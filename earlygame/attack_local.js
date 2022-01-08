@@ -24,6 +24,12 @@ export async function main(ns) {
 		for (let i = 0; i < servers.length; ++i) {
 			let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
 
+			// check if we are running the batch script against this server
+			if (ns.getRunningScript('/earlygame/early-run.js', 'home', server)) {
+				ns.kill('/earlygame/early-hack-template.js', server, server);
+				continue;
+			}
+
 			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);
 			let HackingLevel = ns.getHackingLevel(server);
 			let ServerMaxMoney = ns.getServerMaxMoney(server);

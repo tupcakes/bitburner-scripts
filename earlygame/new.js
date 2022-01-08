@@ -6,7 +6,7 @@ export async function main(ns) {
 
 	let scriptram = ns.getScriptRam("new-owned.js");
 	let operationscriptsram = ns.getScriptRam("hack.js") + ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js") - scriptram - 5;
-	let totalramusage = scriptram + totalramusage;
+	let totalramusage = scriptram + operationscriptsram;
 	let maxRam = ns.getServerMaxRam(ownedserver);
 	let maxnumthreads = parseInt(operationscriptsram / scriptram);
 	let threads = maxnumthreads / 2; // only two op scripts should be running at a time

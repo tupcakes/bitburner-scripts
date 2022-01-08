@@ -19,6 +19,12 @@ export async function main(ns) {
 		var servername = "pserv-" + ram + "GB-" + i
 		var serv = ns.purchaseServer(servername, ram);
 
+		// copy scripts
+		await ns.scp("/earlygame/early-run.js", ownedserver);
+		await ns.scp("hack.js", ownedserver);
+		await ns.scp("grow.js", ownedserver);
+		await ns.scp("weaken.js", ownedserver);
+
 		i++;
 	}
 	await ns.sleep(3000);

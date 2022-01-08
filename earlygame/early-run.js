@@ -14,7 +14,7 @@ export async function main(ns) {
 
 	let scriptram = ns.getScriptRam("/earlygame/early-run.js");
 	let operationscriptsram = ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js");
-	let maxRamforops = ns.getServerMaxRam(ownedserver) - scriptram - operationscriptsram - 5;
+	let maxRamforops = ns.getServerMaxRam(ownedserver) - scriptram - operationscriptsram - 10;
 	let threads = parseInt(maxRamforops / 3);
 
 
@@ -23,7 +23,7 @@ export async function main(ns) {
 	let ServerMinSecurityLevel = ns.getServerMinSecurityLevel(target);
 	let ServerSecurityLevel = ns.getServerSecurityLevel(target);
 
-	let hackamount = Math.trunc(ServerMaxMoney * .75);
+	//let hackamount = Math.trunc(ServerMaxMoney * .75);
 
 
 	ns.tprint("scriptram: " + scriptram);

@@ -1,15 +1,22 @@
 /** @param {NS} ns **/
 export async function main(ns) {
+	ns.disableLog('ALL');
+
 	var target = "joesguns";
-	var ownedserver = "pserv-64GB-0";
+	var ownedserver = "home";
+
+	await ns.scp("/earlygame/early-run.js", ownedserver);
+	await ns.scp("hack.js", ownedserver);
+	await ns.scp("grow.js", ownedserver);
+	await ns.scp("weaken.js", ownedserver);
 	
 
-	let scriptram = ns.getScriptRam("new-owned.js");
-	let operationscriptsram = ns.getScriptRam("hack.js") + ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js") - scriptram - 5;
-	let totalramusage = scriptram + operationscriptsram;
-	let maxRam = ns.getServerMaxRam(ownedserver);
-	let maxnumthreads = parseInt(operationscriptsram / scriptram);
-	let threads = maxnumthreads / 2; // only two op scripts should be running at a time
+	let scriptram = ns.getScriptRam("/earlygame/early-run.js");
+	let operationscriptsram = ns.getScriptRam("hack.js") + ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js");
+	//let totalramusage = scriptram + operationscriptsram;
+	let maxRam = ns.getServerMaxRam(ownedserver) - 5;
+	let maxnumthreads = parseInt(maxRam / 3);
+	let threads = maxnumthreads / 2; // only two operation scripts should be running at a time
 
 	let ServerMoneyAvailable = ns.getServerMoneyAvailable(target);
 	let ServerMaxMoney = ns.getServerMaxMoney(target);
@@ -19,7 +26,11 @@ export async function main(ns) {
 	let hackamount = Math.trunc(ServerMaxMoney * .75);
 
 
-
+	ns.tprint("scriptram: " + scriptram);
+	ns.tprint("operationscriptsram: " + operationscriptsram);
+	ns.tprint("totalramusage: " + totalramusage);
+	ns.tprint("maxRam: " + maxRam);
+	ns.tprint("threads: " + threads);
 
 
 	let sleepoffset = 1000;
@@ -30,19 +41,19 @@ export async function main(ns) {
 	while (true) {
 		// get predicted weaken time
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
-		ns.exec("weaken.js", ownedserver, threads, target);
+		ns.exec("weaken.js", ownedserver, threads, target, hacktime);
 		await ns.sleep(hacktime);
 
 		// get predicted grow time
 		// run grow with sleep of predicted weaken time with offset
 		growtime = ns.getGrowTime(target) + sleepoffset;
-		ns.exec("grow.js", ownedserver, threads, target);
+		ns.exec("grow.js", ownedserver, threads, target, weakentime);
 		await ns.sleep(weakentime);
 
 		// get predicted weaken time
 		// run weaken with sleep of predicted grow time with offset
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
-		ns.exec("weaken.js", ownedserver, threads, target);
+		ns.exec("weaken.js", ownedserver, threads, target, growtime);
 		await ns.sleep(growtime);
 
 		// get predicted hack time
@@ -70,7 +81,7 @@ export async function main(ns) {
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Threads: " + hackthreads);
 
-			ns.exec("hack.js", ownedserver, threads, target);
+			ns.exec("hack.js", ownedserver, threads, target, weakentime);
 			await ns.sleep(weakentime);
 		}
 

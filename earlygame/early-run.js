@@ -6,12 +6,12 @@ export async function main(ns) {
 	let ownedserver = ns.getHostname();
 	
 	let batchram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js')
-	let ServerMaxRam = ns.getServerMaxRam(ownedserver);
-	let ramforbatches = (ServerMaxRam - 10);
+	let ServerFreeRam = parseInt(ns.getServerMaxRam(ownedserver) - ns.getServerUsedRam(ownedserver));
+	let ramforbatches = (ServerFreeRam - 10);
 	let threads = parseInt((ramforbatches) / batchram);
 
 	ns.print("ownedserver: " + ownedserver);
-	ns.print("ServerMaxRam: " + ServerMaxRam);
+	ns.print("ServerFreeRam: " + ServerFreeRam);
 	ns.print("ramforbatches: " + ramforbatches);
 	ns.print("threads: " + threads);
 

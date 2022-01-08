@@ -1,6 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.disableLog('ALL');
+	//ns.disableLog('ALL');
 
 	let target = ns.args[0];
 	let ownedserver = ns.getHostname();
@@ -29,6 +29,7 @@ export async function main(ns) {
 	let threads = Math.trunc(ramforthreads / 3);
 
 	ns.tprint("ramforthreads: " + ramforthreads);
+	ns.tprint("ramperthread: " + Math.trunc((ramforthreads / 3)));
 	ns.tprint("threads: " + threads);
 
 

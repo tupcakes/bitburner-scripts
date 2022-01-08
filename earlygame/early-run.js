@@ -1,9 +1,10 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	//ns.disableLog('ALL');
+	ns.disableLog('ALL');
 
-	var target = "joesguns";
-	var ownedserver = "pserv-64GB-0";
+	let target = ns.args[0];
+	let ownedserver = ns.getHostname();
+
 
 	await ns.scp("/earlygame/early-run.js", ownedserver);
 	await ns.scp("hack.js", ownedserver);

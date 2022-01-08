@@ -26,11 +26,11 @@ export async function main(ns) {
 
 	
 
-	let ramforthreads = ns.getServerMaxRam(ownedserver) - 10;
+	let ramforthreads = (ns.getServerMaxRam(ownedserver) / 3) - 10;
 	let threads = Math.trunc(ramforthreads / 3);
 
 	ns.tprint("ramforthreads: " + ramforthreads);
-	ns.tprint("ramperthread: " + Math.trunc((ramforthreads / 3)));
+	ns.tprint("ramperscript: " + Math.trunc((ramforthreads / 3)));
 	ns.tprint("threads: " + threads);
 
 

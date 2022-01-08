@@ -5,13 +5,6 @@ export async function main(ns) {
 	let target = ns.args[0];
 	let ownedserver = ns.getHostname();
 
-
-	await ns.scp("/earlygame/early-run.js", ownedserver);
-	await ns.scp("hack.js", ownedserver);
-	await ns.scp("grow.js", ownedserver);
-	await ns.scp("weaken.js", ownedserver);
-	
-
 	// let scriptram = ns.getScriptRam("/earlygame/early-run.js");
 	// let operationscriptsram = ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js");
 	// let maxRamforops = ns.getServerMaxRam(ownedserver) - scriptram - operationscriptsram - 10;
@@ -50,19 +43,19 @@ export async function main(ns) {
 		// get predicted weaken time
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
 		ns.exec("weaken.js", ownedserver, threads, target, hacktime);
-		await ns.sleep(hacktime);
+		//await ns.sleep(hacktime);
 
 		// get predicted grow time
 		// run grow with sleep of predicted weaken time with offset
 		growtime = ns.getGrowTime(target) + sleepoffset;
 		ns.exec("grow.js", ownedserver, threads, target, weakentime);
-		await ns.sleep(weakentime);
+		//await ns.sleep(weakentime);
 
 		// get predicted weaken time
 		// run weaken with sleep of predicted grow time with offset
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
 		ns.exec("weaken.js", ownedserver, threads, target, growtime);
-		await ns.sleep(growtime);
+		//await ns.sleep(growtime);
 
 		// get predicted hack time
 		// run hack with sleep of predicted weaken time with offset

@@ -6,34 +6,13 @@ export async function main(ns) {
 	let ownedserver = ns.getHostname();
 	ns.tprint("ownedserver: " + ownedserver);
 
-	// let scriptram = ns.getScriptRam("/earlygame/early-run.js");
-	// let operationscriptsram = ns.getScriptRam("weaken.js") + ns.getScriptRam("grow.js");
-	// let maxRamforops = ns.getServerMaxRam(ownedserver) - scriptram - operationscriptsram - 10;
-	// let threads = parseInt(maxRamforops / 3);
-
-	// let ServerMoneyAvailable = ns.getServerMoneyAvailable(target);
-	// let ServerMaxMoney = ns.getServerMaxMoney(target);
-	// let ServerMinSecurityLevel = ns.getServerMinSecurityLevel(target);
-	// let ServerSecurityLevel = ns.getServerSecurityLevel(target);
-
-	// ns.tprint("scriptram: " + scriptram);
-	// //ns.tprint("operationscriptsram: " + operationscriptsram);
-	// ns.tprint("maxRamforops: " + maxRamforops);
-	// ns.tprint("threads: " + threads);
-	// ns.tprint("weakenram: " + ns.getScriptRam("weaken.js") * threads);
-	// ns.tprint("growram: " + ns.getScriptRam("grow.js") * threads);
-	// ns.tprint("hackram: " + ns.getScriptRam("hack.js") * threads);
-
-	
-
-	let ramforthreads = (ns.getServerMaxRam(ownedserver) / 3) - 10;
-	let threads = Math.trunc(ramforthreads / 3);
+	let ServerMaxRam = ns.getServerMaxRam(ownedserver);
+	let ramforthreads = (ServerMaxRam - 10) / 3;
+	let threads = Math.trunc(ramforthreads);
 
 	ns.tprint("ramforthreads: " + ramforthreads);
 	ns.tprint("ramperscript: " + Math.trunc((ramforthreads / 3)));
 	ns.tprint("threads: " + threads);
-
-
 
 
 	let sleepoffset = 1000;

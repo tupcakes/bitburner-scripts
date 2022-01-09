@@ -5,23 +5,23 @@ export async function main(ns) {
 	ns.clearLog();
 
 	let dollarUS = Intl.NumberFormat("en-US", {
-    	style: "currency",
-    	currency: "USD",
+		style: "currency",
+		currency: "USD",
 		maximumFractionDigits: 0,
 	});
 
 	let target = ns.args[0];
 	let ownedserver = ns.getHostname();
-	
-	let batchram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js')
+
+	let batchram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
 	let ServerFreeRam = parseInt(ns.getServerMaxRam(ownedserver) - ns.getServerUsedRam(ownedserver));
 	let ramforbatches = (ServerFreeRam - 10);
 	let threads = parseInt((ramforbatches) / batchram);
 
 	let weakenmultiplier = .75;
-	let growmultiplier = .9;
+	let growmultiplier = 1.25;
 	let hackmultiplier = 1;
-	let sleepoffset = 1000;
+	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
 	let growtime = 0;
@@ -40,15 +40,12 @@ export async function main(ns) {
 
 	// loop start
 	while (true) {
-		// run first weaken if needed
-		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-			ns.print("");
-			ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
-			// get predicted weaken time
-			weakentime = ns.getWeakenTime(target) + sleepoffset;
-			ns.exec("weaken.js", ownedserver, weakenthreads, target, hacktime);
-			await ns.sleep(hacktime);
-		}
+		ns.print("");
+		ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
+		// get predicted weaken time
+		weakentime = ns.getWeakenTime(target) + sleepoffset;
+		ns.exec("weaken.js", ownedserver, weakenthreads, target, hacktime);
+		await ns.sleep(hacktime);
 
 		ns.print("");
 		ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms");
@@ -69,14 +66,14 @@ export async function main(ns) {
 		// get predicted hack time
 		// run hack with sleep of predicted weaken time with offset
 		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target)) {
-			//hacktime = ns.getHackTime(target) + sleepoffset;
+			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Target money not ready...LOOPING");
 			continue;
 		} else if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-			//hacktime = ns.getHackTime(target) + sleepoffset;
+			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));

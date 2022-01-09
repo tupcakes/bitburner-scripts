@@ -16,7 +16,7 @@ export async function main(ns) {
 		//  3. Run our hacking script on the newly-purchased server with 3 threads
 		//  4. Increment our iterator to indicate that we've bought a new server
 
-		var servername = "pserv-" + ram + "GB-" + i
+		var servername = "pserv-" + i
 		var serv = ns.purchaseServer(servername, ram);
 
 		// copy scripts

@@ -28,9 +28,12 @@ export async function main(ns) {
 			if (ns.getRunningScript('/earlygame/early-run.js', 'home', server) || ns.getRunningScript('/earlygame/run.js', 'home', server)) {
 				ns.kill('/earlygame/early-hack-template.js', server, server);
 				continue;
-			} else if (ns.getRunningScript('/earlygame/early-run.js', 'pserv-0', server) || ns.getRunningScript('/earlygame/run.js', 'pserv-0', server)) {
-				ns.kill('/earlygame/early-hack-template.js', server, server);
-				continue;
+			}
+			if (ns.serverExists('pserv-0') == true) {
+				if (ns.getRunningScript('/earlygame/early-run.js', 'pserv-0', server) || ns.getRunningScript('/earlygame/run.js', 'pserv-0', server)) {
+					ns.kill('/earlygame/early-hack-template.js', server, server);
+					continue;
+				}
 			}
 
 			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);

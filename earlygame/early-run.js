@@ -22,24 +22,33 @@ export async function main(ns) {
 	let growtime = 0;
 	// loop start
 	while (true) {
-		//if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+			ns.print("");
+			ns.print("First weaken.");
 			// get predicted weaken time
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
 			ns.exec("weaken.js", ownedserver, threads, target, hacktime);
 			await ns.sleep(hacktime);
-
+		}
+		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target)) {
+			ns.print("");
+			ns.print("Grow.");
 			// get predicted grow time
 			// run grow with sleep of predicted weaken time with offset
 			growtime = ns.getGrowTime(target) + sleepoffset;
 			ns.exec("grow.js", ownedserver, threads, target, weakentime);
 			await ns.sleep(weakentime);
+		}
 
+		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+			ns.print("");
+			ns.print("Second weaken.");
 			// get predicted weaken time
 			// run weaken with sleep of predicted grow time with offset
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
 			ns.exec("weaken.js", ownedserver, threads, target, growtime);
 			await ns.sleep(growtime);
-		//}
+		}
 
 		// get predicted hack time
 		// run hack with sleep of predicted weaken time with offset

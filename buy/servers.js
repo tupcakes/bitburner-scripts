@@ -2,7 +2,7 @@
 export async function main(ns) {
 
 	// How much RAM each purchased server will have.
-	var ram = 64;
+	var ram = 128;
 
 	// Iterator we'll use for our loop
 	var i = 0;
@@ -20,10 +20,10 @@ export async function main(ns) {
 		var serv = ns.purchaseServer(servername, ram);
 
 		// copy scripts
-		await ns.scp("/earlygame/early-run.js", ownedserver);
-		await ns.scp("hack.js", ownedserver);
-		await ns.scp("grow.js", ownedserver);
-		await ns.scp("weaken.js", ownedserver);
+		await ns.scp("/earlygame/early-run.js", servername);
+		await ns.scp("hack.js", servername);
+		await ns.scp("grow.js", servername);
+		await ns.scp("weaken.js", servername);
 
 		i++;
 	}

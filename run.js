@@ -18,7 +18,7 @@ export async function main(ns) {
 	// determine thread counts
 	//let hackamount = Math.trunc(ServerMoneyAvailable * .75);
 	//let hackthreads = ns.hackAnalyzeThreads(target, hackamount);
-	let weakenthreads = 1000;
+	let weakenthreads = 40;
 	let hackamount = Math.trunc(ServerMaxMoney * .75);
 
 

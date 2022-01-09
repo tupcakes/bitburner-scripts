@@ -25,7 +25,7 @@ export async function main(ns) {
 			let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
 
 			// check if we are running the batch script against this server
-			if (ns.getRunningScript('/earlygame/early-run.js', 'home', server)) {
+			if (ns.getRunningScript('/earlygame/early-run.js', 'home', server) || ns.getRunningScript('/earlygame/run.js', 'home', server)) {
 				ns.kill('/earlygame/early-hack-template.js', server, server);
 				continue;
 			}

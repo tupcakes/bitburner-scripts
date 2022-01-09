@@ -25,7 +25,7 @@ export async function main(ns) {
 	ns.print("target:" + target);
 	ns.print("ServerMaxMoney:" + ServerMaxMoney);
 	ns.print("ServerMoneyAvailable:" + ServerMoneyAvailable);
-	ns.print("weakenthreads: " + weakenthreads);
+	//ns.print("weakenthreads: " + weakenthreads);
 	ns.print("ServerMinSecurityLevel: " + ServerMinSecurityLevel);
 	ns.print("ServerSecurityLevel: " + ServerSecurityLevel);
 
@@ -38,19 +38,31 @@ export async function main(ns) {
 	while (true) {
 		// determine grow threads required
 		let growthreads = parseInt(ns.growthAnalyze(target, 10));
+		ns.print("");
+		ns.print("growthreads" + growthreads);
 		// calc weaken threads based on growthreads
 		weakenthreads = growthreads * 1.25;
-		// get predicted weaken time
-		weakentime = ns.getWeakenTime(target) + sleepoffset;
-		ns.run("weaken.js", weakenthreads, target, hacktime);
-		await ns.sleep(hacktime);
+		ns.print("weakenthreads" + weakenthreads);
 
+		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+			ns.print("");
+			ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
+			// get predicted weaken time
+			weakentime = ns.getWeakenTime(target) + sleepoffset;
+			ns.run("weaken.js", weakenthreads, target, hacktime);
+			await ns.sleep(hacktime);
+		}
+
+		ns.print("");
+		ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms");
 		// get predicted grow time
 		// run grow with sleep of predicted weaken time with offset
 		growtime = ns.getGrowTime(target) + sleepoffset;
 		ns.run("grow.js", growthreads, target, weakentime);
 		await ns.sleep(weakentime);
 
+		ns.print("");
+		ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms");
 		// get predicted weaken time
 		// run weaken with sleep of predicted grow time with offset
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
@@ -82,7 +94,7 @@ export async function main(ns) {
 			ns.print("Hacking: " + target);
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
-			ns.print("Threads: " + hackthreads);
+			ns.print("hackthreadss: " + hackthreads);
 
 			ns.run("hack.js", hackthreads, target, weakentime);
 			await ns.sleep(weakentime);

@@ -19,7 +19,7 @@ export async function main(ns) {
 	let threads = parseInt((ramforbatches) / batchram);
 
 	let weakenmultiplier = .75;
-	let growmultiplier = 1;
+	let growmultiplier = .9;
 	let hackmultiplier = 1;
 	let sleepoffset = 1000;
 	let hacktime = 0;

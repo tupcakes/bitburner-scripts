@@ -14,6 +14,7 @@ export async function main(ns) {
 	ns.print("ServerFreeRam: " + ServerFreeRam);
 	ns.print("ramforbatches: " + ramforbatches);
 	ns.print("threads: " + threads);
+	ns.print("hack threads: " + Math.trunc((threads / 2)));
 
 
 	let sleepoffset = 1000;
@@ -73,7 +74,8 @@ export async function main(ns) {
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 
-			ns.exec("hack.js", ownedserver, threads, target, weakentime);
+			// run with half threads to decrease time to get back to max -- TESTING
+			ns.exec("hack.js", ownedserver, (Math.trunc(threads / 2)), target, weakentime);
 			await ns.sleep(weakentime);
 		}
 

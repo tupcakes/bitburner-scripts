@@ -32,5 +32,6 @@ export async function main(ns) {
             ns.print("");
             await ns.hack(target);
         }
+        await ns.sleep(500);
     }
 }

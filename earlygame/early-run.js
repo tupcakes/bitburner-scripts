@@ -1,6 +1,14 @@
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
+	ns.enableLog('exec');
+	ns.clearLog();
+
+	let dollarUS = Intl.NumberFormat("en-US", {
+    	style: "currency",
+    	currency: "USD",
+		maximumFractionDigits: 0,
+	});
 
 	let target = ns.args[0];
 	let ownedserver = ns.getHostname();
@@ -10,17 +18,26 @@ export async function main(ns) {
 	let ramforbatches = (ServerFreeRam - 10);
 	let threads = parseInt((ramforbatches) / batchram);
 
-	ns.print("ownedserver: " + ownedserver);
-	ns.print("ServerFreeRam: " + ServerFreeRam);
-	ns.print("ramforbatches: " + ramforbatches);
-	ns.print("threads: " + threads);
-	ns.print("hack threads: " + Math.trunc((threads / 2)));
-
-
+	let weakenmultiplier = .75;
+	let growmultiplier = 1.10;
+	let hackmultiplier = 1;
 	let sleepoffset = 1000;
 	let hacktime = 0;
 	let weakentime = 0;
 	let growtime = 0;
+
+	let weakenthreads = Math.trunc(threads * weakenmultiplier);
+	let growthreads = Math.trunc(threads * growmultiplier);
+	let hackthreads = Math.trunc(threads * hackmultiplier);
+
+	ns.print("ownedserver: " + ownedserver);
+	ns.print("ServerFreeRam: " + ServerFreeRam);
+	ns.print("ramforbatches: " + ramforbatches);
+	ns.print("weaken threads: " + weakenthreads);
+	ns.print("grow threads: " + growthreads);
+	ns.print("hack threads: " + hackthreads);
+
+
 	// loop start
 	while (true) {
 		// run first weaken if needed
@@ -29,7 +46,7 @@ export async function main(ns) {
 			ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
 			// get predicted weaken time
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
-			ns.exec("weaken.js", ownedserver, threads, target, hacktime);
+			ns.exec("weaken.js", ownedserver, weakenthreads, target, hacktime);
 			await ns.sleep(hacktime);
 		}
 
@@ -38,7 +55,7 @@ export async function main(ns) {
 		// get predicted grow time
 		// run grow with sleep of predicted weaken time with offset
 		growtime = ns.getGrowTime(target) + sleepoffset;
-		ns.exec("grow.js", ownedserver, threads, target, weakentime);
+		ns.exec("grow.js", ownedserver, growthreads, target, weakentime);
 		await ns.sleep(weakentime);
 
 		ns.print("");
@@ -46,7 +63,7 @@ export async function main(ns) {
 		// get predicted weaken time
 		// run weaken with sleep of predicted grow time with offset
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
-		ns.exec("weaken.js", ownedserver, threads, target, growtime);
+		ns.exec("weaken.js", ownedserver, weakenthreads, target, growtime);
 		await ns.sleep(growtime);
 
 		// get predicted hack time
@@ -67,15 +84,18 @@ export async function main(ns) {
 			continue;
 		} else {
 			hacktime = ns.getHackTime(target) + sleepoffset;
+			let servermoneyavailable = ns.getServerMoneyAvailable(target);
 
 			ns.print("");
 			ns.print("Hacking: " + target);
 			ns.print("Run in: " + Math.trunc(weakentime) + " ms");
-			ns.print("Money: " + ns.getServerMoneyAvailable(target));
+			ns.print("Money: " + dollarUS.format(servermoneyavailable));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
+			let returnmoney = dollarUS.format(((ns.hackAnalyze(target) * servermoneyavailable) * hackthreads));
+			ns.print("Return: " + returnmoney);
 
 			// run with half threads to decrease time to get back to max -- TESTING
-			ns.exec("hack.js", ownedserver, (Math.trunc(threads / 2)), target, weakentime);
+			ns.exec("hack.js", ownedserver, hackthreads, target, weakentime);
 			await ns.sleep(weakentime);
 		}
 

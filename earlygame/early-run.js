@@ -40,6 +40,8 @@ export async function main(ns) {
 
 	// loop start
 	while (true) {
+		hacktime = ns.getHackTime(target) + sleepoffset;
+		
 		ns.print("");
 		ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
 		// get predicted weaken time
@@ -66,21 +68,18 @@ export async function main(ns) {
 		// get predicted hack time
 		// run hack with sleep of predicted weaken time with offset
 		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target)) {
-			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Target money not ready...LOOPING");
 			continue;
 		} else if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Target security not ready...LOOPING");
 			continue;
 		} else {
-			hacktime = ns.getHackTime(target) + sleepoffset;
 			let servermoneyavailable = ns.getServerMoneyAvailable(target);
 
 			ns.print("");

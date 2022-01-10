@@ -64,6 +64,7 @@ export async function main(ns) {
 				// ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
 				// weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
+				await ns.sleep(500);
 			}
 		}
 		ns.print("");

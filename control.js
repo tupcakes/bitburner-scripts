@@ -13,6 +13,7 @@ export async function main(ns) {
 	});
 
 	ns.disableLog('ALL');
+	ns.enablelog('run');
 	ns.clearLog();
 
 	// get all pservs

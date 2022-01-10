@@ -6,6 +6,7 @@ export async function main(ns) {
 
 	await ns.sleep(1000);
 	ns.run("control-home.js", 1, "n00dles");
+	ns.run("control-home.js", 1, "foodnstuff");
 
 	if (ns.getServerMaxRam(ns.getHostname()) >= 128) {
 		if (ns.getHackingLevel() >= 100) {

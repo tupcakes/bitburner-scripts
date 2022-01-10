@@ -1,6 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	let ram = 256;
+	let ram = ns.args[0];
 	let i = 0;
 
     // Continuously try to purchase servers until we've reached the maximum

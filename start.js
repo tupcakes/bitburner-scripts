@@ -5,7 +5,7 @@ export async function main(ns) {
 	ns.run("/earlygame/attack_local.js");
 
 	await ns.sleep(1000);
-	ns.run("control-home.js", 1, "n00dles");
+	//ns.run("control-home.js", 1, "n00dles");
 	ns.run("control-home.js", 1, "foodnstuff");
 
 	if (ns.getServerMaxRam(ns.getHostname()) >= 1024) {

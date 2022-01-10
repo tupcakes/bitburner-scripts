@@ -20,16 +20,15 @@ export async function main(ns) {
 
 	let weakenmultiplier = .5;
 	let growmultiplier = .5;
-	let hackmultiplier = 1.5;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
 	let growtime = 0;
 
-	let controlscriptram = ns.getScriptRam('control.js');
-	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
-	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
-	//let hackthreads = Math.trunc(controlmaxnumthreads * hackmultiplier);
+	// let controlscriptram = ns.getScriptRam('control.js');
+	// let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
+	// let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
+	// let hackthreads = Math.trunc(controlmaxnumthreads * hackmultiplier);
 
 	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .5)));
 

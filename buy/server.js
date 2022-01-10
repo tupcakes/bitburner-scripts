@@ -8,8 +8,10 @@ export async function main(ns) {
 	var i = 0;
 	// Continuously try to purchase servers until we've reached the maximum
 	// amount of servers
-	while (i < ns.getPurchasedServerLimit()) {
-		//let servername = "pserv-" + i
+	if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(ram)) {
+		while (ns.serverExists("pserv-" + i)) {
+			i++;
+		}
 		let serv = ns.purchaseServer(("pserv-" + i), ram);
 
 		// copy scripts
@@ -18,6 +20,8 @@ export async function main(ns) {
 		ns.exec('git-pull.js', ("pserv-" + i), 1)
 
 		i++;
+	} else {
+		ns.tprint("Not enough Money.")
 	}
 	await ns.sleep(3000);
 }

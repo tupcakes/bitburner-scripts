@@ -13,7 +13,7 @@ export async function main(ns) {
 	});
 
 	ns.disableLog('ALL');
-	ns.enablelog('run');
+	ns.enableLog('run');
 	ns.clearLog();
 
 	const runon = "home";

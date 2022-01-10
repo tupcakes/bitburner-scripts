@@ -6,6 +6,9 @@ export function autocomplete(data, args) {
 export async function main(ns) {
 	let target = ns.args[0];
 
+	ns.disableLog('ALL');
+	ns.clearLog();
+
 	// get all pservs
 	let pserv = ns.getPurchasedServers();
 
@@ -30,27 +33,27 @@ export async function main(ns) {
 
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
+			ns.print("");
+			ns.print("Running hack: " + Math.trunc(weakentime) + " ms");
 			ns.run("hack.js", hackthreads, target, 0);
-			//await ns.sleep(weakentime);
 		} else {
 			for (let i = 0; i < pserv.length; ++i) {
 				ns.print("");
-				ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
+				ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms on " + pserv[i]);
 				weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
-				//await ns.sleep(hacktime);
 
 				ns.print("");
-				ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms");
+				ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on " + pserv[i]);
 				growtime = ns.getGrowTime(target) + sleepoffset;
 				ns.exec('grow.js', pserv[i], growthreads, target, 0);
-				//await ns.sleep(weakentime);
 
 				ns.print("");
-				ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms");
+				ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
 				weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
-				//await ns.sleep(growtime);
+
+				ns.print("")
 			}
 		}
 

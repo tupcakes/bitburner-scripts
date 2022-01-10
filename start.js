@@ -31,6 +31,7 @@ export async function main(ns) {
 		if (ns.getHackingLevel() >= 1000) {
 			ns.run("control-home.js", 1, "syscore");
 			ns.run("control-home.js", 1, "snap-fitness");
+			ns.run("control-home.js", 1, "zeus-med");
 		}
 	}
 
@@ -41,7 +42,12 @@ export async function main(ns) {
 			ns.run("control.js", 1, server);
 		}
 		
-		server = "johnson-ortho";
+		// server = "johnson-ortho";
+		// if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
+		// 	ns.run("control.js", 1, server);
+		// }
+
+		server = "global-pharm";
 		if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
 			ns.run("control.js", 1, server);
 		}

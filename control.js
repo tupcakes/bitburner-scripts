@@ -13,6 +13,7 @@ export async function main(ns) {
 	});
 
 	ns.disableLog('ALL');
+	ns.enableLog('run');
 	ns.clearLog();
 
 	// get all pservs
@@ -41,11 +42,11 @@ export async function main(ns) {
 
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
+			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
-			ns.print("Running hack");
+			ns.print("Running hack for " + hacktime + " ms");
 			ns.print("hackthreads: " + hackthreads);
 			ns.run("hack.js", hackthreads, target, 0);
-			hacktime = ns.getHackTime(target) + sleepoffset;
 			await ns.sleep(hacktime);
 		} else {
 			for (let i = 0; i < pserv.length; ++i) {

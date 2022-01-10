@@ -34,10 +34,10 @@ export async function main(ns) {
 
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
-			ns.print("");
-			ns.print("Running hack");
-			ns.print("hackthreads: " + hackthreads);
 			hacktime = ns.getHackTime(target) + sleepoffset;
+			ns.print("");
+			ns.print("Running hack for " + hacktime + " ms");
+			ns.print("hackthreads: " + hackthreads);
 			ns.run("hack.js", hackthreads, target, 0);
 			await ns.sleep(hacktime);
 		} else {

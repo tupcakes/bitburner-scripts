@@ -1,14 +1,16 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.run("hack_ram.js");
-	ns.run("hack_noram.js");
+	ns.run("root_all.js");
+	ns.run("/earlygame/attack_local.js");
+	ns.run("control-home.js", 1, "n00dles");
 
-	// TODO
-	// get tor node
-	// get missing programs
-	// add backdoor to get_root.js
+	if (ns.getHackingLevel() >= 100) {
+		ns.run("control-home.js", 1, "joesguns");
+	}
 
-	// if (ns.getServerMoneyAvailable("home") >= 1000000000) {
-	// 	ns.run("buy/hacknet.js", 1, "buyNodes");
-	// }
+	// only run max of 2 here
+	if (ns.getPurchasedServers.length > 0){
+		ns.run("control.js", 1, "max-hardware");
+		ns.run("control.js", 1, "johnson-ortho");
+	}
 }

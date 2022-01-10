@@ -19,8 +19,8 @@ export async function main(ns) {
 	// get all pservs
 	let pserv = ns.getPurchasedServers();
 
-	let weakenmultiplier = .5;
-	let growmultiplier = .5;
+	let weakenmultiplier = .25;
+	let growmultiplier = .75;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;

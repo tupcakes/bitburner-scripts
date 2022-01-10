@@ -11,7 +11,7 @@ export async function main(ns) {
 		}
 	}
 
-	if (ns.getServerMaxRam(ns.getHostname()) >= 512) {
+	if (ns.getServerMaxRam(ns.getHostname()) >= 1024) {
 		if (ns.getHackingLevel() >= 250) {
 			ns.run("control-home.js", 1, "silver-helix");
 			ns.run("control-home.js", 1, "max-hardware");

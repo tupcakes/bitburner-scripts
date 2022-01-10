@@ -8,16 +8,16 @@ export async function main(ns) {
 	ns.run("control-home.js", 1, "n00dles");
 	ns.run("control-home.js", 1, "foodnstuff");
 
-	if (ns.getServerMaxRam(ns.getHostname()) >= 128) {
+	if (ns.getServerMaxRam(ns.getHostname()) >= 1024) {
 		if (ns.getHackingLevel() >= 100) {
 			ns.run("control-home.js", 1, "joesguns");
+			ns.run("control-home.js", 1, "max-hardware");
 		}
 	}
 
-	if (ns.getServerMaxRam(ns.getHostname()) >= 1024) {
+	if (ns.getServerMaxRam(ns.getHostname()) >= 4096) {
 		if (ns.getHackingLevel() >= 250) {
 			ns.run("control-home.js", 1, "silver-helix");
-			ns.run("control-home.js", 1, "max-hardware");
 		}
 	}
 

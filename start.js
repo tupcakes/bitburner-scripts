@@ -1,6 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.run("/buy/servers.js", 512);
+	ns.run("/buy/servers.js", 1, 1024);
 	ns.run("root_all.js");
 	ns.run("/earlygame/attack_local.js");
 	ns.run("control-home.js", 1, "n00dles");

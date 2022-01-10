@@ -19,7 +19,7 @@ export async function main(ns) {
 	const runon = "home";
 
 	let weakenmultiplier = .1;
-	let growmultiplier = .6;
+	let growmultiplier = 1;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;

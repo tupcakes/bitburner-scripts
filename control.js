@@ -42,6 +42,7 @@ export async function main(ns) {
 
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
+			await ns.sleep(weakentime);
 			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Running hack for " + hacktime + " ms");
@@ -62,7 +63,7 @@ export async function main(ns) {
 
 				// ns.print("");
 				// ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
-				// weakentime = ns.getWeakenTime(target) + sleepoffset;
+				weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
 				await ns.sleep(500);
 			}

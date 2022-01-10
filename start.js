@@ -18,13 +18,13 @@ export async function main(ns) {
 		}
 	}
 
-	if (ns.getServerMaxRam(ns.getHostname()) >= 1024) {
+	if (ns.getServerMaxRam(ns.getHostname()) >= 8192) {
 		if (ns.getHackingLevel() >= 500) {
 			ns.run("control-home.js", 1, "comptek");
 			ns.run("control-home.js", 1, "crush-fitness");
 		}
 	}
-	if (ns.getServerMaxRam(ns.getHostname()) >= 2048) {
+	if (ns.getServerMaxRam(ns.getHostname()) >= 16384) {
 		if (ns.getHackingLevel() >= 1000) {
 			ns.run("control-home.js", 1, "syscore");
 			ns.run("control-home.js", 1, "snap-fitness");
@@ -34,12 +34,12 @@ export async function main(ns) {
 	// only run max of 2 here
 	if (ns.getPurchasedServers().length > 0) {
 		let server = "crush-fitness";
-		if (ns.getServerRequiredHackingLevel(server) >= ns.getHackingLevel()) {
+		if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
 			ns.run("control.js", 1, server);
 		}
 		
 		server = "johnson-ortho";
-		if (ns.getServerRequiredHackingLevel(server) >= ns.getHackingLevel()) {
+		if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
 			ns.run("control.js", 1, server);
 		}
 	}

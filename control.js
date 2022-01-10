@@ -13,7 +13,6 @@ export async function main(ns) {
 	});
 
 	ns.disableLog('ALL');
-	ns.enableLog('run');
 	ns.clearLog();
 
 	// get all pservs
@@ -31,7 +30,7 @@ export async function main(ns) {
 	// let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
 	// let hackthreads = Math.trunc(controlmaxnumthreads * hackmultiplier);
 
-	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .5)));
+	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .25)));
 
 
 	let pservscrptram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');

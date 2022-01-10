@@ -18,8 +18,8 @@ export async function main(ns) {
 
 	const runon = "home";
 
-	let weakenmultiplier = .25;
-	let growmultiplier = .75;
+	let weakenmultiplier = .1;
+	let growmultiplier = .6;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
@@ -28,7 +28,7 @@ export async function main(ns) {
 	let controlscriptram = ns.getScriptRam('control-home.js') + ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
 	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
-	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .5)));
+	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .3)));
 	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
 
@@ -37,26 +37,26 @@ export async function main(ns) {
 			ns.print("");
 			ns.print("Running hack");
 			ns.print("hackthreads: " + hackthreads);
-			ns.run("hack.js", hackthreads, target, 0);
 			hacktime = ns.getHackTime(target) + sleepoffset;
-			await ns.sleep(weakentime);
+			ns.run("hack.js", hackthreads, target, 0);
+			await ns.sleep(hacktime);
 		} else {
 			ns.print("");
-			ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms on " + pserv[i]);
+			ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
-			ns.exec('weaken.js', runon, weakenthreads, target, 0);
+			ns.exec('weaken.js', runon, weakenthreads, target, hacktime);
 			await ns.sleep(hacktime);
 
 			ns.print("");
-			ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on " + pserv[i]);
+			ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on");
 			growtime = ns.getGrowTime(target) + sleepoffset;
-			ns.exec('grow.js', runon, growthreads, target, 0);
+			ns.exec('grow.js', runon, growthreads, target, weakentime);
 			await ns.sleep(weakentime);
 
 			ns.print("");
-			ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
+			ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms");
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
-			ns.exec('weaken.js', runon, weakenthreads, target, 0);
+			ns.exec('weaken.js', runon, weakenthreads, target, growtime);
 			await ns.sleep(growtime);
 		}
 		ns.print("");

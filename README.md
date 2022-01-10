@@ -14,7 +14,7 @@ I always run earlygame/attack_local.js as it will run early-hacking-template.js 
 
 Early on I run earlygame/early-hack-template.js against n00dles for some quick money/levels in combination with some low level crimes and Hacknet nodes.
 
-Once home has more ram, I run earlygame/early-run.js against a low level server.
+Once home has more ram, I run control-home.js against a low level server. Run additional instances as ram allows.
 
 When I can start buying pservs, I run control.js against joesguns. Have at least two pservs with at least 64GB.
 

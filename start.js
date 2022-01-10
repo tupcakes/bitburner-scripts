@@ -3,6 +3,8 @@ export async function main(ns) {
 	ns.run("/buy/servers.js", 1, 1024);
 	ns.run("root_all.js");
 	ns.run("/earlygame/attack_local.js");
+
+	await ns.sleep(1000);
 	ns.run("control-home.js", 1, "n00dles");
 
 	if (ns.getServerMaxRam(ns.getHostname()) >= 128) {

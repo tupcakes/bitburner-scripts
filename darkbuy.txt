@@ -1,11 +1,1 @@
-connect darkweb;
-buy FTPCrack.exe;
-buy relaySMTP.exe;
-buy HTTPWorm.exe;
-buy SQLInject.exe;
-buy ServerProfiler.exe;
-buy DeepscanV1.exe;
-buy DeepscanV2.exe;
-buy AutoLink.exe;
-buy Formulas.exe;
-home;
+alias buyPrograms="connect darkweb; buy FTPCrack.exe; buy relaySMTP.exe; buy HTTPWorm.exe; buy SQLInject.exe; buy ServerProfiler.exe; buy DeepscanV1.exe; buy DeepscanV2.exe; buy AutoLink.exe; buy Formulas.exe; home;"

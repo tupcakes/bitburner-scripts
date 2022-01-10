@@ -2,12 +2,7 @@
 export async function main(ns) {
 	ns.disableLog('ALL');
 
-	var target = "max-hardware";
-	var ram = 0;
-	var cost = 0;
-	var threads = 0;
-	var i = 0;
-	var scriptram = ns.getScriptRam("/earlygame/early-hack-template.js");
+	let scriptram = ns.getScriptRam("/earlygame/early-hack-template.js");
 	
 	// read in server file
 	let file = ns.read("server_list.txt");
@@ -25,16 +20,11 @@ export async function main(ns) {
 			let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
 
 			// check if we are running the batch script against this server
-			if (ns.getRunningScript('/earlygame/early-run.js', 'home', server) || ns.getRunningScript('/earlygame/run.js', 'home', server)) {
+			if (ns.getRunningScript('control.js', 'home', server) || ns.getRunningScript('/earlygame/early-run.js', 'home', server)) {
 				ns.kill('/earlygame/early-hack-template.js', server, server);
 				continue;
 			}
-			if (ns.serverExists('pserv-0') == true) {
-				if (ns.getRunningScript('/earlygame/early-run.js', 'pserv-0', server) || ns.getRunningScript('/earlygame/run.js', 'pserv-0', server)) {
-					ns.kill('/earlygame/early-hack-template.js', server, server);
-					continue;
-				}
-			}
+
 
 			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);
 			let HackingLevel = ns.getHackingLevel(server);

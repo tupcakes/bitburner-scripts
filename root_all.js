@@ -36,15 +36,23 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 
 	let file = ns.read("server_list.txt");
-	let target = file.split("\r\n");
+	let targets = file.split("\r\n");
 
-	for (let i = 0; i < target.length; ++i) {
-		let server = JSON.stringify(target[i].split(",")).replace('["', '').replace('"]', '');
-		if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
-			breakPorts(target);
-			ns.nuke(target);
-			ns.tprint("Hacked: " + target);
-			ns.print("Hacked: " + target);
+	while (true) {
+		for (let i = 0; i < targets.length; ++i) {
+			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
+			if (ns.hasRootAccess(target)) {
+				await ns.sleep(1000);
+				continue;
+			}
+			if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
+				breakPorts(target);
+				ns.nuke(target);
+				ns.tprint("Hacked: " + target);
+				ns.print("Hacked: " + target);
+			}
+			await ns.sleep(1000);
 		}
+		await ns.sleep(1000);
 	}
 }

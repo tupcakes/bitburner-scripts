@@ -18,13 +18,15 @@ export async function main(ns) {
 	let ramforbatches = (ServerFreeRam - 10);
 	let threads = parseInt((ramforbatches) / batchram);
 
-	let weakenmultiplier = .75;
-	let growmultiplier = 1.25;
-	let hackmultiplier = 1;
+	let weakenmultiplier = .5;
+	let growmultiplier = .5;
+	let hackmultiplier = .75;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
 	let growtime = 0;
+
+	let firststloop = true;
 
 	let weakenthreads = Math.trunc(threads * weakenmultiplier);
 	let growthreads = Math.trunc(threads * growmultiplier);
@@ -40,8 +42,10 @@ export async function main(ns) {
 
 	// loop start
 	while (true) {
-		hacktime = ns.getHackTime(target) + sleepoffset;
-		
+		if (firststloop == false) {
+			hacktime = ns.getHackTime(target) + sleepoffset;
+		}
+
 		ns.print("");
 		ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
 		// get predicted weaken time
@@ -72,12 +76,14 @@ export async function main(ns) {
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Target money not ready...LOOPING");
+			firststloop = false;
 			continue;
 		} else if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
 			ns.print("");
 			ns.print("Money: " + ns.getServerMoneyAvailable(target));
 			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
 			ns.print("Target security not ready...LOOPING");
+			firststloop = false;
 			continue;
 		} else {
 			let servermoneyavailable = ns.getServerMoneyAvailable(target);
@@ -93,6 +99,7 @@ export async function main(ns) {
 			// run with half threads to decrease time to get back to max -- TESTING
 			ns.exec("hack.js", ownedserver, hackthreads, target, weakentime);
 			await ns.sleep(weakentime);
+			firststloop = false;
 		}
 
 		await ns.sleep(1000);

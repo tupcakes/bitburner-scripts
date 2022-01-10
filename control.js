@@ -6,6 +6,12 @@ export function autocomplete(data, args) {
 export async function main(ns) {
 	let target = ns.args[0];
 
+	let dollarUS = Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		maximumFractionDigits: 0,
+	});
+
 	ns.disableLog('ALL');
 	ns.clearLog();
 
@@ -23,7 +29,10 @@ export async function main(ns) {
 	let controlscriptram = ns.getScriptRam('control.js');
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
 	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
-	let hackthreads = Math.trunc(controlmaxnumthreads * hackmultiplier);
+	//let hackthreads = Math.trunc(controlmaxnumthreads * hackmultiplier);
+
+	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .5)));
+
 
 	let pservscrptram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
 	let pservmaxRam = ns.getServerMaxRam(pserv[0]) - 10;
@@ -34,28 +43,35 @@ export async function main(ns) {
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
 			ns.print("");
-			ns.print("Running hack: " + Math.trunc(weakentime) + " ms");
+			ns.print("Running hack");
+			ns.print("hackthreads: " + hackthreads);
 			ns.run("hack.js", hackthreads, target, 0);
+			hacktime = ns.getHackTime(target) + sleepoffset;
+			await ns.sleep(hacktime);
 		} else {
 			for (let i = 0; i < pserv.length; ++i) {
-				ns.print("");
-				ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms on " + pserv[i]);
-				weakentime = ns.getWeakenTime(target) + sleepoffset;
+				// ns.print("");
+				// ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms on " + pserv[i]);
+				// weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
 
-				ns.print("");
-				ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on " + pserv[i]);
-				growtime = ns.getGrowTime(target) + sleepoffset;
+				// ns.print("");
+				// ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on " + pserv[i]);
+				// growtime = ns.getGrowTime(target) + sleepoffset;
 				ns.exec('grow.js', pserv[i], growthreads, target, 0);
 
-				ns.print("");
-				ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
-				weakentime = ns.getWeakenTime(target) + sleepoffset;
+				// ns.print("");
+				// ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms on " + pserv[i]);
+				// weakentime = ns.getWeakenTime(target) + sleepoffset;
 				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
-
-				ns.print("")
 			}
 		}
+		ns.print("");
+		ns.print("-----");
+		ns.print("Money available: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+		ns.print("Max money: " + dollarUS.format(ns.getServerMaxMoney(target)));
+		ns.print("Current security: " + ns.getServerSecurityLevel(target));
+		ns.print("Min security: " + ns.getServerMinSecurityLevel(target));
 
 		await ns.sleep(1000);
 	}

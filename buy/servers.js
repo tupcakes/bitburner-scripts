@@ -3,6 +3,10 @@ export async function main(ns) {
 	let ram = ns.args[0];
 	let i = 0;
 
+    if (ns.getPurchasedServers().length == ns.getPurchasedServerLimit()) {
+        ns.tprint("Already purchased max servers.");
+        return;
+    }
     // Continuously try to purchase servers until we've reached the maximum
 	// amount of servers
 	while (i < ns.getPurchasedServerLimit()) {

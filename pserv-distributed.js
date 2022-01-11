@@ -6,9 +6,15 @@ export async function main(ns) {
 	let file = ns.read("server_list.txt");
 	let servers = file.split("\r\n");
 	let targetindex = 0;
-	let batchsize = 4;
 	let counter = 0;
 	let pservindex = 0;
+	
+	if (ns.getServerMaxRam(pserv[0]) > == 1024) {
+		let batchsize = 2;
+	} else if (ns.getServerMaxRam(pserv[0]) > == 2048) {
+		let batchsize = 4;
+	}
+	
 
 	while (pservindex < pserv.length) {
 		//await ns.sleep(500);

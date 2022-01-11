@@ -18,6 +18,7 @@ export async function main(ns) {
 
 	// get all pservs
 	let pserv = ns.getPurchasedServers();
+	//pserv = pserv.push('home')
 
 	let weakenmultiplier = .25;
 	let growmultiplier = .75;

@@ -11,18 +11,19 @@ export async function main(ns) {
 	let pservindex = 0;
 
 	while (pservindex < pserv.length) {
+		//await ns.sleep(500);
 		counter = 0;
 
-		// check if there are any more targets in the list
-		if (targetindex >= servers.length) {
-			ns.scriptKill(ns.getScriptName(), ns.getHostname());
-		}
-
-		await ns.sleep(500);
 		ns.tprint("Pserv------------" + pserv[pservindex]);
 
 		while (counter < batchsize) {
-			await ns.sleep(500);
+			// check if there are any more targets in the list
+			if (targetindex == 69) {
+				ns.tprint("Processed " + targetindex + " targets.");
+				ns.scriptKill(ns.getScriptName(), ns.getHostname());
+				break;
+			}
+
 			let server = JSON.stringify(servers[targetindex].split(",")).replace('["', '').replace('"]', '');
 			let hackinglevel = ns.getHackingLevel();
 			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);

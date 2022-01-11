@@ -37,15 +37,11 @@ export async function main(ns) {
 
 	// only run max of 2 here
 	if (ns.getPurchasedServers().length > 0) {
-		let server = "crush-fitness";
+		let server = "johnson-ortho";
+		server = "johnson-ortho";
 		if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
 			ns.run("control.js", 1, server);
 		}
-		
-		// server = "johnson-ortho";
-		// if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
-		// 	ns.run("control.js", 1, server);
-		// }
 
 		server = "global-pharm";
 		if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {

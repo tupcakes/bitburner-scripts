@@ -20,6 +20,7 @@ export async function main(ns) {
 
 	let weakenmultiplier = .1;
 	let growmultiplier = 1;
+	let moneymultiplier = .3;
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
@@ -28,9 +29,17 @@ export async function main(ns) {
 	let controlscriptram = ns.getScriptRam('control-home.js') + ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
 	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
-	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * .3)));
+	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+	// if there wasn't enough ram to calc hackthreads, wait and recalc
+	while (hackthreads == -1) {
+		await ns.sleep(500);
+		ns.tprint("Not enough ram for hackthreads: " + hackthreads);
+		hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+	}
+	ns.tprint("hackthreads: " + hackthreads);
 	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
+
 
 	while (true) {
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {

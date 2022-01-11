@@ -2,7 +2,7 @@
 export async function main(ns) {
 
 	// How much RAM each purchased server will have.
-	var ram = 256;
+	var ram = ns.argsp[0];
 
 	// Iterator we'll use for our loop
 	var i = 0;

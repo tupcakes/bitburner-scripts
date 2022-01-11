@@ -40,9 +40,13 @@ export async function main(ns) {
 	// hackthreads returned a value less than 1
 	if (hackthreads == -1) {
 		hackthreads = 1;
-		ns.tprint("hackthreads: " + hackthreads);
+		//ns.tprint("hackthreads: " + hackthreads);
+	} else if (hackthreads == 0) {
+		ns.tprint("hackthreads: 0");
+		ns.tprint("No money?!?!?! EXITING!!!");
+		ns.scriptkill('control-home.js', runon);
 	} else {
-		ns.tprint("hackthreads: " + hackthreads);
+		//ns.tprint("hackthreads: " + hackthreads);
 	}
 
 	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);

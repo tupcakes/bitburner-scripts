@@ -120,26 +120,3 @@ export async function main(ns) {
 		await ns.sleep(1000);
 	}
 }
-
-
-
-/*
-ideas
-script requirements
-
-while true
-	if server is ready to hack
-		for each pserv
-			if pservfreemem > scriptmem
-				hack on pserv
-			else
-				continue to next pserv
-	else
-		for each pserv
-			if pservfreemem > scriptmem
-				weaken pserv
-				grow on pserv
-				weaken on pserv
-			else
-				continue to next pserv
-*/

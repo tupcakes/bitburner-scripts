@@ -25,7 +25,7 @@ export async function main(ns) {
 	}
 
 	if (pserv.length > 0) {
-		ns.run("pserv-distributed.js");
+		ns.run("home-distributed.js");
 	}
 
 

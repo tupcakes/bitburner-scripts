@@ -29,13 +29,10 @@ export async function main(ns) {
 
 
 	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
-	// if there wasn't enough ram to calc hackthreads, wait and recalc
-	while (hackthreads == -1) {
-		await ns.sleep(500);
-		ns.tprint("Not enough ram for hackthreads: " + hackthreads);
-		hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+	// hackthreads returned a value less than 1
+	if (hackthreads == -1) {
+		hackthreads = 1;
 	}
-	ns.tprint("hackthreads: " + hackthreads);
 
 
 	let pservscrptram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');

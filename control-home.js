@@ -16,7 +16,7 @@ export async function main(ns) {
 	ns.enableLog('run');
 	ns.clearLog();
 
-	const runon = "home";
+	const runon = ns.getHostname();
 
 	let weakenmultiplier = .1;
 	let growmultiplier = 1;
@@ -26,17 +26,25 @@ export async function main(ns) {
 	let weakentime = 0;
 	let growtime = 0;
 
-	let controlscriptram = ns.getScriptRam('control-home.js') + ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
+	let controlscriptram = Math.trunc(ns.getScriptRam('control-home.js') + ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js'));
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
 	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
 	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
-	// if there wasn't enough ram to calc hackthreads, wait and recalc
-	while (hackthreads == -1) {
-		await ns.sleep(500);
-		ns.tprint("Not enough ram for hackthreads: " + hackthreads);
-		hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+	
+	// ns.tprint("ServerMaxMoney: " + dollarUS.format(ns.getServerMaxMoney(target)));
+	// ns.tprint("MoneytoHack: " + dollarUS.format((ns.getServerMaxMoney(target) * moneymultiplier)));
+	// ns.tprint("controlmaxnumthreads: " + controlmaxnumthreads);
+	// ns.tprint("controlscriptram: " + controlscriptram);
+	// ns.tprint("controlmaxRam: " + controlmaxRam);
+
+	// hackthreads returned a value less than 1
+	if (hackthreads == -1) {
+		hackthreads = 1;
+		ns.tprint("hackthreads: " + hackthreads);
+	} else {
+		ns.tprint("hackthreads: " + hackthreads);
 	}
-	ns.tprint("hackthreads: " + hackthreads);
+
 	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
 

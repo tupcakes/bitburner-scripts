@@ -34,31 +34,80 @@ export async function main(ns) {
 		hackthreads = 1;
 	}
 
-
-	let pservscrptram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
+	let weakenscriptram = ns.getScriptRam('weaken.js');
+	let growscriptram = ns.getScriptRam('grow.js');
+	let hackscriptram = ns.getScriptRam('hack.js');
+	let pservscriptram = weakenscriptram + growscriptram + hackscriptram;
 	let pservmaxRam = ns.getServerMaxRam(pserv[0]) - 10;
-	let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscrptram);
+	let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscriptram);
 	let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
 
 	while (true) {
+		let firstweakenrunning = false;
+		let growrunning = false;
+		let secondweakenrunning = false;
+
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
-			await ns.sleep(weakentime);
-			hacktime = ns.getHackTime(target) + sleepoffset;
-			ns.print("");
-			ns.print("Running hack for " + hacktime + " ms");
-			ns.print("hackthreads: " + hackthreads);
-			ns.run("hack.js", hackthreads, target, 0);
-			await ns.sleep(hacktime);
+			for (let i = 0; i < pserv.length; ++i) {
+				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
+
+				if (pservfreeram > pservscriptram) {
+					await ns.sleep(weakentime);
+					hacktime = ns.getHackTime(target) + sleepoffset;
+					ns.print("");
+					ns.print("Running hack for " + hacktime + " ms");
+					ns.print("hackthreads: " + hackthreads);
+					ns.print("Hack running on: " + pserv[i]);
+					ns.print("Current security: " + ns.getServerSecurityLevel(target));
+					ns.print("Money available: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+					ns.exec("hack.js", pserv[i], hackthreads, target, 0);
+					await ns.sleep(hacktime);
+				} else {
+					continue;
+				}
+			}
 		} else {
 			for (let i = 0; i < pserv.length; ++i) {
-				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
+				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
 
-				ns.exec('grow.js', pserv[i], growthreads, target, 0);
+				if (pservfreeram > pservscriptram && firstweakenrunning == false) {
+					ns.print("");
+					ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
+					ns.print("First weaken running on: " + pserv[i]);
+					weakentime = ns.getWeakenTime(target) + sleepoffset;
+					ns.exec('weaken.js', pserv[i], weakenthreads, target, hacktime);
+					firstweakenrunning = true;
+					//await ns.sleep(hacktime);
+				} else {
+					continue;
+				}
 
-				weakentime = ns.getWeakenTime(target) + sleepoffset;
-				ns.exec('weaken.js', pserv[i], weakenthreads, target, 0);
-				await ns.sleep(500);
+				pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
+				if (pservfreeram > pservscriptram && growrunning == false) {
+					ns.print("");
+					ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms on");
+					ns.print("Grow running on: " + pserv[i]);
+					growtime = ns.getGrowTime(target) + sleepoffset;
+					ns.exec('grow.js', pserv[i], growthreads, target, weakentime);
+					growrunning = true;
+					//await ns.sleep(weakentime);
+				} else {
+					continue;
+				}
+
+				pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
+				if (pservfreeram > pservscriptram && secondweakenrunning == false) {
+					ns.print("");
+					ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms");
+					ns.print("Second weaken running on: " + pserv[i]);
+					weakentime = ns.getWeakenTime(target) + sleepoffset;
+					ns.exec('weaken.js', pserv[i], weakenthreads, target, growtime);
+					let secondweakenrunning = true;
+					//await ns.sleep(growtime);
+				} else {
+					continue;
+				}
 			}
 		}
 		ns.print("");
@@ -71,3 +120,26 @@ export async function main(ns) {
 		await ns.sleep(1000);
 	}
 }
+
+
+
+/*
+ideas
+script requirements
+
+while true
+	if server is ready to hack
+		for each pserv
+			if pservfreemem > scriptmem
+				hack on pserv
+			else
+				continue to next pserv
+	else
+		for each pserv
+			if pservfreemem > scriptmem
+				weaken pserv
+				grow on pserv
+				weaken on pserv
+			else
+				continue to next pserv
+*/

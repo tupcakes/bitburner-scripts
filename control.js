@@ -44,13 +44,18 @@ export async function main(ns) {
 	let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
 
+
 	while (true) {
+		await ns.sleep(500);
 		let firstweakenrunning = false;
 		let growrunning = false;
 		let secondweakenrunning = false;
+		let i = 0;
 
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
-			for (let i = 0; i < pserv.length; ++i) {
+			while (i < pserv.length) {
+				await ns.sleep(500);
+			//for (let i = 0; i < pserv.length; ++i) {
 				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
 
 				if (pservfreeram > pservscriptram) {
@@ -64,12 +69,16 @@ export async function main(ns) {
 					ns.print("Money available: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 					ns.exec("hack.js", pserv[i], hackthreads, target, 0);
 					await ns.sleep(hacktime);
+					break;
 				} else {
+					i++;
 					continue;
 				}
 			}
 		} else {
-			for (let i = 0; i < pserv.length; ++i) {
+			//for (let i = 0; i < pserv.length; ++i) {
+			while (i < pserv.length) {
+				await ns.sleep(500);
 				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
 
 				if (pservfreeram > pservscriptram && firstweakenrunning == false) {
@@ -79,8 +88,8 @@ export async function main(ns) {
 					weakentime = ns.getWeakenTime(target) + sleepoffset;
 					ns.exec('weaken.js', pserv[i], weakenthreads, target, hacktime);
 					firstweakenrunning = true;
-					//await ns.sleep(hacktime);
 				} else {
+					i++;
 					continue;
 				}
 
@@ -92,8 +101,8 @@ export async function main(ns) {
 					growtime = ns.getGrowTime(target) + sleepoffset;
 					ns.exec('grow.js', pserv[i], growthreads, target, weakentime);
 					growrunning = true;
-					//await ns.sleep(weakentime);
 				} else {
+					i++;
 					continue;
 				}
 
@@ -105,8 +114,8 @@ export async function main(ns) {
 					weakentime = ns.getWeakenTime(target) + sleepoffset;
 					ns.exec('weaken.js', pserv[i], weakenthreads, target, growtime);
 					let secondweakenrunning = true;
-					//await ns.sleep(growtime);
 				} else {
+					i++;
 					continue;
 				}
 			}
@@ -117,7 +126,6 @@ export async function main(ns) {
 		ns.print("Max money: " + dollarUS.format(ns.getServerMaxMoney(target)));
 		ns.print("Current security: " + ns.getServerSecurityLevel(target));
 		ns.print("Min security: " + ns.getServerMinSecurityLevel(target));
-
-		await ns.sleep(1000);
 	}
+	ns.tprint("Script finished. This shouldnt happen.");
 }

@@ -10,13 +10,28 @@ nano git-pull.js
 Copy contents of file into new file and run.
 
 ## What to run
-I always run earlygame/attack_local.js as it will run early-hacking-template.js on every server with money and ram against itself.
+I've changed and tweaked this process frequently, so this is subject to change.
 
-Early on I run earlygame/early-hack-template.js against n00dles for some quick money/levels in combination with some low level crimes and Hacknet nodes.
+### Starting out
+Generate a server list with create_serverlist.js.
 
-Once home has more ram, I run control-home.js against a low level server. Run additional instances as ram allows.
+Fire off earlygame/attack_local.js
+It will automatically run early-hacking-script.js on all hosts against themselves.
 
-When I can start buying pservs, I run control.js against joesguns. Have at least two pservs with at least 64GB.
+Also run earlygame/early-run.js against n00dles or more low level servers.
 
-If early-run.js or control.js are running against a server, that server will be excluded from attack_local.js running early-hacking-template.js on it.
+### Increase ram on home
+Once you have more ram on home (at least 32-64 GB), try runnning control-home.js against 1 or 2 low level servers. It's more effient than the starting out scripts.
 
+### Buy more servers
+Get two servers with at least 32 GB of ram each.
+Run control.js against more low level servers. It should schedule weaken, grow, and hack jobs on the purchased servers, with control.js instances running on home.
+
+### Late game
+Run buy/servers.js 1024 or more ram. It will keep buying servers until the max is reached.
+
+Run home-distributed.js. It will run control.js against all servers in server_list.txt.
+
+Occiasionally replace all purchased servers with larger versions when money allows.
+
+Profit.

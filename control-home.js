@@ -18,9 +18,16 @@ export async function main(ns) {
 
 	const runon = ns.getHostname();
 
-	let weakenmultiplier = .1;
-	let growmultiplier = 1;
-	let moneymultiplier = .3;
+	// late game multipliers
+	// let weakenmultiplier = .1;
+	// let growmultiplier = 1;
+	// let moneymultiplier = .3;
+
+	// early game multipliers
+	let weakenmultiplier = .3;
+	let growmultiplier = .7;
+	let moneymultiplier = .1;
+	
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
@@ -30,12 +37,17 @@ export async function main(ns) {
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
 	let controlmaxnumthreads = Math.trunc(controlmaxRam / controlscriptram);
 	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
+	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
 	
 	// ns.tprint("ServerMaxMoney: " + dollarUS.format(ns.getServerMaxMoney(target)));
 	// ns.tprint("MoneytoHack: " + dollarUS.format((ns.getServerMaxMoney(target) * moneymultiplier)));
 	// ns.tprint("controlmaxnumthreads: " + controlmaxnumthreads);
 	// ns.tprint("controlscriptram: " + controlscriptram);
 	// ns.tprint("controlmaxRam: " + controlmaxRam);
+	// ns.tprint("weakenthreads: " + weakenthreads);
+	// ns.tprint("growthreads: " + growthreads);
+	
 
 	// hackthreads returned a value less than 1
 	if (hackthreads == -1) {
@@ -48,9 +60,6 @@ export async function main(ns) {
 	} else {
 		//ns.tprint("hackthreads: " + hackthreads);
 	}
-
-	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
-	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
 
 
 	while (true) {

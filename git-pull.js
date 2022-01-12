@@ -34,10 +34,11 @@ export async function main(ns) {
         const remoteFilePath = baseUrl + localFilePath;
         ns.print(`Trying to update "${localFilePath}" from ${remoteFilePath} ...`);
         if (await ns.wget(`${remoteFilePath}?ts=${new Date().getTime()}`, (options.subfolder ? (options.subfolder + '/') : '') + localFilePath))
-            ns.tprint(`SUCCESS: Updated "${localFilePath}" to the latest from ${remoteFilePath}`);
+            ns.print(`SUCCESS: Updated "${localFilePath}" to the latest from ${remoteFilePath}`);
         else
-            ns.tprint(`WARNING: "${localFilePath}" was not updated. (Currently running or not located at ${remoteFilePath} )`)
+            ns.print(`WARNING: "${localFilePath}" was not updated. (Currently running or not located at ${remoteFilePath} )`)
     }
+    ns.tprint("Completed updating files.");
 }
 
 /** @param {NS} ns 
@@ -61,7 +62,7 @@ async function repositoryListing(ns, folder = '') {
         return files;
     } catch (error) {
         if (folder !== '') throw error; // Propagate the error if this was a recursive call.
-        ns.tprint(`WARNING: Failed to get a repository listing (GitHub API request limit of 60 reached?): ${listUrl}` +
+        ns.print(`WARNING: Failed to get a repository listing (GitHub API request limit of 60 reached?): ${listUrl}` +
             `\nResponse Contents (if available): ${JSON.stringify(response ?? '(N/A)')}\nError: ${String(error)}`);
         // Fallback, assume the user already has a copy of all files in the repo, and use it as a directory listing
         return ns.ls('home').filter(name => options.extension.some(ext => f.endsWith(ext)) &&

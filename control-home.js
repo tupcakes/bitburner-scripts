@@ -27,11 +27,12 @@ export async function main(ns) {
 	let weakenmultiplier = .3;
 	let growmultiplier = .7;
 	let moneymultiplier = .1;
-	
+
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
 	let growtime = 0;
+	let firststloop = true;
 
 	let controlscriptram = Math.trunc(ns.getScriptRam('control-home.js') + ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js'));
 	let controlmaxRam = ns.getServerMaxRam(ns.getHostname()) - 10;
@@ -39,15 +40,15 @@ export async function main(ns) {
 	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
 	let weakenthreads = Math.trunc(controlmaxnumthreads * weakenmultiplier);
 	let growthreads = Math.trunc(controlmaxnumthreads * growmultiplier);
-	
+
 	// ns.tprint("ServerMaxMoney: " + dollarUS.format(ns.getServerMaxMoney(target)));
 	// ns.tprint("MoneytoHack: " + dollarUS.format((ns.getServerMaxMoney(target) * moneymultiplier)));
 	// ns.tprint("controlmaxnumthreads: " + controlmaxnumthreads);
 	// ns.tprint("controlscriptram: " + controlscriptram);
 	// ns.tprint("controlmaxRam: " + controlmaxRam);
-	// ns.tprint("weakenthreads: " + weakenthreads);
-	// ns.tprint("growthreads: " + growthreads);
-	
+	ns.tprint("weakenthreads: " + weakenthreads);
+	ns.tprint("growthreads: " + growthreads);
+
 
 	// hackthreads returned a value less than 1
 	if (hackthreads == -1) {
@@ -55,7 +56,7 @@ export async function main(ns) {
 		//ns.tprint("hackthreads: " + hackthreads);
 	} else if (hackthreads == 0) {
 		ns.tprint("hackthreads: 0");
-		ns.tprint("No money or not enough ram?!?!?! EXITING!!!");
+		ns.tprint("No money?!?!?! EXITING!!!");
 		ns.scriptkill('control-home.js', runon);
 	} else {
 		//ns.tprint("hackthreads: " + hackthreads);
@@ -63,8 +64,11 @@ export async function main(ns) {
 
 
 	while (true) {
+		if (firststloop == false) {
+			hacktime = ns.getHackTime(target) + sleepoffset;
+		}
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
-			await ns.sleep(weakentime);
+			//await ns.sleep(weakentime);
 			hacktime = ns.getHackTime(target) + sleepoffset;
 			ns.print("");
 			ns.print("Running hack for " + hacktime + " ms");
@@ -89,6 +93,8 @@ export async function main(ns) {
 			weakentime = ns.getWeakenTime(target) + sleepoffset;
 			ns.exec('weaken.js', runon, weakenthreads, target, growtime);
 			await ns.sleep(growtime);
+
+			firststloop = false;
 		}
 		ns.print("");
 		ns.print("-----");

@@ -3,7 +3,7 @@ export async function main(ns) {
 	let pserv = ns.getPurchasedServers();
 
 	ns.run("root_all.js");
-	//ns.run("/earlygame/attack_local.js");
+	ns.run("prep_local.js");
 
 	//await ns.sleep(1000);
 	ns.run("control.js", 1, "n00dles");

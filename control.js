@@ -69,11 +69,8 @@ export async function main(ns) {
 
 		// check if scripts are already running
 		firstweakenrunning = ns.isRunning(firstweakenpid);
-		//ns.print("firstweakenrunning: " + firstweakenrunning);
 		growrunning = ns.isRunning(growpid);
-		//ns.print("growrunning: " + growrunning);
 		secondweakenrunning = ns.isRunning(secondweakenpid);
-		//ns.print("secondweakenrunning: " + secondweakenrunning);
 
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
 			hackloop: for (let i = 0; i < pserv.length; ++i) {
@@ -132,12 +129,15 @@ export async function main(ns) {
 					ns.print("Second weaken running on: " + pserv[i]);
 					weakentime = ns.getWeakenTime(target) + sleepoffset;
 					secondweakenpid = ns.exec('weaken2.js', pserv[i], weakenthreads, target, (weakentime + hacktime + growtime));
-					await ns.sleep(weakentime + hacktime + growtime);
 				} else {
 					continue preploop;
 				}
+
 				firststloop = false;
-				break preploop;
+				
+				if (firstweakenrunning == false && growrunning == false && secondweakenrunning == false) {
+					break preploop;
+				}
 			}
 		}
 		ns.print("");

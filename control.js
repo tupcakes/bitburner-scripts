@@ -139,6 +139,9 @@ export async function main(ns) {
 		ns.print("Max money: " + dollarUS.format(ns.getServerMaxMoney(target)));
 		ns.print("Current security: " + ns.getServerSecurityLevel(target));
 		ns.print("Min security: " + ns.getServerMinSecurityLevel(target));
+
+		// check for more pservs
+		pserv = ns.getPurchasedServers();
 	}
 	ns.tprint("Script finished. This shouldnt happen.");
 }

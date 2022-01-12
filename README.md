@@ -24,7 +24,10 @@ Also run earlygame/early-run.js against n00dles or more low level servers.
 Once you have more ram on home (at least 32-64 GB), try runnning control-home.js against 1 or 2 low level servers. It's more effient than the starting out scripts.
 
 ### Buy more servers
+Kill off attack_local.js and start running prep_local.js. It will run alternating weaken and grows locally on the targets.
+
 Get two servers with at least 32 GB of ram each.
+
 Run control.js against more low level servers. It should schedule weaken, grow, and hack jobs on the purchased servers, with control.js instances running on home.
 
 ### Late game

@@ -53,9 +53,11 @@ export async function main(ns) {
 	let firstweakenrunning = false;
 	let growrunning = false;
 	let secondweakenrunning = false;
+	let hackrunning = false;
 	let firstweakenpid = 0;
 	let growpid = 0;
 	let secondweakenpid = 0;
+	let hackpid = 0;
 	let firststloop = true;
 
 
@@ -86,9 +88,15 @@ export async function main(ns) {
 					ns.print("Hack running on: " + pserv[i]);
 					ns.print("Current security: " + ns.getServerSecurityLevel(target));
 					ns.print("Money available: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
-					ns.exec("hack.js", pserv[i], hackthreads, target, 0);
-					await ns.sleep(hacktime);
-					break hackloop;
+					
+					hackpid = ns.exec("hack.js", pserv[i], hackthreads, target, 0);
+					hackrunning = ns.isRunning(hackpid);
+					if (hackrunning == true) {
+						await ns.sleep(hacktime);
+						break hackloop;
+					} else {
+						continue hackloop;
+					}
 				}
 			}
 		} else {

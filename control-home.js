@@ -55,7 +55,7 @@ export async function main(ns) {
 		//ns.tprint("hackthreads: " + hackthreads);
 	} else if (hackthreads == 0) {
 		ns.tprint("hackthreads: 0");
-		ns.tprint("No money?!?!?! EXITING!!!");
+		ns.tprint("No money or not enough ram?!?!?! EXITING!!!");
 		ns.scriptkill('control-home.js', runon);
 	} else {
 		//ns.tprint("hackthreads: " + hackthreads);

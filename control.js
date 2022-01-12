@@ -67,11 +67,11 @@ export async function main(ns) {
 
 		// check if scripts are already running
 		firstweakenrunning = ns.isRunning(firstweakenpid);
-		ns.print("firstweakenrunning: " + firstweakenrunning);
+		//ns.print("firstweakenrunning: " + firstweakenrunning);
 		growrunning = ns.isRunning(growpid);
-		ns.print("growrunning: " + growrunning);
+		//ns.print("growrunning: " + growrunning);
 		secondweakenrunning = ns.isRunning(secondweakenpid);
-		ns.print("secondweakenrunning: " + secondweakenrunning);
+		//ns.print("secondweakenrunning: " + secondweakenrunning);
 
 		if (ns.getServerMoneyAvailable(target) == ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) == ns.getServerMinSecurityLevel(target)) {
 			hackloop: for (let i = 0; i < pserv.length; ++i) {
@@ -96,7 +96,6 @@ export async function main(ns) {
 				await ns.sleep(500);
 
 				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
-				ns.print("getting here--" + pservfreeram + "--" + pservscriptram + "--" + firstweakenrunning);
 				if (pservfreeram > pservscriptram && (firstweakenrunning == false && growrunning == false && secondweakenrunning == false)) {
 					ns.print("");
 					ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");

@@ -42,7 +42,7 @@ export async function main(ns) {
 		hackthreads = 1;
 	}
 
-	let weakenscriptram = ns.getScriptRam('weaken.js');
+	let weakenscriptram = ns.getScriptRam('weaken1.js') + ns.getScriptRam('weaken2.js');
 	let growscriptram = ns.getScriptRam('grow.js');
 	let hackscriptram = ns.getScriptRam('hack.js');
 	let pservscriptram = weakenscriptram + growscriptram + hackscriptram;

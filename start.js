@@ -17,7 +17,12 @@ export async function main(ns) {
 			ns.run("control.js", 1, "sigma-cosmetics");
 			ns.run("control.js", 1, "hong-fang-tea");
 			ns.run("control.js", 1, "harakiri-sushi");
-			// ns.run("control.js", 1, "iron-gym");
+			ns.run("control.js", 1, "iron-gym");
+		}
+		if (ns.getHackingLevel() >= 200) {
+			ns.run("control.js", 1, "zer0");
+			ns.run("control.js", 1, "max-hardware");
+			ns.run("control.js", 1, "silver-helix");
 		}
 	}
 }

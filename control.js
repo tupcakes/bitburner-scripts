@@ -101,8 +101,8 @@ export async function main(ns) {
 		}
 
 		ns.print("");
-		ns.print("ServerMoneyAvailable: " + ns.getServerMoneyAvailable(target));
-		ns.print("ServerMaxMoney: " + ns.getServerMaxMoney(target));
+		ns.print("ServerMoneyAvailable: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+		ns.print("ServerMaxMoney: " + dollarUS.format(ns.getServerMaxMoney(target)));
 		ns.print("ServerSecurityLevel: " + ns.getServerSecurityLevel(target));
 		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 		ns.print("pserv length: " + pserv.length);

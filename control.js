@@ -31,7 +31,7 @@ export async function main(ns) {
 	// let moneymultiplier = .3;
 
 	// aggressive mode multipliers
-	let aggressiveweakenmultiplier = .2;
+	let aggressiveweakenmultiplier = .4;
 	let aggressivegrowmultiplier = 2;
 
 	let sleepoffset = 2000;
@@ -75,17 +75,17 @@ export async function main(ns) {
 		// use agressive grow and weaken multipliers
 		// else
 		// normal multipliers
-		if (ns.getServerMoneyAvailable(target) < aggressivegrowthreshold) {
-			ns.print("");
-			ns.print("Money available too low for hack. Using aggressive multipliers.")
-			weakenthreads = Math.trunc(pservmaxnumthreads * aggressiveweakenmultiplier);
-			growthreads = Math.trunc(pservmaxnumthreads * aggressivegrowmultiplier);
-		} else {
-			ns.print("");
-			ns.print("Money above threshold. Using normal multipliers.")
-			weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
-			growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
-		}
+		// if (ns.getServerMoneyAvailable(target) < aggressivegrowthreshold) {
+		// 	ns.print("");
+		// 	ns.print("Money available too low for hack. Using aggressive multipliers.")
+		// 	weakenthreads = Math.trunc(pservmaxnumthreads * aggressiveweakenmultiplier);
+		// 	growthreads = Math.trunc(pservmaxnumthreads * aggressivegrowmultiplier);
+		// } else {
+		// 	 ns.print("");
+		// 	 ns.print("Money above threshold. Using normal multipliers.")
+		// 	weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
+		// 	growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
+		// }
 
 		await ns.sleep(500);
 		if (firststloop == false) {
@@ -128,7 +128,7 @@ export async function main(ns) {
 				}
 			}
 		} else {
-			preploop: for (let i = 0; i < pserv.length; ++i) {
+			preploop: for (let i = 0; i < pserv.length; i++) {
 				await ns.sleep(500);
 
 				ns.print("");

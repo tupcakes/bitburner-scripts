@@ -16,17 +16,17 @@ I've changed and tweaked this process frequently, so this is subject to change.
 Generate a server list with create_serverlist.js.
 
 Fire off earlygame/attack_local.js
-It will automatically run early-hacking-script.js on all hosts against themselves.
+It will automatically run early-hacking-template.js on all hosts against themselves.
 
 Also run earlygame/early-run.js against n00dles or more low level servers.
 
+If there isn't enough ram to run earlygame/early-run.js yet, just run early-hacking-template.js directly against one of the low level servers with as many threads as you can do from home.
+
 ### Increase ram on home
-Once you have more ram on home (at least 32-64 GB), try runnning control-home.js against 1 or 2 low level servers. It's more effient than the starting out scripts.
+Once you have more ram on home (at least 32-64 GB), try runnning control.js against 1 or 2 low level servers. It's more effient than the starting out scripts.
 
 ### Buy more servers
-Kill off attack_local.js and start running prep_local.js. It will run alternating weaken and grows locally on the targets.
-
-Get two servers with at least 32 GB of ram each.
+Get more servers with at least 32 GB of ram each (more ram is better).
 
 Run control.js against more low level servers. It should schedule weaken, grow, and hack jobs on the purchased servers, with control.js instances running on home.
 

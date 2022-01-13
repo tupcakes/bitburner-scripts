@@ -49,10 +49,12 @@ export async function main(ns) {
 	let growscriptram = ns.getScriptRam('grow.js');
 	let hackscriptram = ns.getScriptRam('hack.js');
 	let pservscriptram = weakenscriptram + growscriptram + hackscriptram;
-	let pservmaxRam = ns.getServerMaxRam(pserv[0]) - 10;
-	let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscriptram);
-	let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
-	let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
+
+	// let pservmaxRam = ns.getServerMaxRam(pserv[0]) - 10;
+	// let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscriptram);
+	// let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
+	// let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
+
 	let firstweakenrunning = false;
 	let growrunning = false;
 	let secondweakenrunning = false;
@@ -98,7 +100,7 @@ export async function main(ns) {
 		ns.print("ServerSecurityLevel: " + ns.getServerSecurityLevel(target));
 		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 		ns.print("pserv length: " + pserv.length);
-		
+
 		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			hackloop: for (let j = 0; j < pserv.length; ++j) {
 				await ns.sleep(500);
@@ -133,6 +135,12 @@ export async function main(ns) {
 
 				ns.print("");
 				ns.print("I'M THE PREPLOOP");
+
+				// set the threads
+				let pservmaxRam = ns.getServerMaxRam(pserv[i]) - 10;
+				let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscriptram);
+				let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
+				let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
 
 				// check if scripts are already running
 				firstweakenrunning = ns.isRunning(firstweakenpid);

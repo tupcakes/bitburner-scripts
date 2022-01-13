@@ -22,11 +22,10 @@ Also run earlygame/early-run.js against n00dles or more low level servers.
 
 If there isn't enough ram to run earlygame/early-run.js yet, just run early-hacking-template.js directly against one of the low level servers with as many threads as you can do from home.
 
-### Increase ram on home
-Once you have more ram on home (at least 32-64 GB), try runnning control.js against 1 or 2 low level servers. It's more effient than the starting out scripts.
+Buy more ram for home as soon as possible.
 
 ### Buy more servers
-Get more servers with at least 32 GB of ram each (more ram is better).
+Get at leat two servers with at least 32 GB of ram each (more ram is better).
 
 Run control.js against more low level servers. It should schedule weaken, grow, and hack jobs on the purchased servers, with control.js instances running on home.
 

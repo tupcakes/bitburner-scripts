@@ -16,7 +16,7 @@ export async function main(ns) {
 		let ServerMaxMoney = ns.getServerMaxMoney(server);
 
 		if (ServerRequiredHackingLevel <= hackinglevel && ServerMaxMoney > 0) {
-			ns.exec("control.js", 'runningon', 1, server);
+			ns.exec("control.js", runningon, 1, server);
 		} else {
 			ns.tprint("Server " + server + " has too high of a security level or has no money. Skipping.");
 		}

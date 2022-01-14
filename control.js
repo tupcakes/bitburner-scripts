@@ -21,13 +21,13 @@ export async function main(ns) {
 	pserv.push("home");
 
 	// early game multipliers
-	let weakenmultiplier = .3;
-	let growmultiplier = 1;
-	let moneymultiplier = .1;
+	let weakenmultiplier = .2;
+	let growmultiplier = 1.15;
+	let moneymultiplier = .20;
 
 	// late game multipliers
-	// let weakenmultiplier = .1;
-	// let growmultiplier = 1;
+	// let weakenmultiplier = .4;
+	// let growmultiplier = 2;
 	// let moneymultiplier = .3;
 
 	// aggressive mode multipliers
@@ -43,6 +43,9 @@ export async function main(ns) {
 	// hackthreads returned a value less than 1
 	if (hackthreads == -1) {
 		hackthreads = 1;
+	}
+	if (target == 'n00dles') {
+		hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
 	}
 
 	let weakenscriptram = ns.getScriptRam('weaken1.js') + ns.getScriptRam('weaken2.js');
@@ -65,14 +68,14 @@ export async function main(ns) {
 	let hackpid = 0;
 	let firststloop = true;
 	let pservfreeram = 0;
-	let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
-	let aggressivegrowthreshold = ns.getServerMaxMoney(target) - moneyperhack;
+	let firstweakenrunningon = "";
+	let growrunningon = "";
+	let secondweakenrunningon = "";
+	//let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
+	//let aggressivegrowthreshold = ns.getServerMaxMoney(target) - moneyperhack;
 
 
 	while (true) {
-		// visual test to see if it's still looping
-		ns.print(Math.floor(Math.random() * 1000));
-
 		// if money below maxmoney - amount to hack
 		// use agressive grow and weaken multipliers
 		// else
@@ -94,29 +97,45 @@ export async function main(ns) {
 			hacktime = ns.getHackTime(target) + sleepoffset;
 		}
 
-		ns.print("");
-		ns.print("ServerMoneyAvailable: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
-		ns.print("ServerMaxMoney: " + dollarUS.format(ns.getServerMaxMoney(target)));
-		ns.print("ServerSecurityLevel: " + ns.getServerSecurityLevel(target));
+		// if (firstweakenrunning == false) {
+		// 	firstweakenrunningon = "";
+		// }
+		// if (growrunning == false) {
+		// 	growrunningon = "";
+		// }
+		// if (secondweakenrunning == false) {
+		// 	secondweakenrunningon = "";
+		// }
+
+		ns.clearLog();
+		ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+		ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
+		ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
 		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
-		ns.print("pserv length: " + pserv.length);
+		ns.print("pserv length:           " + pserv.length);
+		ns.print("Running first weaken:   " + firstweakenrunning + " " + firstweakenrunningon);
+		ns.print("Running grow:           " + growrunning + " " + growrunningon);
+		ns.print("Running second weaken:  " + secondweakenrunning + " " + secondweakenrunningon);
+		// visual test to see if it's still looping
+		ns.print(Math.floor(Math.random() * 1000));
+
 
 		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			hackloop: for (let j = 0; j < pserv.length; ++j) {
 				await ns.sleep(500);
 				pservfreeram = ns.getServerMaxRam(pserv[j]) - ns.getServerUsedRam(pserv[j]);
 
-				ns.print("");
-				ns.print("I'M THE HACKLOOP");
+				// ns.print("");
+				// ns.print("I'M THE HACKLOOP");
 
 				if (pservfreeram > pservscriptram) {
 					hacktime = ns.getHackTime(target) + sleepoffset;
-					ns.print("");
-					ns.print("Running hack for " + hacktime + " ms");
-					ns.print("hackthreads: " + hackthreads);
-					ns.print("Hack running on: " + pserv[j]);
-					ns.print("Current security: " + ns.getServerSecurityLevel(target));
-					ns.print("Money available: " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+					ns.clearLog();
+					ns.print("Running hack for        " + hacktime + " ms");
+					ns.print("hackthreads:            " + hackthreads);
+					ns.print("Hack running on:        " + pserv[j]);
+					ns.print("Current security:       " + ns.getServerSecurityLevel(target));
+					ns.print("Money available:        " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 
 					hackpid = ns.exec("hack.js", pserv[j], hackthreads, target, 0);
 					hackrunning = ns.isRunning(hackpid);
@@ -133,8 +152,8 @@ export async function main(ns) {
 			preploop: for (let i = 0; i < pserv.length; i++) {
 				await ns.sleep(500);
 
-				ns.print("");
-				ns.print("I'M THE PREPLOOP");
+				// ns.print("");
+				// ns.print("I'M THE PREPLOOP");
 
 				// set the threads
 				let pservmaxRam = ns.getServerMaxRam(pserv[i]) - 10;
@@ -147,36 +166,35 @@ export async function main(ns) {
 				growrunning = ns.isRunning(growpid);
 				secondweakenrunning = ns.isRunning(secondweakenpid);
 
-				ns.print("         firstweaken   grow   secondweaken");
-				ns.print("Running->" + firstweakenrunning + "         " + growrunning + "  " + secondweakenrunning);
-
 				let pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
 				if (pservfreeram > pservscriptram && firstweakenrunning == false && growrunning == false && secondweakenrunning == false) {
-					ns.print("");
-					ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
-					ns.print("First weaken running on: " + pserv[i]);
+					firstweakenrunningon = pserv[i];
 					weakentime = ns.getWeakenTime(target) + sleepoffset;
 					firstweakenpid = ns.exec('weaken1.js', pserv[i], weakenthreads, target, hacktime);
 				} else {
 					continue preploop;
 				}
 
+				firstweakenrunning = ns.isRunning(firstweakenpid);
+				growrunning = ns.isRunning(growpid);
+				secondweakenrunning = ns.isRunning(secondweakenpid);
+
 				pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
-				if (pservfreeram > pservscriptram && growrunning == false && secondweakenrunning == false) {
-					ns.print("");
-					ns.print("Grow. Run in: " + Math.trunc(weakentime + hacktime) + " ms on");
-					ns.print("Grow running on: " + pserv[i]);
+				if (pservfreeram > pservscriptram && firstweakenrunning == true && growrunning == false && secondweakenrunning == false) {
+					growrunningon = pserv[i];
 					growtime = ns.getGrowTime(target) + sleepoffset;
 					growpid = ns.exec('grow.js', pserv[i], growthreads, target, (weakentime + hacktime));
 				} else {
 					continue preploop;
 				}
 
+				firstweakenrunning = ns.isRunning(firstweakenpid);
+				growrunning = ns.isRunning(growpid);
+				secondweakenrunning = ns.isRunning(secondweakenpid);
+
 				pservfreeram = ns.getServerMaxRam(pserv[i]) - ns.getServerUsedRam(pserv[i]);
-				if (pservfreeram > pservscriptram && secondweakenrunning == false) {
-					ns.print("");
-					ns.print("Second weaken. Run in: " + Math.trunc(weakentime + hacktime + growtime) + " ms");
-					ns.print("Second weaken running on: " + pserv[i]);
+				if (pservfreeram > pservscriptram && firstweakenrunning == true && growrunning == true && secondweakenrunning == false) {
+					secondweakenrunningon = pserv[i];
 					weakentime = ns.getWeakenTime(target) + sleepoffset;
 					secondweakenpid = ns.exec('weaken2.js', pserv[i], weakenthreads, target, (weakentime + hacktime + growtime));
 				} else {
@@ -194,8 +212,6 @@ export async function main(ns) {
 		// check for more pservs
 		pserv = ns.getPurchasedServers();
 		pserv.push("home");
-
-		//ns.print("Looping...")
 	}
 	ns.tprint("Script finished. This shouldnt happen.");
 }

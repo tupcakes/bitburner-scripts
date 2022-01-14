@@ -4,10 +4,13 @@
 export async function main(ns) {
 	ns.disableLog('ALL');
 
+	let files = ns.ls('home', ".js");
+	files.push('server_list.txt');
+
 	// update owned servers
 	let pservs = ns.getPurchasedServers();
 
-	for (let j = 0; j < pservs.length; ++i) {
+	for (let j = 0; j < pservs.length; ++j) {
 		if (ns.hasRootAccess(pservs[j])) {
 			ns.killall(pservs[j]);
 			for (let i = 0; i < files.length; i++) {
@@ -25,8 +28,6 @@ export async function main(ns) {
 	// update non-owned servers
 	let serverlist = ns.read("server_list.txt");
 	let targets = serverlist.split("\r\n");
-	let files = ns.ls('home', ".js");
-	files.push('server_list.txt');
 
 	for (let i = 0; i < targets.length; ++i) {
 		let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');

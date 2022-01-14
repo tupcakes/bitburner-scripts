@@ -71,7 +71,7 @@ export async function main(ns) {
 	let firstweakenrunningon = "";
 	let growrunningon = "";
 	let secondweakenrunningon = "";
-	//let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
+	let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
 	//let aggressivegrowthreshold = ns.getServerMaxMoney(target) - moneyperhack;
 
 
@@ -110,6 +110,7 @@ export async function main(ns) {
 		ns.clearLog();
 		ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 		ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
+		ns.print("Money per hack cycle:   " + dollarUS.format(moneyperhack));
 		ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
 		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 		ns.print("pserv length:           " + pserv.length);

@@ -117,6 +117,7 @@ export async function main(ns) {
 		ns.print("Running first weaken:   " + firstweakenrunning + " " + firstweakenrunningon);
 		ns.print("Running grow:           " + growrunning + " " + growrunningon);
 		ns.print("Running second weaken:  " + secondweakenrunning + " " + secondweakenrunningon);
+		ns.print("Hack threads:           " + hackthreads);
 		// visual test to see if it's still looping
 		ns.print(Math.floor(Math.random() * 1000));
 

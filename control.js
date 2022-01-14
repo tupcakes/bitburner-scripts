@@ -13,7 +13,7 @@ export async function main(ns) {
 	});
 
 	ns.disableLog('ALL');
-	ns.enableLog('exec');
+	//ns.enableLog('exec');
 	ns.clearLog();
 
 	// get all pservs
@@ -76,6 +76,7 @@ export async function main(ns) {
 
 
 	while (true) {
+		await ns.sleep(20);
 		// if money below maxmoney - amount to hack
 		// use agressive grow and weaken multipliers
 		// else
@@ -92,7 +93,6 @@ export async function main(ns) {
 		// 	growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
 		// }
 
-		await ns.sleep(500);
 		if (firststloop == false) {
 			hacktime = ns.getHackTime(target) + sleepoffset;
 		}
@@ -123,7 +123,7 @@ export async function main(ns) {
 
 		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			hackloop: for (let j = 0; j < pserv.length; ++j) {
-				await ns.sleep(500);
+				await ns.sleep(20);
 				pservfreeram = ns.getServerMaxRam(pserv[j]) - ns.getServerUsedRam(pserv[j]);
 
 				// ns.print("");
@@ -132,6 +132,7 @@ export async function main(ns) {
 				if (pservfreeram > pservscriptram) {
 					hacktime = ns.getHackTime(target) + sleepoffset;
 					ns.clearLog();
+					ns.print("------HACK RUNNING------");
 					ns.print("Running hack for        " + hacktime + " ms");
 					ns.print("hackthreads:            " + hackthreads);
 					ns.print("Hack running on:        " + pserv[j]);
@@ -151,7 +152,7 @@ export async function main(ns) {
 			}
 		} else {
 			preploop: for (let i = 0; i < pserv.length; i++) {
-				await ns.sleep(500);
+				await ns.sleep(20);
 
 				// ns.print("");
 				// ns.print("I'M THE PREPLOOP");

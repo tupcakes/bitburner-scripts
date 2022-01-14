@@ -14,7 +14,7 @@ export async function main(ns) {
 		if (ns.fileExists("SQLInject.exe"))
 			count++;
 
-		ns.print(count);
+		//ns.print(count);
 
 		return count;
 	}
@@ -42,7 +42,7 @@ export async function main(ns) {
 		for (let i = 0; i < targets.length; ++i) {
 			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
 			if (ns.hasRootAccess(target)) {
-				await ns.sleep(1000);
+				await ns.sleep(20);
 				continue;
 			}
 			if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
@@ -51,8 +51,8 @@ export async function main(ns) {
 				ns.tprint("Hacked: " + target);
 				ns.print("Hacked: " + target);
 			}
-			await ns.sleep(1000);
+			await ns.sleep(20);
 		}
-		await ns.sleep(1000);
+		await ns.sleep(20);
 	}
 }

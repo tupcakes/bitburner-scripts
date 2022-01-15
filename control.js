@@ -25,11 +25,6 @@ export async function main(ns) {
 	let growmultiplier = 1.15;
 	let moneymultiplier = .20;
 
-	// late game multipliers
-	// let weakenmultiplier = .4;
-	// let growmultiplier = 2;
-	// let moneymultiplier = .3;
-
 	// aggressive mode multipliers
 	let aggressiveweakenmultiplier = .4;
 	let aggressivegrowmultiplier = 2;
@@ -39,24 +34,10 @@ export async function main(ns) {
 	let weakentime = 0;
 	let growtime = 0;
 
-	let hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
-	// hackthreads returned a value less than 1
-	if (hackthreads == -1) {
-		hackthreads = 1;
-	}
-	if (target == 'n00dles') {
-		hackthreads = Math.trunc(ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
-	}
-
 	let weakenscriptram = ns.getScriptRam('weaken1.js') + ns.getScriptRam('weaken2.js');
 	let growscriptram = ns.getScriptRam('grow.js');
 	let hackscriptram = ns.getScriptRam('hack.js');
 	let pservscriptram = weakenscriptram + growscriptram + hackscriptram;
-
-	// let pservmaxRam = ns.getServerMaxRam(pserv[0]) - 10;
-	// let pservmaxnumthreads = Math.trunc(pservmaxRam / pservscriptram);
-	// let weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
-	// let growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
 
 	let firstweakenrunning = false;
 	let growrunning = false;
@@ -71,41 +52,21 @@ export async function main(ns) {
 	let firstweakenrunningon = "";
 	let growrunningon = "";
 	let secondweakenrunningon = "";
-	let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
-	//let aggressivegrowthreshold = ns.getServerMaxMoney(target) - moneyperhack;
 
 
 	while (true) {
 		await ns.sleep(20);
-		// if money below maxmoney - amount to hack
-		// use agressive grow and weaken multipliers
-		// else
-		// normal multipliers
-		// if (ns.getServerMoneyAvailable(target) < aggressivegrowthreshold) {
-		// 	ns.print("");
-		// 	ns.print("Money available too low for hack. Using aggressive multipliers.")
-		// 	weakenthreads = Math.trunc(pservmaxnumthreads * aggressiveweakenmultiplier);
-		// 	growthreads = Math.trunc(pservmaxnumthreads * aggressivegrowmultiplier);
-		// } else {
-		// 	 ns.print("");
-		// 	 ns.print("Money above threshold. Using normal multipliers.")
-		// 	weakenthreads = Math.trunc(pservmaxnumthreads * weakenmultiplier);
-		// 	growthreads = Math.trunc(pservmaxnumthreads * growmultiplier);
-		// }
 
 		if (firststloop == false) {
 			hacktime = ns.getHackTime(target) + sleepoffset;
 		}
 
-		// if (firstweakenrunning == false) {
-		// 	firstweakenrunningon = "";
-		// }
-		// if (growrunning == false) {
-		// 	growrunningon = "";
-		// }
-		// if (secondweakenrunning == false) {
-		// 	secondweakenrunningon = "";
-		// }
+		let hackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+		// hackthreads returned a value less than 1no
+		if (target == 'n00dles') {
+			hackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
+		}
+		let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
 
 		ns.clearLog();
 		ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));

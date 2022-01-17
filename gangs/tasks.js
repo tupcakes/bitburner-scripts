@@ -7,7 +7,7 @@
 export async function main(ns) {
 
 	// kill training
-	ns.scriptKill('/gangs/training.js', 'home');
+	ns.scriptKill('/gangs/gang-training.js', 'home');
 
 	let wantedlevelmax = 1000;
 
@@ -34,20 +34,16 @@ export async function main(ns) {
 		}
 
 
+		// Task assignment
 		gangmembers = ns.gang.getMemberNames();
-		let tasknames = ns.gang.getTaskNames()
+		let tasknames = ns.gang.getTaskNames();
 		// ["Unassigned","Mug People","Deal Drugs","Strongarm Civilians","Run a Con","Armed Robbery","Traffick Illegal Arms","Threaten & Blackmail","Human Trafficking","Terrorism","Vigilante Justice","Train Combat","Train Hacking","Train Charisma","Territory Warfare"]
-		// if between 0 and 20 assign last task for each person.
+		// if between 0 and wantedlevelmax assign task for each person.
 		if (ns.gang.getGangInformation().wantedLevel >= 1 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
-			// get evenyone's current task
-			let currenttasks = [];
-			for (let i = 0; i < gangmembers.length; ++i) {
-				currenttasks.push(ns.gang.getMemberInformation(gangmembers[i]).task);
-			}
-			// 
+			// set gang member's task to something
 			for (let i = 0; i < gangmembers.length; ++i) {
 				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-
+				// find a way to assign the best task
 
 			}
 			ns.gang.setMemberTask(gangmembers[0], 'Territory Warfare');
@@ -60,15 +56,6 @@ export async function main(ns) {
 				await ns.sleep(20);
 			}
 		}
-
-
-		// alternate idea - only assign just enough vig just too keep wanted gain -
-		// loop though all members
-		//   let wantedLevelGainRate = ns.gang.getGangInformation().wantedLevelGainRate
-		//   if wantedLevelGainRate <= 0
-		//     assign money task
-		//   else
-		//
 
 		await ns.sleep(20);
 	}

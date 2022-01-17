@@ -2,7 +2,7 @@
 export async function main(ns) {
 
 	// kill work scripts
-	ns.scriptKill('/gangs/gang-tasks.js', 'home');
+	ns.scriptKill('/gangs/tasks.js', 'home');
 
 	let ingang = ns.gang.inGang();
 	let gangmembers = ns.gang.getMemberNames();

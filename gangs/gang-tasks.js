@@ -7,7 +7,7 @@
 export async function main(ns) {
 
 	// kill training
-	ns.scriptKill('/gangs/gang-training.js', 'home');
+	ns.scriptKill('/gangs/training.js', 'home');
 
 	let wantedlevelmax = 1000;
 
@@ -30,24 +30,6 @@ export async function main(ns) {
 					ns.tprint(newname + " recruited.")
 					break;
 				}
-			}
-		}
-
-
-		// buy members equipment
-		gangmembers = ns.gang.getMemberNames();
-		let equipmentnames = ns.gang.getEquipmentNames();
-		for (let i = 0; i < equipmentnames.length; ++i) {
-			//ns.tprint(ns.gang.getEquipmentType(equipmentnames[i]));
-			for (let j = 0; j < gangmembers.length; ++j) {
-				// if hacking gang, buy rootkits
-				if (ns.gang.getEquipmentType(equipmentnames[i]) === 'Rootkit' && ganginfo.isHacking === true) {
-						ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
-				// if combat gang, buy combat equipment
-				} else {
-					ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
-				}
-
 			}
 		}
 

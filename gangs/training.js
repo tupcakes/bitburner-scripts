@@ -44,7 +44,7 @@ export async function main(ns) {
 				ns.gang.setMemberTask(gangmembers[i], 'Train Charisma');
 				await ns.sleep(20);
 				continue;
-			} else if (hack < 1.1 && ganginfo.isHacking === true) {
+			} else if (hack < 1.1) {
 				ns.gang.setMemberTask(gangmembers[i], 'Train Hacking');
 				await ns.sleep(20);
 				continue;

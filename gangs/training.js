@@ -6,6 +6,13 @@ export async function main(ns) {
 
 	let ingang = ns.gang.inGang();
 	let gangmembers = ns.gang.getMemberNames();
+	let ganginfo = ns.gang.getGangInformation();
+	let hack = 0;
+	let str = 0;
+	let def = 0;
+	let dex = 0;
+	let agi = 0;
+	let cha = 0;
 
 	while (ingang) {
 		for (let i = 0; i < gangmembers.length; ++i) {
@@ -13,30 +20,39 @@ export async function main(ns) {
 
 			// if training required
 			if (typeof ascensionresult === 'undefined') {
-				ascensionresult.hack = 0;
-				ascensionresult.str = 0;
-				ascensionresult.def = 0;
-				ascensionresult.dex = 0;
-				ascensionresult.agi = 0;
-				ascensionresult.cha = 0;
+				hack = 0;
+				str = 0;
+				def = 0;
+				dex = 0;
+				agi = 0;
+				cha = 0;
+			} else {
+				hack = ascensionresult.hack;
+				str = ascensionresult.str;
+				def = ascensionresult.def;
+				dex = ascensionresult.dex;
+				agi = ascensionresult.agi;
+				cha = ascensionresult.cha;
 			}
 
 			// train combat
-			if (ascensionresult.str < 1.1 && ascensionresult.def < 1.1 && ascensionresult.dex < 1.1 && ascensionresult.agi < 1.1) {
+			if (str < 1.1 && def < 1.1 && dex < 1.1 && agi < 1.1) {
 				ns.gang.setMemberTask(gangmembers[i], 'Train Combat');
 				await ns.sleep(20);
 				continue;
-			}
-			if (ascensionresult.cha < 1.1) {
+			} else if (cha < 1.1) {
 				ns.gang.setMemberTask(gangmembers[i], 'Train Charisma');
 				await ns.sleep(20);
 				continue;
-			}
-			if (ascensionresult.hack < 1.1) {
+			} else if (hack < 1.1 && ganginfo.isHacking === true) {
 				ns.gang.setMemberTask(gangmembers[i], 'Train Hacking');
 				await ns.sleep(20);
 				continue;
+			} else {
+				ns.gang.ascendMember(gangmembers[i]);
 			}
+
+
 		}
 		await ns.sleep(20);
 	}

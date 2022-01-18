@@ -34,6 +34,7 @@ export async function main(ns) {
 	}
 
 	ns.disableLog('ALL');
+	ns.tail();
 
 	let file = ns.read("server_list.txt");
 	let targets = file.split("\r\n");
@@ -48,8 +49,14 @@ export async function main(ns) {
 			if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
 				breakPorts(target);
 				ns.nuke(target);
-				ns.tprint("Hacked: " + target);
-				ns.print("Hacked: " + target);
+
+				// if singularity is available, backdoor
+				if (ns.getPlayer().bitNodeN === 4 || JSON.stringify(sourcefiles).includes(4)) {
+					ns.print("Hacked and backdoor: " + target);
+					await ns.installBackdoor(target);
+				} else {
+					ns.print("Hacked: " + target);
+				}
 			}
 			await ns.sleep(20);
 		}

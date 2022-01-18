@@ -52,8 +52,10 @@ export async function main(ns) {
 
 				// if singularity is available, backdoor
 				if (ns.getPlayer().bitNodeN === 4 || JSON.stringify(sourcefiles).includes(4)) {
-					ns.print("Hacked and backdoor: " + target);
-					await ns.installBackdoor(target);
+					// ns.connect(target);
+					// await ns.installBackdoor(target);
+					// ns.print("Hacked and backdoor: " + target);
+					// ns.connect('home');
 				} else {
 					ns.print("Hacked: " + target);
 				}

@@ -5,7 +5,7 @@ export function autocomplete(data, args) {
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
-	ns.enableLog('exec');
+	//ns.enableLog('exec');
 	ns.clearLog();
 
 	let dollarUS = Intl.NumberFormat("en-US", {
@@ -18,13 +18,15 @@ export async function main(ns) {
 	let ownedserver = ns.getHostname();
 
 	let batchram = ns.getScriptRam('weaken.js') + ns.getScriptRam('grow.js');
+	let hackram = ns.getScriptRam('hack.js');
 	let ServerFreeRam = parseInt(ns.getServerMaxRam(ownedserver) - ns.getServerUsedRam(ownedserver));
 	let ramforbatches = (ServerFreeRam - 10);
 	let threads = parseInt((ramforbatches) / batchram);
 
 	let weakenmultiplier = .5;
 	let growmultiplier = .5;
-	let hackmultiplier = .75;
+
+
 	let sleepoffset = 2000;
 	let hacktime = 0;
 	let weakentime = 0;
@@ -34,14 +36,6 @@ export async function main(ns) {
 
 	let weakenthreads = Math.trunc(threads * weakenmultiplier);
 	let growthreads = Math.trunc(threads * growmultiplier);
-	let hackthreads = Math.trunc(threads * hackmultiplier);
-
-	ns.print("ownedserver: " + ownedserver);
-	ns.print("ServerFreeRam: " + ServerFreeRam);
-	ns.print("ramforbatches: " + ramforbatches);
-	ns.print("weaken threads: " + weakenthreads);
-	ns.print("grow threads: " + growthreads);
-	ns.print("hack threads: " + hackthreads);
 
 
 	// loop start
@@ -50,23 +44,34 @@ export async function main(ns) {
 			hacktime = ns.getHackTime(target) + sleepoffset;
 		}
 
-		ns.print("");
-		ns.print("First weaken. Run in: " + Math.trunc(hacktime) + " ms");
+		let hackthreads = parseInt((ramforbatches) / hackram);
+		let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * hackthreads;
+
+		ns.clearLog();
+		ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
+		ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
+		ns.print("Money per hack cycle:   " + dollarUS.format(moneyperhack));
+		ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
+		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
+		// ns.print("Running first weaken:   " + firstweakenrunning);
+		// ns.print("Running grow:           " + growrunning);
+		// ns.print("Running second weaken:  " + secondweakenrunning);
+		ns.print("Hack threads:           " + hackthreads);
+		// visual test to see if it's still looping
+		ns.print(Math.floor(Math.random() * 1000));
+
+
 		// get predicted weaken time
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
 		ns.exec("weaken.js", ownedserver, weakenthreads, target, hacktime);
 		await ns.sleep(hacktime);
 
-		ns.print("");
-		ns.print("Grow. Run in: " + Math.trunc(weakentime) + " ms");
 		// get predicted grow time
 		// run grow with sleep of predicted weaken time with offset
 		growtime = ns.getGrowTime(target) + sleepoffset;
 		ns.exec("grow.js", ownedserver, growthreads, target, weakentime);
 		await ns.sleep(weakentime);
 
-		ns.print("");
-		ns.print("Second weaken. Run in: " + Math.trunc(growtime) + " ms");
 		// get predicted weaken time
 		// run weaken with sleep of predicted grow time with offset
 		weakentime = ns.getWeakenTime(target) + sleepoffset;
@@ -76,17 +81,9 @@ export async function main(ns) {
 		// get predicted hack time
 		// run hack with sleep of predicted weaken time with offset
 		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target)) {
-			ns.print("");
-			ns.print("Money: " + ns.getServerMoneyAvailable(target));
-			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
-			ns.print("Target money not ready...LOOPING");
 			firststloop = false;
 			continue;
 		} else if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-			ns.print("");
-			ns.print("Money: " + ns.getServerMoneyAvailable(target));
-			ns.print("Sec Level: " + ns.getServerSecurityLevel(target));
-			ns.print("Target security not ready...LOOPING");
 			firststloop = false;
 			continue;
 		} else {

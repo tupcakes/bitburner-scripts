@@ -1,18 +1,37 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	let loop = true
+	ns.disableLog("ALL");
+	let crime = 'Larceny';
 
-	// makes the script require just over 32 GB ram
+// Crime options
+// const crimes = [
+//     "Shoplift",
+//     "RobStore",
+//     "Mug",
+//     "Larceny",
+//     "Drugs",
+//     "BondForgery",
+//     "TraffickArms",
+//     "Homicide",
+//     "GrandTheftAuto",
+//     "Kidnap",
+//     "Assassination",
+//     "Heist",
+// ];
+
+	let loop = true
+	const crimetime = JSON.parse(JSON.stringify(ns.getCrimeStats(crime))).time;
+
 	// document.addEventListener('keypress', ({ key }) => {
 	// 	if (key === 'Enter') {
-	// 		loop = false
+	// 		loop = false;
 	// 	}
 	// })
 
 	ns.stopAction();
 	while (loop) {
-		ns.commitCrime('Homicide');
+		ns.commitCrime(crime);
 		ns.print(ns.heart.break());
-		await ns.sleep(3500);
+		await ns.sleep(crimetime);
 	}
 }

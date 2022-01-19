@@ -3,7 +3,7 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 
 	let scriptram = ns.getScriptRam("/earlygame/early-hack-template.js");
-	
+
 	// read in server file
 	let file = ns.read("server_list.txt");
 	let servers = file.split("\r\n");
@@ -20,7 +20,7 @@ export async function main(ns) {
 			let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
 
 			// check if we are running the batch script against this server
-			if (ns.getRunningScript('control-home.js', 'home', server) || ns.getRunningScript('control.js', 'home', server) || ns.getRunningScript('/earlygame/early-run.js', 'home', server)) {
+			if (ns.getRunningScript('/earlygame/early-control.js', 'home', server) || ns.getRunningScript('control.js', 'home', server)) {
 				ns.kill('/earlygame/early-hack-template.js', server, server);
 				continue;
 			}

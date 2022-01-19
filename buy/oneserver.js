@@ -2,22 +2,32 @@
 export async function main(ns) {
 
 	// How much RAM each purchased server will have.
-	var ram = ns.argsp[0];
+	let ram = ns.argsp[0];
 
-	// Iterator we'll use for our loop
-	var i = 0;
-	// Continuously try to purchase servers until we've reached the maximum
-	// amount of servers
+	// get files to copy
+	let files = ns.ls('home', ".js");
+	files.push('server_list.txt');
+
+	if (ns.getPurchasedServers().length == ns.getPurchasedServerLimit()) {
+        ns.tprint("Already purchased max servers.");
+        return;
+    }
+
+	let i = 0;
 	if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(ram)) {
 		while (ns.serverExists("pserv-" + i)) {
 			i++;
 		}
-		let serv = ns.purchaseServer(("pserv-" + i), ram);
+		let pserv = ns.purchaseServer("pserv-" + i, ram);
 
-		// copy scripts
-		await ns.scp('git-pull.js', ("pserv-" + i));
-		await ns.scp('server_list.txt', ("pserv-" + i));
-		ns.exec('git-pull.js', ("pserv-" + i), 1)
+		// copy scripts from home
+		for (let i = 0; i < files.length; i++) {
+			ns.print(pserv + ": " + files[i]);
+			ns.rm(files[i], pserv);
+			// get new copies
+			await ns.scp(files[i], pserv);
+			await ns.sleep(20);
+		}
 
 		i++;
 	} else {

@@ -42,6 +42,7 @@ export async function main(ns) {
     }
     // connect string
     ns.tprint(path);
+    navigator.clipboard.writeText(path);
 }
 
 export function autocomplete(data, args) {

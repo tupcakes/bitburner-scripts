@@ -1,6 +1,5 @@
 /*
 - Requires: singularity
-- create programs
 - root servers
   - backdoor faction servers
 - join factions
@@ -10,18 +9,6 @@
 export async function main(ns) {
 	ns.tail();
 
-	const programs = [
-		"BruteSSH.exe",
-		"FTPCrack.exe",
-		"relaySMTP.exe",
-		"HTTPWorm.exe",
-		"SQLInject.exe",
-		// "ServerProfiler.exe",
-		// "DeepscanV1.exe",
-		// "DeepscanV2.exe",
-		// "AutoLink.exe"
-		// "Formulas.exe",
-	];
 	const factionservers = [
 		"CSEC",
 		"avmnite-02h",
@@ -48,63 +35,6 @@ export async function main(ns) {
 	ns.stopAction();
 	while (true) {
 		await ns.sleep(100);
-		if (ns.isBusy() === true) {
-			continue;
-		}
-
-
-		// create programs
-		let createprogram_ram = ns.getScriptRam('/helpers/createprogram.js');
-		// brutessh
-		if (ns.fileExists(programs[0]) === false && ns.getHackingLevel() >= 50) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > createprogram_ram) {
-					ns.exec('/helpers/createprogram.js', allservers[i], 1, programs[0])
-				}
-			}
-		}
-		// ftpcrack
-		if (ns.fileExists(programs[1]) === false && ns.getHackingLevel() >= 100) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > createprogram_ram) {
-					ns.exec('/helpers/createprogram.js', allservers[i], 1, programs[1])
-				}
-			}
-		}
-		// relaysmtp
-		if (ns.fileExists(programs[2]) === false && ns.getHackingLevel() >= 250) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > createprogram_ram) {
-					ns.exec('/helpers/createprogram.js', allservers[i], 1, programs[2])
-				}
-			}
-		}
-		// httpworm
-		if (ns.fileExists(programs[3]) === false && ns.getHackingLevel() >= 500) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > get_root_ram) {
-					ns.exec('/helpers/createprogram.js', allservers[i], 1, programs[3])
-				}
-			}
-		}
-		// sqlinject
-		if (ns.fileExists(programs[4]) === false && ns.getHackingLevel() >= 750) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > createprogram_ram) {
-					ns.exec('/helpers/createprogram.js', allservers[i], 1, programs[4])
-				}
-			}
-		}
-		await ns.sleep(100);
-		if (ns.isBusy() === true) {
-			continue;
-		}
-
 
 		// root servers
 		//   backdoor faction servers
@@ -129,7 +59,6 @@ export async function main(ns) {
 					}
 				}
 			}
-
 		}
 
 

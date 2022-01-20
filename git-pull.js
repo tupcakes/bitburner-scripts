@@ -27,6 +27,20 @@ export function autocomplete(data, args) {
  * - Ensuring you have no local changes that you don't mind getting overwritten
  * TODO: Some way to list all files in the repository and/or download them all. **/
 export async function main(ns) {
+    // delete all files
+    ns.killall();
+    let files = ns.ls('home', ".js");
+	files.push('server_list.txt');
+    const index = files.indexOf('git-pull.js'); // don't delete git-pull.js
+    if (index > -1) {
+        files.splice(index, 1);
+    }
+    for (let i = 0; i < files.length; i++) {
+        ns.print(pservs[j] + ": " + files[i]);
+        ns.rm(files[i], pservs[j]);
+        await ns.sleep(20);
+    }
+
     options = ns.flags(argsSchema);
     const baseUrl = `https://raw.githubusercontent.com/${options.github}/${options.repository}/${options.branch}/`;
     const filesToDownload = options['new-file'].concat(options.download.length > 0 ? options.download : await repositoryListing(ns));

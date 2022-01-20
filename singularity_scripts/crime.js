@@ -1,6 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.disableLog("ALL");
+	//ns.disableLog("ALL");
 	ns.tail();
 	let crime = 'Larceny';
 

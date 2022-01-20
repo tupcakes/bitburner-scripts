@@ -38,7 +38,11 @@ export async function main(ns) {
 	}
 
 	// update files
-	ns.run('refreshfiles.js', 1);
+	let refreshfiles_pid = ns.run('refreshfiles.js', 1);
+	while (ns.isRunning(refreshfiles_pid) === true) {
+		await ns.sleep(100);
+		continue;
+	}
 
 	// cancel any running work
 	ns.stopAction();
@@ -124,14 +128,14 @@ export async function main(ns) {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
 					} else if (faction === 'CyberSec') {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					} else if (faction === 'Tian Di Hui') {
-						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					} else if (faction === 'Tetrads') {
-						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
-					} else if (faction === 'Netburners') {
-						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
 					} else if (faction === 'NiteSec') {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
+					} // else if (faction === 'Tian Di Hui') {
+					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
+					// } else if (faction === 'Tetrads') {
+					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
+					// } else if (faction === 'Netburners') {
+					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
 					} else {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
 					}

@@ -30,7 +30,11 @@ export async function main(ns) {
 	}
 
 	// update files
-	ns.run('refreshfiles.js', 1);
+	let refreshfiles_pid = ns.run('refreshfiles.js', 1);
+	while (ns.isRunning(refreshfiles_pid) === true) {
+		await ns.sleep(100);
+		continue;
+	}
 
 	ns.stopAction();
 	while (true) {

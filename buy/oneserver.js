@@ -2,7 +2,7 @@
 export async function main(ns) {
 
 	// How much RAM each purchased server will have.
-	let ram = ns.argsp[0];
+	let ram = ns.args[0];
 
 	// get files to copy
 	let files = ns.ls('home', ".js");

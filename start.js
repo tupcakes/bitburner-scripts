@@ -2,10 +2,10 @@
 export async function main(ns) {
 	let pserv = ns.getPurchasedServers();
 
-	ns.run("root_all.js");
+	ns.run("mcp.js");
 	ns.run("earlygame/attack_local.js");
 
-	//await ns.sleep(1000);
+	await ns.sleep(10000);
 	ns.run("control.js", 1, "n00dles");
 
 	if (pserv.length > 0) {

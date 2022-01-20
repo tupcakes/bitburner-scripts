@@ -136,9 +136,9 @@ export async function main(ns) {
 					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
 					// } else if (faction === 'Netburners') {
 					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					} else {
-						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					}
+					// } else {
+					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
+					// }
 				}
 			}
 			await ns.sleep(worktime);

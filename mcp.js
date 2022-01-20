@@ -111,7 +111,7 @@ export async function main(ns) {
 		// join factions
 		let joinfaction_ram = ns.getScriptRam('/helpers/joinfaction.js');
 		let factioninvites = ns.checkFactionInvitations();
-		if (factioninvites > 0) {
+		if (factioninvites.length > 0) {
 			for (const factioninvite of factioninvites) {
 
 				factionallserversloop:

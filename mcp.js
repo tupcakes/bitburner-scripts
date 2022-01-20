@@ -8,6 +8,26 @@
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.tail();
+	ns.disableLog('ALL');
+	//ns.enableLog('exec');
+	ns.clearLog();
+
+	function countPrograms() {
+		let count = 0;
+
+		if (ns.fileExists("BruteSSH.exe"))
+			count++;
+		if (ns.fileExists("FTPCrack.exe"))
+			count++;
+		if (ns.fileExists("relaySMTP.exe"))
+			count++;
+		if (ns.fileExists("HTTPWorm.exe"))
+			count++;
+		if (ns.fileExists("SQLInject.exe"))
+			count++;
+
+		return count;
+	}
 
 	const factionservers = [
 		"CSEC",
@@ -39,38 +59,51 @@ export async function main(ns) {
 	}
 	ns.print("Done updating files.");
 
+
 	ns.stopAction();
 	while (true) {
 		await ns.sleep(100);
+		//ns.print(Math.floor(Math.random() * 1000));
 
 		// root servers
 		//   backdoor faction servers
 		let get_root_ram = ns.getScriptRam('/helpers/get_root.js');
+
+		roottargetsloop:
 		for (let i = 0; i < targets.length; ++i) {
 			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
-			// if (ns.hasRootAccess(target) === true) {
-			// 	await ns.sleep(20);
-			// 	continue;
-			// } else 
-			if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target) && ns.hasRootAccess(target) === false) {
+			if (ns.hasRootAccess(target) === true) {
+				await ns.sleep(20);
+				continue roottargetsloop;
+			}
+			if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target)) {
+				rootallserversloop:
 				for (let j = 0; j < allservers.length; ++j) {
-					let availableram = ns.getServerMaxRam(allservers[j]) - ns.getServerUsedRam(allservers[j]);
-					if (availableram > get_root_ram) {
-						ns.exec('/helpers/get_root.js', allservers[j], 1, target)
-						ns.tprint("Rooted: " + target);
-						let copyfiles_pid = ns.run('/helpers/copyfiles.js', 1, target);
-						await ns.sleep(100);
-						while (ns.isRunning(copyfiles_pid) === true) {
-							await ns.sleep(20);
-							continue;
-						}
-						// backdoor
-						if (factionservers.includes(target)) {
-							ns.tprint("Backdoored: " + target);
-							ns.run('/helpers/backdoor.js', 1, target);
+					if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
+						let availableram = ns.getServerMaxRam(allservers[j]) - ns.getServerUsedRam(allservers[j]);
+						if (availableram > get_root_ram) {
+							ns.exec('/helpers/get_root.js', allservers[j], 1, target)
+							ns.tprint("Rooted: " + target);
+							ns.print("Rooted: " + target);
+
+							let copyfiles_pid = ns.run('/helpers/copyfiles.js', 1, target);
+							await ns.sleep(100);
+
+							copyrunningloop:
+							while (ns.isRunning(copyfiles_pid) === true) {
+								await ns.sleep(20);
+								continue copyrunningloop;
+							}
+							// backdoor
+							if (factionservers.includes(target)) {
+								ns.run('/helpers/backdoor.js', 1, target);
+								ns.tprint("Backdoored: " + target);
+								ns.print("Backdoored: " + target);
+								await ns.sleep(5000);
+							}
+							break rootallserversloop;
 						}
 					}
-					break;
 				}
 			}
 		}
@@ -80,10 +113,14 @@ export async function main(ns) {
 		let factioninvites = ns.checkFactionInvitations();
 		if (factioninvites > 0) {
 			for (const factioninvite of factioninvites) {
+
+				factionallserversloop:
 				for (let i = 0; i < allservers.length; ++i) {
 					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
 					if (availableram > joinfaction_ram) {
-						ns.exec('/helpers/joinfaction.js', allservers[i], 1, factioninvite)
+						ns.exec('/helpers/joinfaction.js', allservers[i], 1, factioninvite);
+						ns.print('Joined: ' + factioninvite);
+						break factionallserversloop;
 					}
 				}
 			}

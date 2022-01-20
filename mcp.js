@@ -114,13 +114,13 @@ export async function main(ns) {
 		if (factioninvites.length > 0) {
 			for (const factioninvite of factioninvites) {
 
-				factionallserversloop:
+				factionaserversloop:
 				for (let i = 0; i < allservers.length; ++i) {
 					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
 					if (availableram > joinfaction_ram) {
 						ns.exec('/helpers/joinfaction.js', allservers[i], 1, factioninvite);
 						ns.print('Joined: ' + factioninvite);
-						break factionallserversloop;
+						break factionaserversloop;
 					}
 				}
 			}

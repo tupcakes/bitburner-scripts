@@ -45,10 +45,11 @@ export async function main(ns) {
 		let get_root_ram = ns.getScriptRam('/helpers/get_root.js');
 		for (let i = 0; i < targets.length; ++i) {
 			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
-			if (ns.hasRootAccess(target)) {
-				await ns.sleep(20);
-				continue;
-			} else if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target)) {
+			// if (ns.hasRootAccess(target) === true) {
+			// 	await ns.sleep(20);
+			// 	continue;
+			// } else 
+			if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target) && ns.hasRootAccess(target) === false) {
 				for (let j = 0; j < allservers.length; ++j) {
 					let availableram = ns.getServerMaxRam(allservers[j]) - ns.getServerUsedRam(allservers[j]);
 					if (availableram > get_root_ram) {
@@ -66,6 +67,7 @@ export async function main(ns) {
 							ns.run('/helpers/backdoor.js', 1, target);
 						}
 					}
+					break;
 				}
 			}
 		}

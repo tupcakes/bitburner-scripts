@@ -112,7 +112,6 @@ export async function main(ns) {
 		// -------Faction Work-------
 		let worktime = 900000; // used for crime also
 		let workforfaction_ram = ns.getScriptRam('/helpers/workforfaction.js');
-		//let worktime = 5000;
 		// work for factions
 		let factions = JSON.parse(JSON.stringify(ns.getPlayer().factions));
 		//types
@@ -121,28 +120,38 @@ export async function main(ns) {
 		//  None,
 		//  Security,
 		for (const faction of factions) {
-			for (let i = 0; i < allservers.length; ++i) {
-				let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-				if (availableram > workforfaction_ram) {
-					if (faction === 'Slum Snakes') {
+
+			if (faction === 'Slum Snakes') {
+				for (let i = 0; i < allservers.length; ++i) {
+					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
+					if (availableram > workforfaction_ram) {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
-					} else if (faction === 'CyberSec') {
+						await ns.sleep(worktime);
+						ns.stopAction();
+						break;
+					}
+				}
+			} else if (faction === 'CyberSec') {
+				for (let i = 0; i < allservers.length; ++i) {
+					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
+					if (availableram > workforfaction_ram) {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					} else if (faction === 'NiteSec') {
+						await ns.sleep(worktime);
+						ns.stopAction();
+						break;
+					}
+				}
+			} else if (faction === 'NiteSec') {
+				for (let i = 0; i < allservers.length; ++i) {
+					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
+					if (availableram > workforfaction_ram) {
 						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					} // else if (faction === 'Tian Di Hui') {
-					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					// } else if (faction === 'Tetrads') {
-					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
-					// } else if (faction === 'Netburners') {
-					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					// } else {
-					// 	ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Hacking');
-					// }
+						await ns.sleep(worktime);
+						ns.stopAction();
+						break;
+					}
 				}
 			}
-			await ns.sleep(worktime);
-			ns.stopAction();
 		}
 
 

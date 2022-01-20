@@ -36,11 +36,15 @@ export async function main(ns) {
 	// cancel any running work
 	ns.stopAction();
 
+
 	while (true) {
 		await ns.sleep(250);
+		if (ns.isBusy() === true) {
+			continue;
+		}
 
 
-		// Create programs
+		// -------Create programs-------
 		// brutessh
 		if (ns.fileExists(programs[0]) === false && ns.getHackingLevel() >= 50) {
 			ns.run('/singularity_scripts/createprogram.js', 1, programs[0]);
@@ -61,29 +65,34 @@ export async function main(ns) {
 		if (ns.fileExists(programs[4]) === false && ns.getHackingLevel() >= 750) {
 			ns.run('/singularity_scripts/createprogram.js', 1, programs[4]);
 		}
+		await ns.sleep(100);
 		if (ns.isBusy() === true) {
 			continue;
 		}
 
 
-		// backdoor servers - need to figure out tree searches
+		// -------backdoor servers------- - need to figure out tree searches
 		// for (let i = 0; i < factionservers.length; ++i) {
-		// 	if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel() && ns.getServer(server).backdoorInstalled === false) {
-		// 		ns.run('/singularity_scripts/backdoor.js', 1, factionservers[i]);
+		// 	if (ns.getServerRequiredHackingLevel(factionservers[i]) <= ns.getHackingLevel() && ns.getServer(factionservers[i]).backdoorInstalled === false) {
+		// 		ns.run('get_root.js', 1, 'home', factionservers[i])
+		// 		if (ns.hasRootAccess(factionservers[i])) {
+		// 			ns.run('/singularity_scripts/backdoor.js', 1, factionservers[i]);
+		// 		}
 		// 	}
 		// }
 
 
-		// join factions
+		// -------join factions-------
 		let factioninvites = ns.checkFactionInvitations();
 		for (const factioninvite of factioninvites) {
 			ns.joinFaction(factioninvite);
 		}
 
 
+		// -------WORK-------
+		let worktime = 900000; // used for crime also
+		//let worktime = 5000;
 		// work for factions
-		// let timetowork = 900000;
-		let timetowork = 5000;
 		let factions = JSON.parse(JSON.stringify(ns.getPlayer().factions));
 		//types
 		//  Field,
@@ -99,8 +108,15 @@ export async function main(ns) {
 			if (faction === 'CyberSec') {
 				ns.workForFaction(faction, "Hacking", true);
 			}
-			await ns.sleep(timetowork);
+			await ns.sleep(worktime);
 			ns.stopAction();
 		}
+
+
+		// -------do crime-------
+		ns.run('/singularity_scripts/bestcrime.js', 1);
+		await ns.sleep(worktime);
+		ns.scriptKill('/singularity_scripts/bestcrime.js', 'home');
+		ns.stopAction();
 	}
 }

@@ -28,7 +28,6 @@ export function autocomplete(data, args) {
  * TODO: Some way to list all files in the repository and/or download them all. **/
 export async function main(ns) {
     // delete all files
-    ns.killall();
     let files = ns.ls('home', ".js");
 	files.push('server_list.txt');
     const index = files.indexOf('git-pull.js'); // don't delete git-pull.js
@@ -36,8 +35,8 @@ export async function main(ns) {
         files.splice(index, 1);
     }
     for (let i = 0; i < files.length; i++) {
-        ns.print(pservs[j] + ": " + files[i]);
-        ns.rm(files[i], pservs[j]);
+        ns.print(files[i]);
+        ns.rm(files[i], 'home');
         await ns.sleep(20);
     }
 

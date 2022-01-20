@@ -55,11 +55,11 @@ export async function main(ns) {
 						ns.exec('/helpers/get_root.js', allservers[j], 1, target)
 						ns.tprint("Rooted: " + target);
 						let copyfiles_pid = ns.run('/helpers/copyfiles.js', 1, target);
+						await ns.sleep(100);
 						while (ns.isRunning(copyfiles_pid) === true) {
 							await ns.sleep(20);
 							continue;
 						}
-						await ns.sleep(100);
 						// backdoor
 						if (factionservers.includes(target)) {
 							ns.tprint("Backdoored: " + target);

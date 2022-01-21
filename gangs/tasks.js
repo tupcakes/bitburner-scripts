@@ -25,7 +25,6 @@ export async function main(ns) {
 			for (let i = 0; i < gangmembers.length + 1; ++i) {
 				let newmember = 'Thug-' + i;
 				if (gangmembers.includes(newmember) === true) {
-					ns.tprint(newmember + ' already exists.')
 					continue;
 				} else {
 					ns.gang.recruitMember(newmember);

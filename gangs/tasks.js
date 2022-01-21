@@ -13,21 +13,23 @@ export async function main(ns) {
 
 	let ingang = ns.gang.inGang();
 	let ganginfo = ns.gang.getGangInformation();
-	let gangmembers = ns.gang.getMemberNames();
 
 	// if we are in a gang? loop
 	while (ingang) {
+		let gangmembers = ns.gang.getMemberNames();
+		
 		// check if we can recruit a member
 		if (ns.gang.canRecruitMember() == true) {
 			// check if name already exists
 			gangmembers = ns.gang.getMemberNames();
-			for (let i = 0; i < gangmembers.length; ++i) {
-				if (gangmembers.includes('Thug-' + i)) {
+			for (let i = 0; i < gangmembers.length + 1; ++i) {
+				let newmember = 'Thug-' + i;
+				if (gangmembers.includes(newmember) === true) {
+					ns.tprint(newmember + ' already exists.')
 					continue;
 				} else {
-					let newname = 'Thug-' + i;
-					ns.gang.recruitMember(newname);
-					ns.tprint(newname + " recruited.")
+					ns.gang.recruitMember(newmember);
+					ns.tprint(newmember + " recruited.")
 					break;
 				}
 			}
@@ -44,7 +46,9 @@ export async function main(ns) {
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				// ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				ns.gang.setMemberTask(gangmembers[i], tasknames[1]);
+				
 				// find a way to assign the best task
 
 			}

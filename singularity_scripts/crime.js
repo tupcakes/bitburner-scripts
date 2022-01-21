@@ -2,26 +2,26 @@
 export async function main(ns) {
 	// ns.disableLog("ALL");
 	ns.tail();
-	let crime = 'Homicide';
 
-// Crime options
-// const crimes = [
-//     "Shoplift",
-//     "RobStore",
-//     "Mug",
-//     "Larceny",
-//     "Drugs",
-//     "BondForgery",
-//     "TraffickArms",
-//     "Homicide",
-//     "GrandTheftAuto",
-//     "Kidnap",
-//     "Assassination",
-//     "Heist",
-// ];
+	// Crime options
+	// const crimes = [
+	//     "Shoplift",
+	//     "RobStore",
+	//     "Mug",
+	//     "Larceny",
+	//     "Drugs",
+	//     "BondForgery",
+	//     "TraffickArms",
+	//     "Homicide",
+	//     "GrandTheftAuto",
+	//     "Kidnap",
+	//     "Assassination",
+	//     "Heist",
+	// ];
 
 	let loop = true
-	const crimetime = JSON.parse(JSON.stringify(ns.getCrimeStats(crime))).time;
+	const Homicidetime = JSON.parse(JSON.stringify(ns.getCrimeStats('Homicide'))).time;
+	const Mugtime = JSON.parse(JSON.stringify(ns.getCrimeStats('Mug'))).time;
 
 	// document.addEventListener('keypress', ({ key }) => {
 	// 	if (key === 'Enter') {
@@ -31,7 +31,10 @@ export async function main(ns) {
 
 	ns.stopAction();
 	while (loop) {
+		// create gang if ready. switch to best crime
 		if (ns.heart.break() <= -54000) {
+			ns.gang.createGang('Slum Snakes');
+			ns.run('/gangs/tasks.js', 1);
 			ns.spawn('/singularity_scripts/bestcrime.js');
 		}
 

@@ -15,8 +15,13 @@ export async function main(ns) {
 	// kill training
 	ns.scriptKill('/gangs/training.js', 'home');
 
-	let wantedlevelmax = 10;
 
+	// SET THESE
+	let wantedpenthreshold = .995;
+	let equipbuythreshold = 50000000;
+
+
+	let vigillaties = true
 	let ingang = ns.gang.inGang();
 	let ganginfo = ns.gang.getGangInformation();
 
@@ -49,7 +54,7 @@ export async function main(ns) {
 			//ns.tprint(ns.gang.getEquipmentType(equipmentnames[i]));
 			for (let j = 0; j < gangmembers.length; ++j) {
 				// buy if less than 5 mil
-				if (ns.gang.getEquipmentCost(equipmentnames[i]) < 5000000) {
+				if (ns.gang.getEquipmentCost(equipmentnames[i]) < equipbuythreshold) {
 					purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
 				}
 				if (purchased === true) {
@@ -70,7 +75,7 @@ export async function main(ns) {
 				}
 
 				// if stats are good enough, ascend.
-				if (ascensionresult.str >= ascensionthreashold && ascensionresult.def >= ascensionthreashold && ascensionresult.dex >= ascensionthreashold && ascensionresult.agi >= ascensionthreashold) {
+				if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
 					ns.gang.ascendMember(gangmembers[i]);
 				}
 			}
@@ -82,33 +87,21 @@ export async function main(ns) {
 		let tasknames = ns.gang.getTaskNames();
 		// ["Unassigned","Mug People","Deal Drugs","Strongarm Civilians","Run a Con","Armed Robbery","Traffick Illegal Arms","Threaten & Blackmail","Human Trafficking","Terrorism","Vigilante Justice","Train Combat","Train Hacking","Train Charisma","Territory Warfare"]
 		// if between 0 and wantedlevelmax assign task for each person.
-		if (ns.gang.getGangInformation().wantedLevel >= 1 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
+		if (ns.gang.getGangInformation().wantedPenalty > wantedpenthreshold) {
 			// set gang member's task to something
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				// ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-				ns.gang.setMemberTask(gangmembers[i], tasknames[3]);
-
-				// find a way to assign the best task
-				// needs formulas api!!!!
-				// let taskmoneygain = 0
-				// for each task {
-				//   if (taskmoneygain > ns.formulas.moneyGain(ns.gang.getGangInformation(), gangmembers[i], ns.gang.getTaskStats(tasknames[j]));) {
-				//     let tasktodo = tasknames[j];
-				//   }
-				// }
-				// do task
+				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				//ns.gang.setMemberTask(gangmembers[i], tasknames[6]);
 
 			}
-			//ns.gang.setMemberTask(gangmembers[0], 'Territory Warfare');
 		} else {
 			// set everyone to Vigilante Justice if wanted level is too high
 			while (ns.gang.getGangInformation().wantedLevel > 1) {
 				for (let i = 0; i < gangmembers.length; ++i) {
 					ns.gang.setMemberTask(gangmembers[i], tasknames[10]);
 				}
-				//ns.gang.setMemberTask(gangmembers[0], 'Territory Warfare');
 				await ns.sleep(20);
 			}
 		}

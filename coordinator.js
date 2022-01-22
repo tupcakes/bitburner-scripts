@@ -49,14 +49,14 @@ export async function main(ns) {
 		let usableservers = [];
 
 		let pservs = ns.getPurchasedServers();
-		for (const pserv of pservs) {
-			usableservers.push(pserv);
-		}
 		// add all rootable servers that have ram and we have root on
 		for (const rootableserver of rootableservers) {
 			if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
 				usableservers.push(rootableserver);
 			}
+		}
+		for (const pserv of pservs) {
+			usableservers.push(pserv);
 		}
 		usableservers.push("home");
 

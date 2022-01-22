@@ -1,4 +1,10 @@
-export function autocomplete(data, args) {
+/**
+ * This is a early to mid level script. it will assign hack, weaken,
+ * and grow jobs to rooted servers, then psers, then home.
+ */
+
+
+ export function autocomplete(data, args) {
 	return data.servers;
 }
 

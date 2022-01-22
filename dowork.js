@@ -123,18 +123,20 @@ export async function main(ns) {
 		//  None,
 		//  Security,
 		for (const faction of factions) {
-
-			if (faction === 'Slum Snakes') {
-				for (let i = 0; i < allservers.length; ++i) {
-					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
-					if (availableram > workforfaction_ram) {
-						ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
-						await ns.sleep(worktime);
-						ns.stopAction();
-						break;
+			if (ns.gang.inGang() === false) {
+				if (faction === 'Slum Snakes') {
+					for (let i = 0; i < allservers.length; ++i) {
+						let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
+						if (availableram > workforfaction_ram) {
+							ns.exec('/helpers/workforfaction.js', allservers[i], 1, faction, 'Security');
+							await ns.sleep(worktime);
+							ns.stopAction();
+							break;
+						}
 					}
 				}
-			} else if (faction === 'CyberSec') {
+			}
+			if (faction === 'CyberSec') {
 				for (let i = 0; i < allservers.length; ++i) {
 					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
 					if (availableram > workforfaction_ram) {
@@ -144,7 +146,8 @@ export async function main(ns) {
 						break;
 					}
 				}
-			} else if (faction === 'NiteSec') {
+			}
+			if (faction === 'NiteSec') {
 				for (let i = 0; i < allservers.length; ++i) {
 					let availableram = ns.getServerMaxRam(allservers[i]) - ns.getServerUsedRam(allservers[i]);
 					if (availableram > workforfaction_ram) {

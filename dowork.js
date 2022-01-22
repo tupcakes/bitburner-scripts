@@ -42,7 +42,7 @@ export async function main(ns) {
 	while (ns.isRunning(refreshfiles_pid) === true) {
 		ns.clearLog();
 		ns.print("Updating files.")
-		await ns.sleep(100);
+		await ns.sleep(20);
 		continue;
 	}
 	ns.print("Done updating files.");

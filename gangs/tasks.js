@@ -5,6 +5,8 @@
 
 /** @param {NS} ns **/
 export async function main(ns) {
+	let ascenddisabled = ns.args[0];
+
 	ns.tail();
 	ns.disableLog('ALL');
 	//ns.enableLog('exec');
@@ -39,19 +41,40 @@ export async function main(ns) {
 		}
 
 
-		// // Buy equipment
-		// let equipmentnames = ns.gang.getEquipmentNames();
-		// let purchased = false;
+		// Buy equipment
+		let equipmentnames = ns.gang.getEquipmentNames();
+		let purchased = false;
 
-		// for (let i = 0; i < equipmentnames.length; ++i) {
-		// 	//ns.tprint(ns.gang.getEquipmentType(equipmentnames[i]));
-		// 	for (let j = 0; j < gangmembers.length; ++j) {
-		// 		purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
-		// 		if (purchased === true) {
-		// 			ns.print(gangmembers[j] + " " + equipmentnames[i]);
-		// 		}
-		// 	}
-		// }
+		for (let i = 0; i < equipmentnames.length; ++i) {
+			//ns.tprint(ns.gang.getEquipmentType(equipmentnames[i]));
+			for (let j = 0; j < gangmembers.length; ++j) {
+				// buy if less than 5 mil
+				if (ns.gang.getEquipmentCost(equipmentnames[i]) < 5000000) {
+					purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
+				}
+				if (purchased === true) {
+					ns.print(gangmembers[j] + " " + equipmentnames[i]);
+				}
+			}
+		}
+
+
+		// Ascension
+		if (ascenddisabled !== 'noascend') {
+			let ascensionthreashold = 1.1;
+			for (let i = 0; i < gangmembers.length; ++i) {
+				let ascensionresult = ns.gang.getAscensionResult(gangmembers[i]);
+				// if not capable of ascending goto next member
+				if (typeof ascensionresult === 'undefined') {
+					continue;
+				}
+
+				// if stats are good enough, ascend.
+				if (ascensionresult.str >= ascensionthreashold && ascensionresult.def >= ascensionthreashold && ascensionresult.dex >= ascensionthreashold && ascensionresult.agi >= ascensionthreashold) {
+					ns.gang.ascendMember(gangmembers[i]);
+				}
+			}
+		}
 
 
 		// Task assignment

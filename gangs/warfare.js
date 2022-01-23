@@ -60,13 +60,13 @@ export async function main(ns) {
 			while (ns.gang.getGangInformation().territoryClashChance > 0) {
 				continue;
 			}
-			ns.run('/gangs/tasks.js');
+			ns.spawn('/gangs/tasks.js', 1);
 		}
 
 		// war is not going well. regroup
 		if (territory < .14) {
 			ns.gang.setTerritoryWarfare(false);
-			ns.run('/gangs/tasks.js');
+			ns.spawn('/gangs/tasks.js', 1);
 		}
 	}
 }

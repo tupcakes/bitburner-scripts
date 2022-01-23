@@ -9,16 +9,16 @@ export async function main(ns) {
 	files.push('server_list.txt');
 
 	if (ns.getPurchasedServers().length == ns.getPurchasedServerLimit()) {
-        ns.tprint("Already purchased max servers.");
-        return;
-    }
+		ns.tprint("Already purchased max servers.");
+		return;
+	}
 
 	let i = 0;
 	if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(ram)) {
-		while (ns.serverExists("pserv-" + i)) {
+		while (ns.serverExists("pserv-" + ram + "GB-" + i)) {
 			i++;
 		}
-		let pserv = ns.purchaseServer("pserv-" + i, ram);
+		let pserv = ns.purchaseServer("pserv-" + ram + "GB-" + i, ram);
 
 		// copy scripts from home
 		for (let i = 0; i < files.length; i++) {

@@ -4,7 +4,7 @@ export async function main(ns) {
     let i = 0;
 
     let files = ns.ls('home', ".js");
-	files.push('server_list.txt');
+    files.push('server_list.txt');
 
     if (ns.getPurchasedServers().length == ns.getPurchasedServerLimit()) {
         ns.tprint("Already purchased max servers.");
@@ -13,10 +13,10 @@ export async function main(ns) {
 
     while (i < ns.getPurchasedServerLimit()) {
         if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(ram)) {
-            while (ns.serverExists("pserv-" + i)) {
+            while (ns.serverExists("pserv-" + ram + "GB-" + i)) {
                 i++;
             }
-            let pserv = ns.purchaseServer("pserv-" + i, ram);
+            let pserv = ns.purchaseServer("pserv-" + ram + "GB-" + i, ram);
 
             // copy scripts
             for (let i = 0; i < files.length; i++) {

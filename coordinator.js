@@ -26,9 +26,10 @@ export async function main(ns) {
 	let rootableservers = file.split("\r\n");
 
 	// multipliers - ADJUST THIS
-	let weakendecrease = .6;
-	let growthfactor = 1.06;
-	let moneypercentage = .25;
+	let weakenmultiplier = .2;
+	let growmultiplier = 1.15;
+	let moneymultiplier = .20;
+
 
 	let sleepoffset = 2000;
 	let hacktime = 0;
@@ -38,6 +39,7 @@ export async function main(ns) {
 	let weakenscriptram = ns.getScriptRam('weaken1.js');
 	let growscriptram = ns.getScriptRam('grow.js');
 	let hackscriptram = ns.getScriptRam('hack.js');
+	let scriptram = weakenscriptram + growscriptram + hackscriptram;
 
 	let usableserversthreadsavailable = 0;
 
@@ -64,18 +66,30 @@ export async function main(ns) {
 		for (const pserv of pservs) {
 			usableservers.push(pserv);
 		}
-		usableservers.push("home");
+		//usableservers.push("home");
+		
+		// get ram of all usableservers
+		let totalram = 0;
+		for (const usableserver of usableservers) {
+			totalram = totalram + ns.getServerMaxRam(usableserver);
+		}
+		// subtrack room for one instance of each script as a buffer.
+		let maxnumthreads = Math.floor((totalram - scriptram) / scriptram);
 
 
-		let returnmoney = ns.getServerMaxMoney(target) * moneypercentage;
-		let reqhackthreads = Math.ceil(ns.hackAnalyzeThreads(target, returnmoney));
+		let reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+		// hackthreads returned a value less than 1
+		if (target == 'n00dles') {
+			reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
+		}
+		let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * reqhackthreads;
 		let remaininghackthreads = Math.ceil(reqhackthreads);
 
 
 		ns.clearLog();
 		ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 		ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
-		ns.print("Money per hack cycle:   " + dollarUS.format(returnmoney));
+		ns.print("Money per hack cycle:   " + dollarUS.format(moneyperhack));
 		ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
 		ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 		ns.print("Usable servers length:  " + usableservers.length);
@@ -106,7 +120,7 @@ export async function main(ns) {
 				ns.print("Thread available:       " + usableserversthreadsavailable);
 				ns.print("Current security:       " + ns.getServerSecurityLevel(target));
 				ns.print("Money available:        " + dollarUS.format(ns.getServerMoneyAvailable(target)));
-				ns.print("Money to hack:          " + dollarUS.format(returnmoney));
+				ns.print("Money to hack:          " + dollarUS.format(moneyperhack));
 
 				// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 				// threads.
@@ -126,11 +140,10 @@ export async function main(ns) {
 			await ns.sleep(hacktime);
 		} else {
 			// set the threads
-			let reqweakenthreads = 0;
-			while (ns.weakenAnalyze(reqweakenthreads) < weakendecrease) { // 40 threads on joesguns
-				reqweakenthreads++;
-			}
-			let reqgrowthreads = Math.ceil(ns.growthAnalyze(target, growthfactor));
+			let reqweakenthreads = Math.ceil(maxnumthreads * weakenmultiplier);
+			let reqgrowthreads = Math.ceil(maxnumthreads * growmultiplier);
+
+
 
 			let remainingfirstweakenthreads = Math.ceil(reqweakenthreads);
 			let remaininggrowthreads = Math.ceil(reqgrowthreads);

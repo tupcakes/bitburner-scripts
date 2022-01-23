@@ -18,7 +18,7 @@ export async function main(ns) {
 
 		for (let i = 0; i < targets.length; ++i) {
 			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
-			if (ns.getServerRequiredHackingLevel(target) <= ns.getHackingLevel() && ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0) {
+			if (ns.getServerRequiredHackingLevel(target) <= ns.getHackingLevel() && ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0 && ns.getServerMaxMoney(target) > 0) {
 				ns.run("control.js", 1, target);
 			}
 

@@ -14,7 +14,15 @@ export async function main(ns) {
 				if (ns.getServerMaxMoney('home') > moneytokeep) {
 					ns.killall(pserv);
 					ns.deleteServer(pserv);
-					ns.purchaseServer(pserv, currentserverram + currentserverram);
+
+					let newram = currentserverram + currentserverram
+
+					for (let i = 0; i < pservs.length; ++i) {
+						while (ns.serverExists("pserv-" + newram + "GB-" + i)) {
+							i++;
+						}
+						let newname = ns.purchaseServer("pserv-" + newram + "GB-" + i, newram);
+					}
 				}
 			}
 		}

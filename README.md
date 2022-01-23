@@ -13,14 +13,14 @@ Copy contents of file into new file and run.
 I've changed and tweaked this process frequently, so this is subject to change.
 
 ### Starting out
-Generate a server list with create_serverlist.js.
+Generate a server list with create_serverlist.js. You might need to remove home.
 
 Fire off earlygame/attack_local.js
-It will automatically run early-hacking-template.js on all hosts against themselves.
+It will automatically run early-hacking-template.js on all hosts against themselves. If there is enough ram, run mcp.js instead.
 
-Also run earlygame/early-run.js against n00dles or more low level servers.
+Run earlygame/coordinator.js n00dles or against another low level server you have root on.
 
-If there isn't enough ram to run earlygame/early-run.js yet, just run early-hacking-template.js directly against one of the low level servers with as many threads as you can do from home.
+If there isn't enough ram to run earlygame/coordinator.js yet, just run early-hacking-template.js directly against one of the low level servers with as many threads as you can do from home.
 
 Buy more ram for home as soon as possible.
 
@@ -32,7 +32,7 @@ Run control.js against more low level servers. It should schedule weaken, grow, 
 ### Late game
 Run buy/servers.js 1024 or more ram. It will keep buying servers until the max is reached.
 
-Run home-distributed.js. It will run control.js against all servers in server_list.txt.
+Run pserv-controller.js. It will run control.js against all servers in server_list.txt, but limited to how many pservs are available
 
 Occiasionally replace all purchased servers with larger versions when money allows.
 

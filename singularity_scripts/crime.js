@@ -19,7 +19,8 @@ export async function main(ns) {
 	//     "Heist",
 	// ];
 
-	let loop = true
+	let loop = true;
+	let crimetime = 0;
 	const Homicidetime = JSON.parse(JSON.stringify(ns.getCrimeStats('Homicide'))).time;
 	const Mugtime = JSON.parse(JSON.stringify(ns.getCrimeStats('Mug'))).time;
 
@@ -40,8 +41,10 @@ export async function main(ns) {
 
 		// if homicide not good enough do mug
 		if (ns.getCrimeChance('Homicide') < .9) {
+			crimetime = Mugtime;
 			ns.commitCrime('Mug');
 		} else {
+			crimetime = Homicidetime;
 			ns.commitCrime('Homicide');
 		}
 		ns.print(ns.heart.break());

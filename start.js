@@ -18,8 +18,11 @@ export async function main(ns) {
 	ns.run("distributed-share.js");
 	// ns.run("upgradepservs.js");
 
-	if (pservs.length > 0) {
+	if (pservs.length > 0 && psers.length < 25) {
 		ns.run("pserv-controller.js");
+	} else if (pservs.length === 25) {
+		ns.scriptKill('pserv-controller.js', 'home');
+		ns.run("home-distributed.js");
 	}
 
 	if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel('megacorp')) {

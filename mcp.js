@@ -5,28 +5,13 @@
 - join factions
 */
 
+import { countPrograms } from "/libraries/root.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
 	//ns.enableLog('exec');
 	ns.clearLog();
-
-	function countPrograms() {
-		let count = 0;
-
-		if (ns.fileExists("BruteSSH.exe"))
-			count++;
-		if (ns.fileExists("FTPCrack.exe"))
-			count++;
-		if (ns.fileExists("relaySMTP.exe"))
-			count++;
-		if (ns.fileExists("HTTPWorm.exe"))
-			count++;
-		if (ns.fileExists("SQLInject.exe"))
-			count++;
-
-		return count;
-	}
 
 	const factionservers = [
 		"CSEC",
@@ -67,7 +52,7 @@ export async function main(ns) {
 			if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target)) {
 				rootallserversloop:
 				for (let j = 0; j < allservers.length; ++j) {
-					if (countPrograms() >= ns.getServerNumPortsRequired(target)) {
+					if (countPrograms(ns) >= ns.getServerNumPortsRequired(target)) {
 						let availableram = ns.getServerMaxRam(allservers[j]) - ns.getServerUsedRam(allservers[j]);
 						if (availableram > get_root_ram) {
 							ns.exec('/helpers/get_root.js', allservers[j], 1, target)

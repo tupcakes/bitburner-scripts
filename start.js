@@ -1,15 +1,9 @@
+import { updatefiles } from "/libraries/utils.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	// update files
-	let refreshfiles_pid = ns.run('refreshfiles.js', 1);
-	while (ns.isRunning(refreshfiles_pid) === true) {
-		ns.clearLog();
-		ns.print("Updating files.")
-		await ns.sleep(20);
-		continue;
-	}
-	ns.print("Done updating files.");
-	
+	await updatefiles(ns);
 
 	let pservs = ns.getPurchasedServers();
 

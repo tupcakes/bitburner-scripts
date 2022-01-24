@@ -33,5 +33,4 @@ export async function main(ns) {
 	} else {
 		ns.tprint("Not enough Money.")
 	}
-	await ns.sleep(3000);
 }

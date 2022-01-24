@@ -29,6 +29,6 @@ export async function main(ns) {
 
             i++;
         }
-        await ns.sleep(1000);
+        await ns.sleep(20);
     }
 }

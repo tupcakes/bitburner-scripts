@@ -4,18 +4,30 @@ export async function main(ns) {
 	let usableservers = [];
 	usableservers.push("home");
 
-	let pservs = ns.getPurchasedServers();
+	let file = ns.read("server_list.txt");
+	let rootableservers = file.split("\r\n");
+
+
 	// add all rootable servers that have ram and we have root on
 	for (const rootableserver of rootableservers) {
 		if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
 			usableservers.push(rootableserver);
 		}
 	}
+
+	let pservs = ns.getPurchasedServers();
 	for (const pserv of pservs) {
 		usableservers.push(pserv);
 	}
 
 	for (const server of usableservers) {
-		ns.killall(server);
+		let scripts = ns.ps(server);
+		for (let i = 0; i < scripts.length; ++i) {
+			if (scripts[i].filename !== 'endallscripts.js') {
+				ns.scriptKill(scripts[i].filename, server);
+				ns.tprint("Killall: " + scripts[i].filename + " on " + server);
+			}
+		}
 	}
+
 }

@@ -13,10 +13,10 @@ export async function main(ns) {
 
     while (i < ns.getPurchasedServerLimit()) {
         if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(ram)) {
-            while (ns.serverExists("pserv-" + ram + "GB-" + i)) {
+            while (ns.serverExists("pserv-" + i + "-" + ram + "GB")) {
                 i++;
             }
-            let pserv = ns.purchaseServer("pserv-" + ram + "GB-" + i, ram);
+            let pserv = ns.purchaseServer("pserv-" + i + "-" + ram + "GB", ram);
 
             // copy scripts
             for (let i = 0; i < files.length; i++) {

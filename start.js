@@ -14,11 +14,13 @@ export async function main(ns) {
 	let pservs = ns.getPurchasedServers();
 
 	ns.run("mcp.js");
-	ns.run("/gangs/tasks.js");
+	if (ns.gang.inGang() === true) {
+		ns.run("/gangs/tasks.js");
+	}
 	ns.run("distributed-share.js");
 	// ns.run("upgradepservs.js");
 
-	if (pservs.length > 0 && psers.length < 25) {
+	if (pservs.length > 0 && pservs.length < 25) {
 		ns.run("pserv-controller.js");
 	} else if (pservs.length === 25) {
 		ns.scriptKill('pserv-controller.js', 'home');

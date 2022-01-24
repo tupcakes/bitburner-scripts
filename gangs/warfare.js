@@ -1,3 +1,5 @@
+import { newgangmember, buygangequipment, ascendgangmember } from "/libraries/gang.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	let gangmembers = ns.gang.getMemberNames();
@@ -33,6 +35,19 @@ export async function main(ns) {
 	// determine if power is enough to win clashes
 	while (true) {
 		await ns.sleep(20);
+
+
+		// check if we can recruit a member
+		newgangmember(ns);
+
+
+		// Buy equipment
+		buygangequipment(ns);
+
+
+		// Ascension
+		ascendgangmember(ns);
+
 
 		// get chance to win as array of objects
 		let chances = [];

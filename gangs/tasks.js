@@ -3,6 +3,8 @@
  * Vigilante Justice if wanted level gets too high.
 **/
 
+import { newgangmember, buygangequipment, ascendgangmember } from "/libraries/gangs.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	let noascend = ns.args[0];
@@ -20,11 +22,8 @@ export async function main(ns) {
 	// SET THESE
 	//let wantedpenthreshold = .995;
 	let wantedlevelmax = 1000;
-	let equipbuythreshold = 10000000000;
-	let ascensionthreashold = 2;
 
 
-	let vigillaties = true
 	let ingang = ns.gang.inGang();
 	let ganginfo = ns.gang.getGangInformation();
 
@@ -33,57 +32,15 @@ export async function main(ns) {
 		let gangmembers = ns.gang.getMemberNames();
 
 		// check if we can recruit a member
-		if (ns.gang.canRecruitMember() == true) {
-			// check if name already exists
-			gangmembers = ns.gang.getMemberNames();
-			for (let i = 0; i < gangmembers.length + 1; ++i) {
-				let newmember = 'Thug-' + i;
-				if (gangmembers.includes(newmember) === true) {
-					continue;
-				} else {
-					ns.gang.recruitMember(newmember);
-					ns.tprint(newmember + " recruited.")
-					break;
-				}
-			}
-		}
+		newgangmember(ns);
 
 
 		// Buy equipment
-		if (nobuy !== 'nobuy') {
-			let equipmentnames = ns.gang.getEquipmentNames();
-			let purchased = false;
-
-			for (let i = 0; i < equipmentnames.length; ++i) {
-				//ns.tprint(ns.gang.getEquipmentType(equipmentnames[i]));
-				for (let j = 0; j < gangmembers.length; ++j) {
-					// buy if less than 5 mil
-					if (ns.gang.getEquipmentCost(equipmentnames[i]) < equipbuythreshold) {
-						purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
-					}
-					if (purchased === true) {
-						ns.print(gangmembers[j] + " " + equipmentnames[i]);
-					}
-				}
-			}
-		}
+		buygangequipment(ns);
 
 
 		// Ascension
-		if (noascend !== 'noascend') {
-			for (let i = 0; i < gangmembers.length; ++i) {
-				let ascensionresult = ns.gang.getAscensionResult(gangmembers[i]);
-				// if not capable of ascending goto next member
-				if (typeof ascensionresult === 'undefined') {
-					continue;
-				}
-
-				// if stats are good enough, ascend.
-				if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
-					ns.gang.ascendMember(gangmembers[i]);
-				}
-			}
-		}
+		ascendgangmember(ns);
 
 
 		// Task assignment

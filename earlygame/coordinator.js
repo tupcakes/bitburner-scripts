@@ -36,9 +36,9 @@ export async function main(ns) {
 	let weakentime = 0;
 	let growtime = 0;
 
-	let weakenscriptram = ns.getScriptRam('weaken1.js');
-	let growscriptram = ns.getScriptRam('grow.js');
-	let hackscriptram = ns.getScriptRam('hack.js');
+	let weakenscriptram = ns.getScriptRam('/helpers/weaken1.js');
+	let growscriptram = ns.getScriptRam('/helpers/grow.js');
+	let hackscriptram = ns.getScriptRam('/helpers/hack.js');
 	let scriptram = weakenscriptram + growscriptram + hackscriptram;
 
 	let usableserversthreadsavailable = 0;
@@ -125,10 +125,10 @@ export async function main(ns) {
 				// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 				// threads.
 				if (usableserversthreadsavailable > remaininghackthreads) {
-					pid = ns.exec("hack.js", usableservers[i], remaininghackthreads, target, hacktime);
+					pid = ns.exec("/helpers/hack.js", usableservers[i], remaininghackthreads, target, hacktime);
 					break;
 				} else {
-					pid = ns.exec("hack.js", usableservers[i], usableserversthreadsavailable, target, 0);
+					pid = ns.exec("/helpers/hack.js", usableservers[i], usableserversthreadsavailable, target, 0);
 					remaininghackthreads = remaininghackthreads - usableserversthreadsavailable;
 				}
 
@@ -169,11 +169,11 @@ export async function main(ns) {
 					// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 					// threads.
 					if (usableserversthreadsavailable > remainingfirstweakenthreads) {
-						pid = ns.exec("weaken1.js", usableservers[i], remainingfirstweakenthreads, target, hacktime);
+						pid = ns.exec("/helpers/weaken1.js", usableservers[i], remainingfirstweakenthreads, target, hacktime);
 						weakentime = ns.getWeakenTime(target) + sleepoffset;
 						break;
 					} else {
-						pid = ns.exec("weaken1.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/weaken1.js", usableservers[i], usableserversthreadsavailable, target, 0);
 						remainingfirstweakenthreads = remainingfirstweakenthreads - usableserversthreadsavailable;
 					}
 
@@ -204,11 +204,11 @@ export async function main(ns) {
 					// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 					// threads.
 					if (usableserversthreadsavailable > remaininggrowthreads) {
-						pid = ns.exec("grow.js", usableservers[i], remaininggrowthreads, target, (weakentime + hacktime));
+						pid = ns.exec("/helpers/grow.js", usableservers[i], remaininggrowthreads, target, (weakentime + hacktime));
 						growtime = ns.getGrowTime(target) + sleepoffset;
 						break;
 					} else {
-						pid = ns.exec("grow.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/grow.js", usableservers[i], usableserversthreadsavailable, target, 0);
 						remaininggrowthreads = remaininggrowthreads - usableserversthreadsavailable;
 					}
 
@@ -239,11 +239,11 @@ export async function main(ns) {
 					// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 					// threads.
 					if (usableserversthreadsavailable > remainingsecondweakenthreads) {
-						pid = ns.exec("weaken2.js", usableservers[i], remainingsecondweakenthreads, target, (weakentime + hacktime + growtime));
+						pid = ns.exec("/helpers/weaken2.js", usableservers[i], remainingsecondweakenthreads, target, (weakentime + hacktime + growtime));
 						weakentime = ns.getWeakenTime(target) + sleepoffset;
 						break;
 					} else {
-						pid = ns.exec("weaken2.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/weaken2.js", usableservers[i], usableserversthreadsavailable, target, 0);
 						remainingsecondweakenthreads = remainingsecondweakenthreads - usableserversthreadsavailable;
 					}
 

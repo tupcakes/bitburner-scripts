@@ -37,3 +37,10 @@ Run pserv-controller.js. It will run control.js against all servers in server_li
 Occiasionally replace all purchased servers with larger versions when money allows.
 
 Profit.
+
+
+## My Order
+- BN 1 - All
+- BN 2 - 2.1
+- BN 4 - All
+- BN ?

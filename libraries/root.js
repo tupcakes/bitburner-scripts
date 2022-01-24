@@ -19,7 +19,7 @@ export function countPrograms(ns) {
 
 /** @param {NS} ns **/
 // try to open every port we can
-function breakPorts(ns, hostname) {
+export function breakPorts(ns, hostname) {
 	if (ns.fileExists("BruteSSH.exe"))
 		ns.brutessh(hostname);
 	if (ns.fileExists("FTPCrack.exe"))

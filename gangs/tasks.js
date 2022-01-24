@@ -3,7 +3,7 @@
  * Vigilante Justice if wanted level gets too high.
 **/
 
-import { newgangmember, buygangequipment, ascendgangmember } from "/libraries/gangs.js";
+import { newgangmember, buygangequipment, ascendgangmember, warfaretick } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -43,6 +43,9 @@ export async function main(ns) {
 		ascendgangmember(ns);
 
 
+		// wait for tick
+		await warfaretick(ns);
+
 		// Task assignment
 		gangmembers = ns.gang.getMemberNames();
 		let tasknames = ns.gang.getTaskNames();
@@ -54,8 +57,8 @@ export async function main(ns) {
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-				//ns.gang.setMemberTask(gangmembers[i], tasknames[6]);
+				//ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				ns.gang.setMemberTask(gangmembers[i], tasknames[2]);
 
 			}
 		} else {
@@ -67,6 +70,16 @@ export async function main(ns) {
 				await ns.sleep(20);
 			}
 		}
+
+		// if we haven't won the war,
+		// do work for 18 seconds, then set to territory warfare until next tick
+		if (ns.gang.getGangInformation().territory < 1) {
+			await ns.sleep(18500);
+			for (let i = 0; i < gangmembers.length; ++i) {
+				ns.gang.setMemberTask(gangmembers[i], 'Territory Warfare');
+			}
+		}
+
 
 		await ns.sleep(20);
 	}

@@ -56,3 +56,18 @@ export function ascendgangmember(ns) {
 		}
 	}
 }
+
+
+/** @param {NS} ns **/
+// returns true if a warfare tick just happened.
+export async function warfaretick(ns) {
+	let otherganginfo = ns.gang.getChanceToWinClash('The Black Hand');
+	while (true) {
+		await ns.sleep(20);
+		let otherganginfoupdate = ns.gang.getChanceToWinClash('The Black Hand');
+		if (otherganginfo !== otherganginfoupdate) {
+			return true;
+		}
+	}
+	
+}

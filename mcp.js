@@ -7,7 +7,6 @@
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.tail();
 	ns.disableLog('ALL');
 	//ns.enableLog('exec');
 	ns.clearLog();

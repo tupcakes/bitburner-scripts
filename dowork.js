@@ -9,8 +9,6 @@
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.tail();
-
 	const programs = [
 		"BruteSSH.exe",
 		"FTPCrack.exe",

@@ -1,9 +1,12 @@
-import { updatefiles } from "/libraries/utils.js";
+import { updatefiles, getportopeners } from "/libraries/utils.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
 	// update files
 	await updatefiles(ns);
+
+	// get tor and port openers
+	getportopeners(ns);
 
 	let pservs = ns.getPurchasedServers();
 

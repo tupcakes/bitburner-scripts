@@ -1,14 +1,15 @@
 /** 
  * assigns a task for each person. it will assign
  * Vigilante Justice if wanted level gets too high.
+ * will wait for warfare tick and schedule warfare
+ * just before the tick so power increases.
+ * will start warfare if lowest chance is > 60.
 **/
 
 import { newgangmember, buygangequipment, ascendgangmember, warfaretick } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	let noascend = ns.args[0];
-	let nobuy = ns.args[1];
 
 	ns.tail();
 	ns.disableLog('ALL');
@@ -22,6 +23,17 @@ export async function main(ns) {
 	// SET THESE
 	//let wantedpenthreshold = .995;
 	let wantedlevelmax = 1000;
+
+
+	const gangs = [
+		"Slum Snakes",
+		"Speakers for the Dead",
+		"The Black Hand",
+		"The Dark Army",
+		"The Syndicate",
+		"NiteSec",
+		"Tetrads",
+	];
 
 
 	let ingang = ns.gang.inGang();
@@ -43,6 +55,34 @@ export async function main(ns) {
 		ascendgangmember(ns);
 
 
+		// get chance to win as array of objects
+		let chances = [];
+		let lowestchance = Math.min(chances);
+		for (const gang of gangs) {
+			let ChanceToWinClash = ns.gang.getChanceToWinClash(gang);
+			// skip my gang
+			if (gang === ns.gang.getGangInformation().faction) {
+				continue;
+			}
+			chances.push(ChanceToWinClash);
+		}
+
+		lowestchance = Math.min(...chances);
+		// ready for war
+		if (lowestchance >= .60) {
+			ns.gang.setTerritoryWarfare(true);
+		}
+		// we won
+		let territory = ns.gang.getGangInformation().territory;
+		if (territory === 1) {
+			ns.gang.setTerritoryWarfare(false);
+		}
+		// war is not going well. regroup
+		if (territory < .14) {
+			ns.gang.setTerritoryWarfare(false);
+		}
+
+
 		// wait for tick
 		await warfaretick(ns);
 
@@ -57,8 +97,8 @@ export async function main(ns) {
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				//ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-				ns.gang.setMemberTask(gangmembers[i], tasknames[2]);
+				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				// ns.gang.setMemberTask(gangmembers[i], tasknames[3]);
 
 			}
 		} else {

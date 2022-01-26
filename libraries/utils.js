@@ -12,6 +12,22 @@ export async function updatefiles(ns) {
 
 
 /** @param {NS} ns **/
+export async function copyfiles(ns, target) {
+	let files = ns.ls('home', ".js");
+    files.push('server_list.txt');
+
+	// copy scripts
+	for (let i = 0; i < files.length; i++) {
+		ns.print(target + ": " + files[i]);
+		ns.rm(files[i], target);
+		// get new copies
+		await ns.scp(files[i], target);
+		await ns.sleep(20);
+	}
+}
+
+
+/** @param {NS} ns **/
 export async function getportopeners(ns) {
 	// buy tor router
 	ns.purchaseTor();

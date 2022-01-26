@@ -42,7 +42,7 @@ export function buygangequipment(ns) {
 /** @param {NS} ns **/
 export function ascendgangmember(ns) {
 	let gangmembers = ns.gang.getMemberNames();
-	let ascensionthreashold = 2;
+	let ascensionthreashold = 1.2;
 	for (let i = 0; i < gangmembers.length; ++i) {
 		let ascensionresult = ns.gang.getAscensionResult(gangmembers[i]);
 		// if not capable of ascending goto next member

@@ -37,3 +37,38 @@ export async function getportopeners(ns) {
 	ns.purchaseProgram("HTTPWorm.exe");
 	ns.purchaseProgram("SQLInject.exe");
 }
+
+
+// really shitty method of estimating the most profitable server.
+// gets money per sec for a single thread.
+/** @param {NS} ns **/
+export async function getmostprofitable(ns) {
+	let file = ns.read("server_list.txt");
+	let servers = file.split("\r\n");
+	let stats = [];
+
+
+	for (let i = 0; i < servers.length; ++i) {
+		let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
+
+		// only check if the server can have money and is hackable
+		if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(server) && ns.getServerMaxMoney(server) > 0) {
+			let weakentime = ns.getWeakenTime(server) * 2;
+			let growtime = ns.getGrowTime(server);
+			let hacktime = ns.getHackTime(server);
+			let totaltime = (weakentime + growtime + hacktime) / 1000;
+			let moneyperhack = ns.hackAnalyze(server);
+			let moneypersec = moneyperhack / totaltime;
+
+			const stat = new Object
+			stat.name = server;
+			stat.moneypersec = moneypersec;
+			stat.moneyperhack = moneyperhack;
+			stats.push(stat);
+		}
+	}
+
+	let bestserver = stats.reduce((max, stat) => max.moneypersec > stat.moneypersec ? max : stat);
+
+	return bestserver.name;
+}

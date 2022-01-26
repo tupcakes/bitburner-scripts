@@ -77,7 +77,6 @@ export async function warfaretick(ns) {
 // returns true if a warfare tick just happened.
 export function getbesttask(ns, gangmember) {
 	let member = ns.gang.getMemberInformation(gangmember);
-	ns.tprint(member);
 
 	let tasks = ns.gang.getTaskNames();
 	let taskweights = [];

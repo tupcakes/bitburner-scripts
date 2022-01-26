@@ -74,9 +74,10 @@ export async function warfaretick(ns) {
 
 
 /** @param {NS} ns **/
-// returns true if a warfare tick just happened.
+// a shitty function to try and get best task
 export function getbesttask(ns, gangmember) {
 	let member = ns.gang.getMemberInformation(gangmember);
+	let ganginfo = ns.gang.getGangInformation();
 
 	let tasks = ns.gang.getTaskNames();
 	let taskweights = [];
@@ -95,10 +96,12 @@ export function getbesttask(ns, gangmember) {
 			(taskdetails.chaWeight / 100) * member.cha;
 
 		statWeight -= 3.2 * taskdetails.difficulty;
-
+		const territoryMult = Math.max(0.005, Math.pow(ganginfo.territory * 100, taskdetails.territory.money) / 100);
+		const territoryPenalty = (0.2 * ganginfo.territory + 0.8)
+		const respectMult = ganginfo.respect / (ganginfo.respect + ganginfo.wantedLevel);
 		const taskweight = new Object
 		taskweight.name = task;
-		taskweight.statWeight = statWeight;
+		taskweight.statWeight = taskdetails.baseMoney * statWeight * territoryMult * respectMult;
 
 		taskweights.push(taskweight);
 	}

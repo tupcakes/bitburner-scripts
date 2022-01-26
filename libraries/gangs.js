@@ -71,3 +71,39 @@ export async function warfaretick(ns) {
 	}
 	
 }
+
+
+/** @param {NS} ns **/
+// returns true if a warfare tick just happened.
+export function getbesttask(ns, gangmember) {
+	let member = ns.gang.getMemberInformation(gangmember);
+	ns.tprint(member);
+
+	let tasks = ns.gang.getTaskNames();
+	let taskweights = [];
+	for (const task of tasks) {
+		let taskdetails = ns.gang.getTaskStats(task);
+		if (taskdetails.baseMoney === 0) {
+			continue;
+		}
+
+		let statWeight =
+			(taskdetails.hackWeight / 100) * member.hack +
+			(taskdetails.strWeight / 100) * member.str +
+			(taskdetails.defWeight / 100) * member.def +
+			(taskdetails.dexWeight / 100) * member.dex +
+			(taskdetails.agiWeight / 100) * member.agi +
+			(taskdetails.chaWeight / 100) * member.cha;
+
+		statWeight -= 3.2 * taskdetails.difficulty;
+
+		const taskweight = new Object
+		taskweight.name = task;
+		taskweight.statWeight = statWeight;
+
+		taskweights.push(taskweight);
+	}
+
+	let besttask = taskweights.reduce((max, taskweight) => max.statWeight > taskweight.statWeight ? max : taskweight);
+	return besttask.name;
+}

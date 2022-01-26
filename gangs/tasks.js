@@ -6,7 +6,7 @@
  * will start warfare if lowest chance is > 60.
 **/
 
-import { newgangmember, buygangequipment, ascendgangmember, warfaretick } from "/libraries/gangs.js";
+import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -22,7 +22,7 @@ export async function main(ns) {
 
 	// SET THESE
 	//let wantedpenthreshold = .995;
-	let wantedlevelmax = 1000;
+	let wantedlevelmax = 100;
 
 
 	const gangs = [
@@ -78,7 +78,7 @@ export async function main(ns) {
 			ns.gang.setTerritoryWarfare(false);
 		}
 		// war is not going well. regroup
-		if (territory < .14) {
+		if (territory < .10) {
 			ns.gang.setTerritoryWarfare(false);
 		}
 
@@ -97,8 +97,9 @@ export async function main(ns) {
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-				// ns.gang.setMemberTask(gangmembers[i], tasknames[3]);
+				//ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
+				//ns.gang.setMemberTask(gangmembers[i], tasknames[3]);
+				ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
 
 			}
 		} else {

@@ -18,7 +18,7 @@ export async function copyfiles(ns, target) {
 
 	// copy scripts
 	for (let i = 0; i < files.length; i++) {
-		ns.print(target + ": " + files[i]);
+		// ns.print(target + ": " + files[i]);
 		ns.rm(files[i], target);
 		// get new copies
 		await ns.scp(files[i], target);

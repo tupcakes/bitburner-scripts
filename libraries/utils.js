@@ -160,7 +160,12 @@ export async function buyaugments(ns) {
 		"Social Negotiation Assistant (S.N.A)",
 	];
 
+	const playeraugs = ns.getOwnedAugmentations(true);
+
 	for (const augment of augments) {
-		ns.purchaseAugmentation(factions[0], augment);
+		if (playeraugs.includes(augment) === false) {
+			ns.purchaseAugmentation(factions[0], augment);
+			ns.print("Purchased: " + augment);
+		}
 	}
 }

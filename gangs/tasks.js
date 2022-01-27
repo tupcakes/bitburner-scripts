@@ -21,8 +21,7 @@ export async function main(ns) {
 
 
 	// SET THESE
-	//let wantedpenthreshold = .995;
-	let wantedlevelmax = 100;
+	//let wantedlevelmax = 100;
 
 
 	const gangs = [
@@ -41,6 +40,13 @@ export async function main(ns) {
 
 	// if we are in a gang? loop
 	while (ingang) {
+		//let wantedlevelmax = 100;
+		ganginfo = ns.gang.getGangInformation();
+		let wantedpenalty = ganginfo.respect / (ganginfo.respect + ganginfo.wantedLevel);
+		// let wantedlevelmax = wantedpenalty * ((ganginfo.wantedLevel / Math.abs(ganginfo.wantedLevelGainRate)) / 10);
+		let wantedlevelmax = wantedpenalty * 1000;
+		ns.print("Wanted threashold: " + wantedlevelmax);
+		
 		let gangmembers = ns.gang.getMemberNames();
 
 		// check if we can recruit a member
@@ -69,7 +75,7 @@ export async function main(ns) {
 
 		lowestchance = Math.min(...chances);
 		// ready for war
-		if (lowestchance >= .60) {
+		if (lowestchance >= .55) {
 			ns.gang.setTerritoryWarfare(true);
 		}
 		// we won
@@ -89,6 +95,7 @@ export async function main(ns) {
 		// Task assignment
 		gangmembers = ns.gang.getMemberNames();
 		let tasknames = ns.gang.getTaskNames();
+
 		// ["Unassigned","Mug People","Deal Drugs","Strongarm Civilians","Run a Con","Armed Robbery","Traffick Illegal Arms","Threaten & Blackmail","Human Trafficking","Terrorism","Vigilante Justice","Train Combat","Train Hacking","Train Charisma","Territory Warfare"]
 		// if between 0 and wantedlevelmax assign task for each person.
 		//if (ns.gang.getGangInformation().wantedPenalty <= wantedpenthreshold && ns.gang.getGangInformation().wantedPenalty >= 1) {

@@ -1,29 +1,42 @@
-/** @param {NS} ns **/
-export async function main(ns) {
-	let pservs = ns.getPurchasedServers();
-	if (pservs.length !== 25) {
-		ns.tprint("You don't have 25 servers.");
-		return;
-	}
+/**
+ * Will do one upgrade pass on pservs if there are max number.
+ */
 
-	while (true) {
-		await ns.sleep(20);
+ import { copyfiles } from "/libraries/utils.js";
 
-		for (let i = 0; i < pservs.length; ++i) {
-			let currentserverram = ns.getServerMaxRam(pservs[i]);
-			// if ram of last server is greater than ram of current, then upgrade
-			if (ns.getServerMaxRam(pservs[i - 1]) > currentserverram) {
-				ns.killall(pservs[i]);
-				ns.deleteServer(pservs[i]);
-				let newram = currentserverram + currentserverram
-				ns.purchaseServer("pserv-" + i + "-" + newram + "GB", newram);
-			}
-			
-			// check if last server has been upgraded, quit if true
-			if (ns.getServerMaxRam(pservs.length) === newram) {
-				ns.tprint("All servers upgraded to " + newram);
-				return;
-			}
-		}
-	}
-}
+ /** @param {NS} ns **/
+ export async function main(ns) {
+	 let pservs = ns.getPurchasedServers();
+ 
+	 if (pservs.length !== ns.getPurchasedServerLimit()) {
+		 ns.tprint("You don't have max servers.");
+		 return;
+	 }
+ 
+	 // if the last server in the array doesn't have max ram, keep upgrading.
+	 while (ns.getServerMaxRam(pservs[24]) !== ns.getPurchasedServerMaxRam()) {
+		 let i = 0;
+ 
+		 // do one pass of upgrading servers
+		 while (i < ns.getPurchasedServerLimit()) {
+			 await ns.sleep(20);
+ 
+			 let currentserverram = ns.getServerMaxRam(pservs[i]);
+			 let newram = currentserverram + currentserverram
+			 let newservername = "pserv-" + i + "-" + newram + "GB"
+ 
+			 // if we have enough money, upgrade the server
+			 if (ns.getServerMoneyAvailable("home") > ns.getPurchasedServerCost(newram)) {
+				 if (ns.serverExists(newservername) === false) {
+					 ns.killall(pservs[i]);
+					 ns.deleteServer(pservs[i]);
+					 ns.purchaseServer(newservername, newram);
+					 await copyfiles(ns, newservername);
+					 ns.tprint("Upgraded: " + newservername);
+					 i++;
+				 }
+			 }
+		 }
+ 
+	 }
+ }

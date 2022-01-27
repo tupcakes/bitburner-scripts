@@ -163,7 +163,7 @@ export async function buyaugments(ns) {
 	const playeraugs = ns.getOwnedAugmentations(true);
 
 	for (const augment of augments) {
-		if (playeraugs.includes(augment) === false) {
+		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
 			ns.purchaseAugmentation(factions[0], augment);
 			ns.print("Purchased: " + augment);
 		}

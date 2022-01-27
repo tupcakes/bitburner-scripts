@@ -6,7 +6,7 @@
  * will start warfare if lowest chance is > 60.
 **/
 
-import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask } from "/libraries/gangs.js";
+import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -104,9 +104,13 @@ export async function main(ns) {
 			// 8 - Human Trafficking seems to be the best all around for territory gains
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
-				//ns.gang.setMemberTask(gangmembers[i], tasknames[8]);
-				//ns.gang.setMemberTask(gangmembers[i], tasknames[3]);
-				ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
+				// if the member can do HT, then do it. otherwise train up.
+				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking') {
+					trainmember(ns, gangmembers[i]);
+				} else {
+					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
+					
+				}
 
 			}
 		} else {

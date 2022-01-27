@@ -53,7 +53,7 @@ export function ascendgangmember(ns) {
 			}
 
 			// if stats are good enough, ascend.
-			if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
+			if (ascensionresult.hack >= ascensionthreashold || ascensionresult.cha >= ascensionthreashold || ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
 				ns.gang.ascendMember(gangmembers[i]);
 				ns.print("Experience based ascend: " + gangmembers[i]);
 			}

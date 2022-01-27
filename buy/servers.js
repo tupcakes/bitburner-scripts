@@ -27,8 +27,11 @@ export async function main(ns) {
                 await ns.sleep(20);
             }
 
+            ns.tprint("Purchased: " + pserv);
+
             i++;
         }
         await ns.sleep(20);
     }
+    ns.tprint("Done buying servers");
 }

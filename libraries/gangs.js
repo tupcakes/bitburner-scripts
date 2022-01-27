@@ -32,7 +32,7 @@ export function buygangequipment(ns) {
 				purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
 			}
 			if (purchased === true) {
-				ns.print(gangmembers[j] + " " + equipmentnames[i]);
+				//ns.print(gangmembers[j] + " " + equipmentnames[i]);
 			}
 		}
 	}
@@ -42,7 +42,7 @@ export function buygangequipment(ns) {
 /** @param {NS} ns **/
 export function ascendgangmember(ns) {
 	let gangmembers = ns.gang.getMemberNames();
-	let ascensionthreashold = 1.2;
+	let ascensionthreashold = 1.6;
 	for (let i = 0; i < gangmembers.length; ++i) {
 		// if member is not actively training
 		if (ns.gang.getMemberInformation(gangmembers[i]).task.includes('Train') === false) {
@@ -55,6 +55,7 @@ export function ascendgangmember(ns) {
 			// if stats are good enough, ascend.
 			if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
 				ns.gang.ascendMember(gangmembers[i]);
+				ns.print("Experience based ascend: " + gangmembers[i]);
 			}
 		}
 	}
@@ -152,5 +153,6 @@ export function trainmember(ns, gangmember) {
 		ns.gang.setMemberTask(gangmember, 'Train Hacking');
 	} else {
 		ns.gang.ascendMember(gangmember);
+		ns.print("Training based ascend: " + gangmember);
 	}
 }

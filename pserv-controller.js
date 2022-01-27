@@ -16,15 +16,16 @@ export async function main(ns) {
 		let pservs = ns.getPurchasedServers();
 		let maxtargets = (pservs.length * 2) - 1;
 
-		for (let i = 0; i < targets.length; ++i) {
+		for (let i = 0; i < maxtargets; ++i) {
 			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
 			if (ns.getServerRequiredHackingLevel(target) <= ns.getHackingLevel() && ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0 && ns.getServerMaxMoney(target) > 0) {
 				ns.run("control.js", 1, target);
 			}
+		}
 
-			if (i > maxtargets) {
-				break;
-			}
+		// if we have max pservs, just attack everything.
+		if (ns.getPurchasedServers().length === ns.getPurchasedServerLimit()) {
+			ns.run("home-distributed.js");
 		}
 	}
 }

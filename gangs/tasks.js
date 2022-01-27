@@ -105,7 +105,7 @@ export async function main(ns) {
 			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
-				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking') {
+				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking' && gangmembers.length > 6) {
 					trainmember(ns, gangmembers[i]);
 				} else {
 					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));

@@ -6,6 +6,8 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
+import { buyaugments } from "/libraries/utils.js";
+
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -32,6 +34,7 @@ export async function main(ns) {
 			allservers.push(target);
 		}
 	}
+
 
 	ns.stopAction();
 	while (true) {
@@ -98,5 +101,8 @@ export async function main(ns) {
 				}
 			}
 		}
+
+		// buy approved augments
+		buyaugments(ns);
 	}
 }

@@ -14,7 +14,7 @@ export async function updatefiles(ns) {
 /** @param {NS} ns **/
 export async function copyfiles(ns, target) {
 	let files = ns.ls('home', ".js");
-    files.push('server_list.txt');
+	files.push('server_list.txt');
 
 	// copy scripts
 	for (let i = 0; i < files.length; i++) {
@@ -71,4 +71,96 @@ export async function getmostprofitable(ns) {
 	let bestserver = stats.reduce((max, stat) => max.moneypersec > stat.moneypersec ? max : stat);
 
 	return bestserver.name;
+}
+
+
+// buys from the collection of hacking, skill, and rep augments
+/** @param {NS} ns **/
+export async function buyaugments(ns) {
+	const factions = [
+		"Slum Snakes",
+		"CyberSec",
+		"Tian Di Hui",
+		"Netburners",
+		"Sector-12",
+		"Chongqing",
+		"New Tokyo",
+		"Ishima",
+		"Aevum",
+		"Volhaven",
+		"NiteSec",
+		"The Black Hand",
+		"BitRunners",
+		"ECorp",
+		"MegaCorp",
+		"KuaiGong International",
+		"Four Sigma",
+		"NWO",
+		"Blade Industries",
+		"OmniTek Incorporated",
+		"Bachman & Associates",
+		"Clarke Incorporated",
+		"Fulcrum Secret Technologies",
+		"Tetrads",
+		"Silhouette",
+		"Speakers for the Dead",
+		"The Dark Army",
+		"The Syndicate",
+		"The Covenant",
+		"Daedalus",
+		"Illuminati",
+	];
+
+	const augments = [
+		"BitWire",
+		"Artificial Bio-neural Network Implant",
+		"Artificial Synaptic Potentiation",
+		"Enhanced Myelin Sheathing",
+		"Synaptic Enhancement Implant",
+		"Neural-Retention Enhancement",
+		"DataJack",
+		"Embedded Netburner Module",
+		"Embedded Netburner Module Core Implant",
+		"Embedded Netburner Module Core V2 Upgrade",
+		"Embedded Netburner Module Core V3 Upgrade",
+		"Embedded Netburner Module Analyze Engine",
+		"Embedded Netburner Module Direct Memory Access Upgrade",
+		"Neuralstimulator",
+		"Neural Accelerator",
+		"Cranial Signal Processors - Gen I",
+		"Cranial Signal Processors - Gen II",
+		"Cranial Signal Processors - Gen III",
+		"Cranial Signal Processors - Gen IV",
+		"Cranial Signal Processors - Gen V",
+		"Neuronal Densification",
+		"FocusWire",
+		"PC Direct-Neural Interface",
+		"PC Direct-Neural Interface Optimization Submodule",
+		"PC Direct-Neural Interface NeuroNet Injector",
+		"ADR-V1 Pheromone Gene",
+		"ADR-V2 Pheromone Gene",
+		"The Shadow's Simulacrum",
+		"Neurotrainer I",
+		"Neurotrainer II",
+		"Neurotrainer III",
+		"HyperSight Corneal Implant",
+		"Power Recirculation Core",
+		"QLink",
+		"SPTN-97 Gene Modification",
+		"ECorp HVMind Implant",
+		"SmartJaw",
+		"Xanipher",
+		"nextSENS Gene Modification",
+		"OmniTek InfoLoad",
+		"BitRunners Neurolink",
+		"The Black Hand",
+		"CRTX42-AA Gene Modification",
+		"Neuregen Gene Modification",
+		"PCMatrix",
+		"Social Negotiation Assistant (S.N.A)",
+	];
+
+	for (const augment of augments) {
+		ns.purchaseAugmentation(factions[0], augment);
+	}
 }

@@ -44,15 +44,18 @@ export function ascendgangmember(ns) {
 	let gangmembers = ns.gang.getMemberNames();
 	let ascensionthreashold = 1.2;
 	for (let i = 0; i < gangmembers.length; ++i) {
-		let ascensionresult = ns.gang.getAscensionResult(gangmembers[i]);
-		// if not capable of ascending goto next member
-		if (typeof ascensionresult === 'undefined') {
-			continue;
-		}
+		// if member is not actively training
+		if (ns.gang.getMemberInformation(gangmembers[i]).task.includes('Train') === false) {
+			let ascensionresult = ns.gang.getAscensionResult(gangmembers[i]);
+			// if not capable of ascending goto next member
+			if (typeof ascensionresult === 'undefined') {
+				continue;
+			}
 
-		// if stats are good enough, ascend.
-		if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
-			ns.gang.ascendMember(gangmembers[i]);
+			// if stats are good enough, ascend.
+			if (ascensionresult.str >= ascensionthreashold || ascensionresult.def >= ascensionthreashold || ascensionresult.dex >= ascensionthreashold || ascensionresult.agi >= ascensionthreashold) {
+				ns.gang.ascendMember(gangmembers[i]);
+			}
 		}
 	}
 }
@@ -69,7 +72,7 @@ export async function warfaretick(ns) {
 			return true;
 		}
 	}
-	
+
 }
 
 
@@ -108,4 +111,46 @@ export function getbesttask(ns, gangmember) {
 
 	let besttask = taskweights.reduce((max, taskweight) => max.statWeight > taskweight.statWeight ? max : taskweight);
 	return besttask.name;
+}
+
+
+/** @param {NS} ns **/
+export function trainmember(ns, gangmember) {
+	let ascensionthreashold = 1.1;
+	let hack = 0;
+	let str = 0;
+	let def = 0;
+	let dex = 0;
+	let agi = 0;
+	let cha = 0;
+
+	let ascensionresult = ns.gang.getAscensionResult(gangmember);
+
+	// if training required
+	if (typeof ascensionresult === 'undefined') {
+		hack = 0;
+		str = 0;
+		def = 0;
+		dex = 0;
+		agi = 0;
+		cha = 0;
+	} else {
+		hack = ascensionresult.hack;
+		str = ascensionresult.str;
+		def = ascensionresult.def;
+		dex = ascensionresult.dex;
+		agi = ascensionresult.agi;
+		cha = ascensionresult.cha;
+	}
+
+	// train combat
+	if (str < ascensionthreashold && def < ascensionthreashold && dex < ascensionthreashold && agi < ascensionthreashold) {
+		ns.gang.setMemberTask(gangmember, 'Train Combat');
+	} else if (cha < ascensionthreashold) {
+		ns.gang.setMemberTask(gangmember, 'Train Charisma');
+	} else if (hack < ascensionthreashold) {
+		ns.gang.setMemberTask(gangmember, 'Train Hacking');
+	} else {
+		ns.gang.ascendMember(gangmember);
+	}
 }

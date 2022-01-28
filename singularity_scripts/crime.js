@@ -3,34 +3,12 @@ export async function main(ns) {
 	// ns.disableLog("ALL");
 	ns.tail();
 
-	// Crime options
-	// const crimes = [
-	//     "Shoplift",
-	//     "RobStore",
-	//     "Mug",
-	//     "Larceny",
-	//     "Drugs",
-	//     "BondForgery",
-	//     "TraffickArms",
-	//     "Homicide",
-	//     "GrandTheftAuto",
-	//     "Kidnap",
-	//     "Assassination",
-	//     "Heist",
-	// ];
-
 	let loop = true;
 	let crimetime = 0;
 	const Homicidetime = JSON.parse(JSON.stringify(ns.getCrimeStats('Homicide'))).time;
 	const Mugtime = JSON.parse(JSON.stringify(ns.getCrimeStats('Mug'))).time;
 
-	// document.addEventListener('keypress', ({ key }) => {
-	// 	if (key === 'Enter') {
-	// 		loop = false;
-	// 	}
-	// })
-
-	ns.stopAction();
+	//ns.stopAction();
 	while (loop) {
 		// create gang if ready. switch to best crime
 		if (ns.heart.break() <= -54000) {

@@ -5,8 +5,8 @@ export async function main(ns) {
 	// update files
 	await updatefiles(ns);
 
-	// get tor and port openers
-	getportopeners(ns);
+	// get tor and port openers - disabling because of int gain when self creating
+	//getportopeners(ns);
 
 	let pservs = ns.getPurchasedServers();
 

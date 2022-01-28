@@ -28,6 +28,31 @@ export async function copyfiles(ns, target) {
 
 
 /** @param {NS} ns **/
+export async function createexes(ns) {
+	const programs = [
+		"BruteSSH.exe",
+		"FTPCrack.exe",
+		"relaySMTP.exe",
+		"HTTPWorm.exe",
+		"SQLInject.exe",
+		"DeepscanV1.exe",
+		"DeepscanV2.exe",
+		"AutoLink.exe",
+		"ServerProfiler.exe",
+	];
+
+
+	for (const program of programs) {
+		if (ns.isBusy() === false) {
+			if (ns.fileExists(program) === false) {
+				ns.createProgram(program, true);
+			}
+		}
+	}
+}
+
+
+/** @param {NS} ns **/
 export async function getportopeners(ns) {
 	// buy tor router
 	ns.purchaseTor();

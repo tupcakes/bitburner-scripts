@@ -5,6 +5,8 @@ export async function main(ns) {
 	// update files
 	await updatefiles(ns);
 
+	ns.run("/buy/hacknet.js");
+
 	// get tor and port openers - disabling because of int gain when self creating
 	//getportopeners(ns);
 

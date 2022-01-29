@@ -1,5 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
+	ns.tail();
 	const programs = [
 		"DeepscanV1.exe",
 		"DeepscanV2.exe",
@@ -10,10 +11,11 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(20);
 
-		const randomprogram = programs[Math.floor(Math.random() * programs.length)];
-
 		if (ns.isBusy() === false) {
+			let randomprogram = programs[Math.floor(Math.random() * programs.length)];
 			ns.rm(randomprogram);
 		}
+
+		
 	}
 }

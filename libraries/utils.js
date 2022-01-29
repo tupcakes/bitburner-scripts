@@ -45,7 +45,7 @@ export async function createexes(ns) {
 	for (const program of programs) {
 		if (ns.isBusy() === false) {
 			if (ns.fileExists(program) === false) {
-				ns.createProgram(program, true);
+				ns.createProgram(program, false);
 			}
 		}
 	}

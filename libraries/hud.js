@@ -65,3 +65,16 @@ export function controlscriptsrunning(ns) {
 	}
 	return i;
 }
+
+
+/** @param {NS} ns **/
+export function coordinatorscriptsrunning(ns) {
+	let coordinatorscripts = ns.ps('home');
+	let i = 0;
+	for (const coordinatorscript of coordinatorscripts) {
+		if (coordinatorscript.filename.includes('coordinator.js') === true) {
+			i++;
+		}
+	}
+	return i;
+}

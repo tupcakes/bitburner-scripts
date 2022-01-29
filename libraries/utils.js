@@ -137,6 +137,11 @@ export async function buyaugments(ns) {
 	];
 
 	const augments = [
+		"Hacknet Node CPU Architecture Neural-Upload",
+		"Hacknet Node Cache Architecture Neural-Upload",
+		"Hacknet Node NIC Architecture Neural-Upload",
+		"Hacknet Node Kernel Direct-Neural Interface",
+		"Hacknet Node Core Direct-Neural Interface",
 		"BitWire",
 		"Artificial Bio-neural Network Implant",
 		"Artificial Synaptic Potentiation",

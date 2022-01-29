@@ -40,13 +40,13 @@ export async function main(ns) {
 
 	// if we are in a gang? loop
 	while (ingang) {
-		//let wantedlevelmax = 100;
+		let wantedlevelmax = 100;
 		ganginfo = ns.gang.getGangInformation();
 		let wantedpenalty = ganginfo.respect / (ganginfo.respect + ganginfo.wantedLevel);
 		// let wantedlevelmax = wantedpenalty * ((ganginfo.wantedLevel / Math.abs(ganginfo.wantedLevelGainRate)) / 10);
-		let wantedlevelmax = wantedpenalty * 1000;
-		ns.print("Wanted threashold: " + wantedlevelmax);
-		
+		//let wantedlevelmax = wantedpenalty * 1000;
+		//ns.print("Wanted threashold: " + wantedlevelmax);
+
 		let gangmembers = ns.gang.getMemberNames();
 
 		// check if we can recruit a member
@@ -90,7 +90,9 @@ export async function main(ns) {
 
 
 		// wait for tick
-		await warfaretick(ns);
+		if (territory < 1) {
+			await warfaretick(ns);
+		}
 
 		// Task assignment
 		gangmembers = ns.gang.getMemberNames();
@@ -109,17 +111,28 @@ export async function main(ns) {
 					trainmember(ns, gangmembers[i]);
 				} else {
 					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
-					
+
 				}
 
 			}
 		} else {
 			// set everyone to Vigilante Justice if wanted level is too high
 			while (ns.gang.getGangInformation().wantedLevel > 1) {
+
+				await warfaretick(ns);
+
 				for (let i = 0; i < gangmembers.length; ++i) {
 					ns.gang.setMemberTask(gangmembers[i], tasknames[10]);
 				}
-				await ns.sleep(20);
+
+				if (ns.gang.getGangInformation().territory < 1) {
+					await ns.sleep(18500);
+					for (let i = 0; i < gangmembers.length; ++i) {
+						ns.gang.setMemberTask(gangmembers[i], 'Territory Warfare');
+					}
+				} else {
+					await ns.sleep(20);
+				}
 			}
 		}
 

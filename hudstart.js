@@ -1,4 +1,4 @@
-import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning } from "/libraries/hud.js";
+import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning, cheeseintrunning } from "/libraries/hud.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -16,6 +16,7 @@ export async function main(ns) {
     ns.print("-----Running Processes-----")
     ns.print("Control scripts running:     " + controlscriptsrunning(ns));
     ns.print("Coordinator scripts running: " + coordinatorscriptsrunning(ns));
+    ns.print("Cheeseint running:           " + cheeseintrunning(ns));
     ns.print("");
     ns.print("-----Gang Info-----")
     ns.print("Wanted Level:                " + ns.gang.getGangInformation().wantedLevel.toFixed(2));

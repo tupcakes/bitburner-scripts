@@ -56,10 +56,10 @@ export function getrootedram(ns) {
 
 /** @param {NS} ns **/
 export function controlscriptsrunning(ns) {
-	let controlscripts = ns.ps('home');
+	let scripts = ns.ps('home');
 	let i = 0;
-	for (const controlscript of controlscripts) {
-		if (controlscript.filename.includes('control.js') === true) {
+	for (const script of scripts) {
+		if (script.filename.includes('control.js') === true) {
 			i++;
 		}
 	}
@@ -69,12 +69,23 @@ export function controlscriptsrunning(ns) {
 
 /** @param {NS} ns **/
 export function coordinatorscriptsrunning(ns) {
-	let coordinatorscripts = ns.ps('home');
+	let scripts = ns.ps('home');
 	let i = 0;
-	for (const coordinatorscript of coordinatorscripts) {
-		if (coordinatorscript.filename.includes('coordinator.js') === true) {
+	for (const script of scripts) {
+		if (script.filename.includes('coordinator.js') === true) {
 			i++;
 		}
 	}
 	return i;
+}
+
+
+/** @param {NS} ns **/
+export function cheeseintrunning(ns) {
+	let running = ns.scriptRunning('cheeseint.js', 'home');
+	if (running === true) {
+		return true;
+	} else {
+		return false;
+	}
 }

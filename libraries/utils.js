@@ -67,7 +67,7 @@ export async function getportopeners(ns) {
 // really shitty method of estimating the most profitable server.
 // gets money per sec for a single thread.
 /** @param {NS} ns **/
-export async function getmostprofitable(ns) {
+export function getmostprofitable(ns) {
 	let file = ns.read("server_list.txt");
 	let servers = file.split("\r\n");
 	let stats = [];

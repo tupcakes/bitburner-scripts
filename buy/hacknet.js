@@ -3,7 +3,6 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 	//ns.enableLog('exec');
 	ns.clearLog();
-	ns.tail();
 	
 	let nodelimit = 9;
 	let allupgraded = false;

@@ -92,7 +92,7 @@ export function getmostprofitable(ns) {
 			stats.push(stat);
 		}
 	}
-
+	
 	let bestserver = stats.reduce((max, stat) => max.moneypersec > stat.moneypersec ? max : stat);
 
 	return bestserver.name;
@@ -187,10 +187,16 @@ export async function buyaugments(ns) {
 
 	const playeraugs = ns.getOwnedAugmentations(true);
 
+	// buy from gang
 	for (const augment of augments) {
 		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
 			ns.purchaseAugmentation(factions[0], augment);
 			ns.print("Purchased: " + augment);
 		}
+	}
+
+	// buy NeuroFlux Governor - Level X
+	for (const faction of factions) {
+		ns.purchaseAugmentation(faction, 'NeuroFlux Governor');
 	}
 }

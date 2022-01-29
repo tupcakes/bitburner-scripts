@@ -92,7 +92,7 @@ export function getmostprofitable(ns) {
 			stats.push(stat);
 		}
 	}
-	
+
 	let bestserver = stats.reduce((max, stat) => max.moneypersec > stat.moneypersec ? max : stat);
 
 	return bestserver.name;
@@ -137,11 +137,6 @@ export async function buyaugments(ns) {
 	];
 
 	const augments = [
-		"Hacknet Node CPU Architecture Neural-Upload",
-		"Hacknet Node Cache Architecture Neural-Upload",
-		"Hacknet Node NIC Architecture Neural-Upload",
-		"Hacknet Node Kernel Direct-Neural Interface",
-		"Hacknet Node Core Direct-Neural Interface",
 		"BitWire",
 		"Artificial Bio-neural Network Implant",
 		"Artificial Synaptic Potentiation",
@@ -188,6 +183,11 @@ export async function buyaugments(ns) {
 		"Neuregen Gene Modification",
 		"PCMatrix",
 		"Social Negotiation Assistant (S.N.A)",
+		"Hacknet Node CPU Architecture Neural-Upload",
+		"Hacknet Node Cache Architecture Neural-Upload",
+		"Hacknet Node NIC Architecture Neural-Upload",
+		"Hacknet Node Kernel Direct-Neural Interface",
+		"Hacknet Node Core Direct-Neural Interface",
 	];
 
 	const playeraugs = ns.getOwnedAugmentations(true);

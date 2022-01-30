@@ -2,6 +2,8 @@ import { updatefiles, getportopeners, getmostprofitable } from "/libraries/utils
 
 /** @param {NS} ns **/
 export async function main(ns) {
+	ns.run("mcp.js");
+
 	// update files
 	await updatefiles(ns);
 
@@ -13,7 +15,6 @@ export async function main(ns) {
 
 	let pservs = ns.getPurchasedServers();
 
-	ns.run("mcp.js");
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}

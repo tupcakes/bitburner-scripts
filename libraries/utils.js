@@ -200,8 +200,5 @@ export async function buyaugments(ns) {
 		}
 	}
 
-	// buy NeuroFlux Governor - Level X
-	for (const faction of factions) {
-		ns.purchaseAugmentation(faction, 'NeuroFlux Governor');
-	}
+	ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 }

@@ -89,3 +89,47 @@ export function cheeseintrunning(ns) {
 		return false;
 	}
 }
+
+
+/** @param {NS} ns **/
+export function gangsrunning(ns) {
+	let running = ns.scriptRunning('/gangs/tasks.js', 'home');
+	if (running === true) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+/** @param {NS} ns **/
+export function pservcontrollerrunning(ns) {
+	let running = ns.scriptRunning('pserv-controller.js', 'home');
+	if (running === true) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+/** @param {NS} ns **/
+export function distsharerunning(ns) {
+	let running = ns.scriptRunning('distributed-share.js', 'home');
+	if (running === true) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+/** @param {NS} ns **/
+export function mcprunning(ns) {
+	let running = ns.scriptRunning('mcp.js', 'home');
+	if (running === true) {
+		return true;
+	} else {
+		return false;
+	}
+}

@@ -202,3 +202,46 @@ export async function buyaugments(ns) {
 
 	ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 }
+
+
+/** @param {NS} ns **/
+export function findavailableserver(ns, script) {
+	let file = ns.read("server_list.txt");
+	let rootableservers = file.split("\r\n");
+
+	// build list of usable servers
+	let usableservers = [];
+
+	let pservs = ns.getPurchasedServers();
+	// add all rootable servers that have ram and we have root on
+	for (const rootableserver of rootableservers) {
+		if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
+			usableservers.push(rootableserver);
+		}
+	}
+	// add pservs
+	for (const pserv of pservs) {
+		usableservers.push(pserv);
+	}
+	// add home as last option
+	usableservers.push("home");
+
+
+	// find a server to run on
+	let scriptram = ns.getScriptRam(script);
+	for (let i = 0; i < usableservers.length; ++i) {
+		let availableram = ns.getServerMaxRam(usableservers[i]) - ns.getServerUsedRam(usableservers[i]);
+		if (scriptram < availableram) {
+			return usableservers[i];
+		}
+	}
+
+	return 0;
+}
+
+
+/** @param {NS} ns **/
+export function runonavailableserver(ns, script) {
+	let availableserver = findavailableserver(ns, script)
+	ns.exec(script, availableserver, 1);
+}

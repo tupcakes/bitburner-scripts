@@ -3,7 +3,7 @@ import { updatefiles, getportopeners, getmostprofitable } from "/libraries/utils
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.run("mcp.js");
-
+	
 	// update files
 	await updatefiles(ns);
 

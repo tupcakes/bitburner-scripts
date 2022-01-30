@@ -183,11 +183,11 @@ export async function buyaugments(ns) {
 		"Neuregen Gene Modification",
 		"PCMatrix",
 		"Social Negotiation Assistant (S.N.A)",
-		"Hacknet Node CPU Architecture Neural-Upload",
-		"Hacknet Node Cache Architecture Neural-Upload",
-		"Hacknet Node NIC Architecture Neural-Upload",
-		"Hacknet Node Kernel Direct-Neural Interface",
-		"Hacknet Node Core Direct-Neural Interface",
+		// "Hacknet Node CPU Architecture Neural-Upload",
+		// "Hacknet Node Cache Architecture Neural-Upload",
+		// "Hacknet Node NIC Architecture Neural-Upload",
+		// "Hacknet Node Kernel Direct-Neural Interface",
+		// "Hacknet Node Core Direct-Neural Interface",
 	];
 
 	const playeraugs = ns.getOwnedAugmentations(true);

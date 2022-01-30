@@ -6,7 +6,7 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
-import { buyaugments, createexes } from "/libraries/utils.js";
+import { buyaugments, createexes, findavailableserver } from "/libraries/utils.js";
 
 
 /** @param {NS} ns **/
@@ -21,6 +21,7 @@ export async function main(ns) {
 		"I.I.I.I",
 		"run4theh111z",
 	];
+	
 	let file = ns.read("server_list.txt");
 	let targets = file.split("\r\n");
 	let pservs = ns.getPurchasedServers();
@@ -107,5 +108,7 @@ export async function main(ns) {
 
 		// create programs - for int
 		await createexes(ns);
+
+		ns.upgradeHomeRam();
 	}
 }

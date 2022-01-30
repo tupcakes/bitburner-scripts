@@ -35,10 +35,10 @@ export async function createexes(ns) {
 		"relaySMTP.exe",
 		"HTTPWorm.exe",
 		"SQLInject.exe",
-		"DeepscanV1.exe",
-		"DeepscanV2.exe",
-		"AutoLink.exe",
-		"ServerProfiler.exe",
+		// "DeepscanV1.exe",
+		// "DeepscanV2.exe",
+		// "AutoLink.exe",
+		// "ServerProfiler.exe",
 	];
 
 
@@ -195,7 +195,9 @@ export async function buyaugments(ns) {
 	// buy from gang
 	for (const augment of augments) {
 		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			ns.purchaseAugmentation(factions[0], augment);
+			let purchased = ns.purchaseAugmentation(factions[0], augment);
+		}
+		if (purchased === true) {
 			ns.print("Purchased: " + augment);
 		}
 	}

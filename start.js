@@ -5,6 +5,7 @@ export async function main(ns) {
 	let pservs = ns.getPurchasedServers();
 
 	ns.run("mcp.js");
+	ns.run("hudstart.js");
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	let pservram = 0;
@@ -21,11 +22,9 @@ export async function main(ns) {
 	// update files
 	await updatefiles(ns);
 
-	//ns.run("/buy/hacknet.js");
-
-	// get tor and port openers - disabling because of int gain when self creating
-	ns.purchaseTor();
-	//getportopeners(ns);
+	// get tor and port openers
+	//ns.purchaseTor();
+	getportopeners(ns);
 
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");

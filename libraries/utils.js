@@ -246,3 +246,23 @@ export function runonavailableserver(ns, script, args) {
 	let availableserver = findavailableserver(ns, script)
 	ns.exec(script, availableserver, 1, args);
 }
+
+
+/** @param {NS} ns **/
+export function getbesthackxp(ns) {
+	let file = ns.read("server_list.txt");
+	let servers = file.split("\r\n");
+	let xpstats = [];
+
+	for (let i = 0; i < servers.length; ++i) {
+		let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
+		let serverxp = ns.formulas.hacking.hackExp(ns.getServer(server), ns.getPlayer());
+		const stat = new Object
+		stat.name = server;
+		stat.xp = serverxp;
+		xpstats.push(stat);
+	}
+
+	let bestserver = xpstats.reduce((max, stat) => max.serverxp > stat.serverxp ? max : stat);
+	return bestserver.name;
+}

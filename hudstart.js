@@ -10,7 +10,7 @@ export async function main(ns) {
 		let homeramavailable = ns.getServerMaxRam('home') - ns.getServerUsedRam('home');
 
 		ns.print("-----Available Server Resources-----")
-		ns.print("Home ram available/total:    " + homeramavailable + "/" + ns.getServerMaxRam('home') + " GB");
+		ns.print("Home ram available/total:    " + homeramavailable.toFixed(2) + "/" + ns.getServerMaxRam('home') + " GB");
 		ns.print("Total pservs:                " + getpservcount(ns));
 		ns.print("Pserv 0 ram:                 " + getpservram(ns) + " GB");
 		ns.print("Total hacked servers:        " + getrootedcount(ns));

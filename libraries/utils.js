@@ -191,7 +191,7 @@ export async function buyaugments(ns) {
 	// 	// "Hacknet Node Core Direct-Neural Interface",
 	// ];
 
-	const augments = ns.getAugmentationsFromFaction(factions[0]); 
+	const augments = ns.getAugmentationsFromFaction(factions[0]);
 	const playeraugs = ns.getOwnedAugmentations(true);
 
 	// buy from gang

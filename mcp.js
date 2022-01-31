@@ -110,5 +110,11 @@ export async function main(ns) {
 		await createexes(ns);
 
 		ns.upgradeHomeRam();
+
+		// check if ready to install augments and reset
+		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
+		if (pendingaugs >= 5) {
+			ns.run("reset.js");
+		}
 	}
 }

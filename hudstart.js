@@ -26,7 +26,7 @@ export async function main(ns) {
 		ns.print("Cheeseint running:           " + cheeseintrunning(ns));
 		ns.print("");
 		ns.print("-----Gang Info-----")
-		ns.print("Wanted Level:                " + ns.gang.getGangInformation().wantedLevel.toFixed(2));
+		ns.print("Wanted Level/Penalty:        " + ns.gang.getGangInformation().wantedLevel.toFixed(2) + "/" + (1 - ns.gang.getGangInformation().wantedPenalty).toFixed(2));
 		ns.print("Wanted Rate:                 " + ns.gang.getGangInformation().wantedLevelGainRate.toFixed(2));
 		ns.print("Territory:                   " + ((ns.gang.getGangInformation().territory) * 100).toFixed(2));
 

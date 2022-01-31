@@ -42,7 +42,7 @@ export async function main(ns) {
 	while (ingang) {
 		let wantedlevelmax = 100;
 		ganginfo = ns.gang.getGangInformation();
-		let wantedpenalty = (1 - ganginfo.wantedPenalty).toFixed(2);
+		let wantedpenalty = ((1 - ganginfo.wantedPenalty) * 100).toFixed(2);
 		let gangmembers = ns.gang.getMemberNames();
 
 		// check if we can recruit a member

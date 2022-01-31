@@ -2,7 +2,21 @@ import { updatefiles, getportopeners, getmostprofitable } from "/libraries/utils
 
 /** @param {NS} ns **/
 export async function main(ns) {
+	let pservs = ns.getPurchasedServers();
+
 	ns.run("mcp.js");
+
+	// buy pservs with ram = home + home, if we don't have 25 pservs
+	let pservram = 0;
+	if (pservs.length === 0) {
+		pservram = ns.getServerMaxRam('home') * 2;
+		ns.run("/buy/servers.js", 1, pservram);
+	} else if (pservs.length > 0 && pservs.length < 25) {
+		pservram = ns.getServerMaxRam(pservs[0]);
+		ns.run("/buy/servers.js", 1, pservram);
+	} else {
+		ns.run("/buy/upgradepservs.js");
+	}
 	
 	// update files
 	await updatefiles(ns);
@@ -12,8 +26,6 @@ export async function main(ns) {
 	// get tor and port openers - disabling because of int gain when self creating
 	ns.purchaseTor();
 	//getportopeners(ns);
-
-	let pservs = ns.getPurchasedServers();
 
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");

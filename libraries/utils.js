@@ -195,10 +195,7 @@ export async function buyaugments(ns) {
 	// buy from gang
 	for (const augment of augments) {
 		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			let purchased = ns.purchaseAugmentation(factions[0], augment);
-		}
-		if (purchased === true) {
-			ns.print("Purchased: " + augment);
+			ns.purchaseAugmentation(factions[0], augment);
 		}
 	}
 
@@ -243,7 +240,7 @@ export function findavailableserver(ns, script) {
 
 
 /** @param {NS} ns **/
-export function runonavailableserver(ns, script) {
+export function runonavailableserver(ns, script, args) {
 	let availableserver = findavailableserver(ns, script)
-	ns.exec(script, availableserver, 1);
+	ns.exec(script, availableserver, 1, args);
 }

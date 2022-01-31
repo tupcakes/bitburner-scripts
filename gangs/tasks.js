@@ -42,11 +42,7 @@ export async function main(ns) {
 	while (ingang) {
 		let wantedlevelmax = 100;
 		ganginfo = ns.gang.getGangInformation();
-		let wantedpenalty = ganginfo.respect / (ganginfo.respect + ganginfo.wantedLevel);
-		// let wantedlevelmax = wantedpenalty * ((ganginfo.wantedLevel / Math.abs(ganginfo.wantedLevelGainRate)) / 10);
-		//let wantedlevelmax = wantedpenalty * 1000;
-		//ns.print("Wanted threashold: " + wantedlevelmax);
-
+		let wantedpenalty = (1 - ganginfo.wantedPenalty).toFixed(2);
 		let gangmembers = ns.gang.getMemberNames();
 
 		// check if we can recruit a member
@@ -100,20 +96,26 @@ export async function main(ns) {
 
 		// ["Unassigned","Mug People","Deal Drugs","Strongarm Civilians","Run a Con","Armed Robbery","Traffick Illegal Arms","Threaten & Blackmail","Human Trafficking","Terrorism","Vigilante Justice","Train Combat","Train Hacking","Train Charisma","Territory Warfare"]
 		// if between 0 and wantedlevelmax assign task for each person.
-		//if (ns.gang.getGangInformation().wantedPenalty <= wantedpenthreshold && ns.gang.getGangInformation().wantedPenalty >= 1) {
-		if (ns.gang.getGangInformation().wantedLevel >= 1 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
+		//if (ns.gang.getGangInformation().wantedLevel >= 1 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
+		if (wantedpenalty == 0) {
 			// set gang member's task to something
-			// 8 - Human Trafficking seems to be the best all around for territory gains
-			// 9 - Terrorism for best respect gains
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
 				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking' && gangmembers.length > 6) {
 					trainmember(ns, gangmembers[i]);
 				} else {
 					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
-
 				}
-
+			}
+		} else if (wantedpenalty != 0 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
+			// set gang member's task to something
+			for (let i = 0; i < gangmembers.length; ++i) {
+				// if the member can do HT, then do it. otherwise train up.
+				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking' && gangmembers.length > 6) {
+					trainmember(ns, gangmembers[i]);
+				} else {
+					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
+				}
 			}
 		} else {
 			// set everyone to Vigilante Justice if wanted level is too high

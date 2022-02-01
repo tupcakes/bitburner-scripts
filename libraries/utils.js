@@ -199,7 +199,7 @@ export async function buyaugments(ns) {
 	// buy augs from daedalus
 	for (const augment of daedalusaugs) {
 		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			// ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
+			ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 			ns.purchaseAugmentation('Daedalus', augment);
 		}
 	}
@@ -208,6 +208,7 @@ export async function buyaugments(ns) {
 	if (ns.getPlayer().bitNodeN === 2) {
 		for (const augment of sec12augs) {
 			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+				ns.purchaseAugmentation('Sector-12', 'NeuroFlux Governor');
 				ns.purchaseAugmentation('Sector-12', augment);
 			}
 		}

@@ -5,6 +5,7 @@ export async function main(ns) {
 	// spawn start at end
 
 	while (ns.getServerMaxRam('home') < 265) {
+		ns.tail();
 		await ns.sleep(20);
 
 		// buy ram for home if possible

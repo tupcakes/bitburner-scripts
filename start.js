@@ -10,7 +10,7 @@ export async function main(ns) {
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	let pservram = 0;
 	if (pservs.length === 0) {
-		pservram = ns.getServerMaxRam('home') * 2;
+		pservram = ns.getServerMaxRam('home');
 		ns.run("/buy/servers.js", 1, pservram);
 	} else if (pservs.length > 0 && pservs.length < 25) {
 		pservram = ns.getServerMaxRam(pservs[0]);

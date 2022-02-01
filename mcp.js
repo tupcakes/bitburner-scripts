@@ -21,7 +21,7 @@ export async function main(ns) {
 		"I.I.I.I",
 		"run4theh111z",
 	];
-	
+
 	let file = ns.read("server_list.txt");
 	let targets = file.split("\r\n");
 	let pservs = ns.getPurchasedServers();
@@ -43,6 +43,27 @@ export async function main(ns) {
 
 		// buy ram for home if possible
 		ns.upgradeHomeRam();
+
+		// buy approved augments
+		buyaugments(ns);
+
+		// hacking contracts
+		if (ns.isBusy() === false) {
+			if (ns.getPlayer().bitNodeN === 2) {
+				ns.run('/helpers/workforfaction.js', 1, 'Sector-12', 'Hacking');
+			} else {
+				ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');
+			}
+		}
+
+		// create programs - for int
+		//await createexes(ns);
+
+		// check if ready to install augments and reset
+		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
+		if (pendingaugs >= 4) {
+			ns.run("reset.js");
+		}
 
 		// root servers
 		//   backdoor faction servers
@@ -103,25 +124,6 @@ export async function main(ns) {
 					}
 				}
 			}
-		}
-
-		// buy approved augments
-		buyaugments(ns);
-
-		// hacking contracts
-		if (ns.getPlayer().bitNodeN === 2) {
-			ns.run('/helpers/workforfaction.js', 1, 'Sector-12', 'Hacking');
-		} else {
-			ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');
-		}
-
-		// create programs - for int
-		//await createexes(ns);
-
-		// check if ready to install augments and reset
-		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
-		if (pendingaugs >= 4) {
-			ns.run("reset.js");
 		}
 	}
 }

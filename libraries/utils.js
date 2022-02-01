@@ -197,21 +197,23 @@ export async function buyaugments(ns) {
 	const sec12augs = ns.getAugmentationsFromFaction('Sector-12');
 
 	// buy augs from daedalus
-	for (const augment of daedalusaugs) {
-		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
-			ns.purchaseAugmentation('Daedalus', augment);
+	if (ns.getPlayer().bitNodeN !== 2) {
+		for (const augment of daedalusaugs) {
+			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+				ns.purchaseAugmentation('Daedalus', augment);
+			}
 		}
+		ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 	}
 
 	// buy from Sector-12 if in BN2
 	if (ns.getPlayer().bitNodeN === 2) {
 		for (const augment of sec12augs) {
 			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-				ns.purchaseAugmentation('Sector-12', 'NeuroFlux Governor');
 				ns.purchaseAugmentation('Sector-12', augment);
 			}
 		}
+		ns.purchaseAugmentation('Sector-12', 'NeuroFlux Governor');
 	}
 
 	// buy from gang, but not augs from daedalus or sec12

@@ -34,6 +34,6 @@ export async function main(ns) {
         await ns.sleep(20);
     }
     ns.tprint("Done buying servers.");
-    ns.tprint("Starting upgrades...");
-    ns.run('/buy/upgradepservs.js');
+    // ns.tprint("Starting upgrades...");
+    // ns.run('/buy/upgradepservs.js');
 }

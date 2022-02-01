@@ -40,7 +40,9 @@ export async function main(ns) {
 	ns.stopAction();
 	while (true) {
 		await ns.sleep(100);
-		//ns.print(Math.floor(Math.random() * 1000));
+
+		// buy ram for home if possible
+		ns.upgradeHomeRam();
 
 		// root servers
 		//   backdoor faction servers
@@ -115,8 +117,6 @@ export async function main(ns) {
 
 		// create programs - for int
 		await createexes(ns);
-
-		ns.upgradeHomeRam();
 
 		// check if ready to install augments and reset
 		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;

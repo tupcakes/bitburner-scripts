@@ -42,6 +42,6 @@ export async function main(ns) {
 	} else {
 		let bestserver = getmostprofitable(ns);
 		ns.run('/earlygame/coordinator.js', 1, bestserver);
-		//ns.run("pserv-controller.js");
+		ns.run("pserv-controller.js");
 	}
 }

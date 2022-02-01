@@ -9,7 +9,7 @@ export async function main(ns) {
 	let serverlist = ns.read("server_list.txt");
 	let targets = serverlist.split("\r\n");
 
-	ns.scriptKill('/earlygame/coordinator.js', 'home');
+	//ns.scriptKill('/earlygame/coordinator.js', 'home');
 
 	while (true) {
 		await ns.sleep(20);

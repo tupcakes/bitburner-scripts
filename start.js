@@ -30,6 +30,8 @@ export async function main(ns) {
 		ns.run("/gangs/tasks.js");
 	}
 	
+
+	// should probably move this to mcp?
 	if (pservs.length > 1 && pservs.length < 25) {
 		ns.run("pserv-controller.js");
 		let bestserver = getmostprofitable(ns);
@@ -40,6 +42,6 @@ export async function main(ns) {
 	} else {
 		let bestserver = getmostprofitable(ns);
 		ns.run('/earlygame/coordinator.js', 1, bestserver);
-		ns.run("pserv-controller.js");
+		//ns.run("pserv-controller.js");
 	}
 }

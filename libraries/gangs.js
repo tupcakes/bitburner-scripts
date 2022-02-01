@@ -156,3 +156,15 @@ export function trainmember(ns, gangmember) {
 		ns.print("Training based ascend: " + gangmember);
 	}
 }
+
+
+export function readyforhumantrafficking(ns, gangmember) {
+	let memberinfo = ns.gang.getMemberInformation(gangmember);
+	
+	// if HT stat multipliers are good enough, approve for crime
+	if (memberinfo.hack_asc_mult >= 2.5 && memberinfo.dex_asc_mult >= 2.5 && memberinfo.cha_asc_mult >= 2.5) {
+		return true;
+	} else {
+		return false;
+	}
+}

@@ -6,7 +6,7 @@
  * will start warfare if lowest chance is > 60.
 **/
 
-import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember } from "/libraries/gangs.js";
+import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember, readyforhumantrafficking } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -101,20 +101,20 @@ export async function main(ns) {
 			// set gang member's task to something
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
-				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking' && gangmembers.length > 6) {
+				if (readyforhumantrafficking(ns, gangmembers[i]) === false) {
 					trainmember(ns, gangmembers[i]);
 				} else {
-					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
+					ns.gang.setMemberTask(gangmembers[i], 'Human Trafficking');
 				}
 			}
 		} else if (wantedpenalty != 0 && ns.gang.getGangInformation().wantedLevel <= wantedlevelmax) {
 			// set gang member's task to something
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
-				if (getbesttask(ns, gangmembers[i]) !== 'Human Trafficking' && gangmembers.length > 6) {
+				if (readyforhumantrafficking(ns, gangmembers[i]) === false) {
 					trainmember(ns, gangmembers[i]);
 				} else {
-					ns.gang.setMemberTask(gangmembers[i], getbesttask(ns, gangmembers[i]));
+					ns.gang.setMemberTask(gangmembers[i], 'Human Trafficking');
 				}
 			}
 		} else {

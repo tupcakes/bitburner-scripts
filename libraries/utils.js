@@ -191,17 +191,34 @@ export async function buyaugments(ns) {
 	// 	// "Hacknet Node Core Direct-Neural Interface",
 	// ];
 
-	const augments = ns.getAugmentationsFromFaction(factions[0]);
+	const ssaugs = ns.getAugmentationsFromFaction('Slum Snakes');
 	const playeraugs = ns.getOwnedAugmentations(true);
+	const daedalusaugs = ns.getAugmentationsFromFaction('Daedalus');
+	const sec12augs = ns.getAugmentationsFromFaction('Sector-12');
 
-	// buy from gang
-	for (const augment of augments) {
+	// buy augs from daedalus
+	for (const augment of daedalusaugs) {
 		if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			ns.purchaseAugmentation(factions[0], augment);
+			// ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
+			ns.purchaseAugmentation('Daedalus', augment);
 		}
 	}
 
-	ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
+	// buy from Sector-12 if in BN2
+	if (ns.getPlayer().bitNodeN === 2) {
+		for (const augment of sec12augs) {
+			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+				ns.purchaseAugmentation('Sector-12', augment);
+			}
+		}
+	}
+
+	// buy from gang, but not augs from daedalus or sec12
+	for (const augment of ssaugs) {
+		if (daedalusaugs.includes(augment) === false && sec12augs.includes(augment) === false && playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+			ns.purchaseAugmentation('Slum Snakes', augment);
+		}
+	}
 }
 
 

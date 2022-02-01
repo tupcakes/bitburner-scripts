@@ -116,11 +116,11 @@ export async function main(ns) {
 		}
 
 		// create programs - for int
-		await createexes(ns);
+		//await createexes(ns);
 
 		// check if ready to install augments and reset
 		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
-		if (pendingaugs >= 5) {
+		if (pendingaugs >= 4) {
 			ns.run("reset.js");
 		}
 	}

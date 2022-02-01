@@ -106,6 +106,13 @@ export async function main(ns) {
 		// buy approved augments
 		buyaugments(ns);
 
+		// hacking contracts
+		if (ns.getPlayer().bitNodeN === 2) {
+			ns.run('/helpers/workforfaction.js', 1, 'Sector-12', 'Hacking');
+		} else {
+			ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');
+		}
+
 		// create programs - for int
 		await createexes(ns);
 

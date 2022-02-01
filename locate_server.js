@@ -33,7 +33,7 @@ export async function main(ns) {
 
     recursiveScan(ns, '', 'home', server, route);
     for (const i in route) {
-        await ns.sleep(500);
+        await ns.sleep(20);
         const extra = i > 0 ? "└ " : "";
         ns.tprint(`${" ".repeat(i)}${extra}${route[i]}`);
 

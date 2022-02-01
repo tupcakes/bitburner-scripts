@@ -6,7 +6,7 @@
  * will start warfare if lowest chance is > 60.
 **/
 
-import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember, readyforhumantrafficking } from "/libraries/gangs.js";
+import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember, trainforht, readyforhumantrafficking } from "/libraries/gangs.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -102,7 +102,7 @@ export async function main(ns) {
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
 				if (readyforhumantrafficking(ns, gangmembers[i]) === false) {
-					trainmember(ns, gangmembers[i]);
+					trainforht(ns, gangmembers[i]);
 				} else {
 					ns.gang.setMemberTask(gangmembers[i], 'Human Trafficking');
 				}
@@ -112,7 +112,7 @@ export async function main(ns) {
 			for (let i = 0; i < gangmembers.length; ++i) {
 				// if the member can do HT, then do it. otherwise train up.
 				if (readyforhumantrafficking(ns, gangmembers[i]) === false) {
-					trainmember(ns, gangmembers[i]);
+					trainforht(ns, gangmembers[i]);
 				} else {
 					ns.gang.setMemberTask(gangmembers[i], 'Human Trafficking');
 				}

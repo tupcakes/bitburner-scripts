@@ -158,9 +158,54 @@ export function trainmember(ns, gangmember) {
 }
 
 
+/** @param {NS} ns **/
+export function trainforht(ns, gangmember) {
+	let ascensionthreashold = 1.1;
+	let hack = 0;
+	let str = 0;
+	let def = 0;
+	let dex = 0;
+	let agi = 0;
+	let cha = 0;
+
+	let ascensionresult = ns.gang.getAscensionResult(gangmember);
+
+	// if training required
+	if (typeof ascensionresult === 'undefined') {
+		hack = 0;
+		str = 0;
+		def = 0;
+		dex = 0;
+		agi = 0;
+		cha = 0;
+	} else {
+		hack = ascensionresult.hack;
+		str = ascensionresult.str;
+		def = ascensionresult.def;
+		dex = ascensionresult.dex;
+		agi = ascensionresult.agi;
+		cha = ascensionresult.cha;
+	}
+
+	let memberinfo = ns.gang.getMemberInformation(gangmember);
+
+	if (memberinfo.dex_mult < 2.5) {
+		ns.gang.setMemberTask(gangmember, 'Train Combat');
+	} else if (memberinfo.cha_mult < 2.5) {
+		ns.gang.setMemberTask(gangmember, 'Train Charisma');
+	} else if (memberinfo.hack_mult < 2.5) {
+		ns.gang.setMemberTask(gangmember, 'Train Hacking');
+	} else if (dex < ascensionthreashold && cha < ascensionthreashold && hack < ascensionthreashold) {
+		ns.gang.ascendMember(gangmember);
+		ns.print("Training based ascend: " + gangmember);
+	}
+}
+
+
+/** @param {NS} ns **/
 export function readyforhumantrafficking(ns, gangmember) {
 	let memberinfo = ns.gang.getMemberInformation(gangmember);
-	
+
 	// if HT stat multipliers are good enough, approve for crime
 	if (memberinfo.hack_asc_mult >= 2.5 && memberinfo.dex_asc_mult >= 2.5 && memberinfo.cha_asc_mult >= 2.5) {
 		return true;

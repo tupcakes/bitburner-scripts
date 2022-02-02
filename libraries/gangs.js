@@ -209,10 +209,11 @@ export function trainforht(ns, gangmember) {
 /** @param {NS} ns **/
 export function readyforhumantrafficking(ns, gangmember) {
 	let memberinfo = ns.gang.getMemberInformation(gangmember);
-	let statmultiplier = 2.5;
+	let combstatmult = 2.5;
+	let noncombstatmult = 1.5;
 
 	// if HT stat multipliers are good enough, approve for crime
-	if (memberinfo.hack_mult >= statmultiplier && memberinfo.hack_mult >= statmultiplier && memberinfo.hack_mult >= statmultiplier) {
+	if (memberinfo.dex_mult >= combstatmult && memberinfo.hack_mult >= noncombstatmult && memberinfo.cha_mult >= noncombstatmult) {
 		return true;
 	} else {
 		return false;

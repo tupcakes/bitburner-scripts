@@ -24,11 +24,13 @@ export async function main(ns) {
 		ns.print("Control scripts running:     " + controlscriptsrunning(ns));
 		ns.print("Coordinator scripts running: " + coordinatorscriptsrunning(ns));
 		ns.print("Cheeseint running:           " + cheeseintrunning(ns));
-		ns.print("");
-		ns.print("-----Gang Info-----")
-		ns.print("Wanted Level/Penalty:        " + ns.gang.getGangInformation().wantedLevel.toFixed(2) + "/" + ((1 - ns.gang.getGangInformation().wantedPenalty) * 100).toFixed(2));
-		ns.print("Wanted Rate:                 " + ns.gang.getGangInformation().wantedLevelGainRate.toFixed(2));
-		ns.print("Territory:                   " + ((ns.gang.getGangInformation().territory) * 100).toFixed(2));
+		if (ns.gang.inGang() === true) {
+			ns.print("");
+			ns.print("-----Gang Info-----")
+			ns.print("Wanted Level/Penalty:        " + ns.gang.getGangInformation().wantedLevel.toFixed(2) + "/" + ((1 - ns.gang.getGangInformation().wantedPenalty) * 100).toFixed(2));
+			ns.print("Wanted Rate:                 " + ns.gang.getGangInformation().wantedLevelGainRate.toFixed(2));
+			ns.print("Territory:                   " + ((ns.gang.getGangInformation().territory) * 100).toFixed(2));
+		}
 
 		ns.print(Math.floor(Math.random() * 1000));
 		await ns.sleep(20);

@@ -41,6 +41,8 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(100);
 
+		let playerfactions = ns.getPlayer().factions;
+
 		// buy ram for home if possible
 		ns.upgradeHomeRam();
 
@@ -48,11 +50,13 @@ export async function main(ns) {
 		buyaugments(ns);
 
 		// hacking contracts
+
 		if (ns.isBusy() === false) {
-			if (ns.getPlayer().bitNodeN === 2) {
-				ns.run('/helpers/workforfaction.js', 1, 'Sector-12', 'Hacking');
-			} else {
+			if (playerfactions.includes('Daedalus') && ns.getPlayer().bitNodeN !== 2) {
 				ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');
+			}
+			if (playerfactions.includes('Sector-12') && ns.getPlayer().bitNodeN === 2) {
+				ns.run('/helpers/workforfaction.js', 1, 'Sector-12', 'Hacking');
 			}
 		}
 

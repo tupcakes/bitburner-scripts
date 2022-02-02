@@ -13,28 +13,13 @@ Copy contents of file into new file and run.
 I've changed and tweaked this process frequently, so this is subject to change.
 
 ### Starting out
-Generate a server list with create_serverlist.js. You might need to remove home.
+Run bootstrap.js.
 
-Fire off earlygame/attack_local.js
-It will automatically run early-hacking-template.js on all hosts against themselves. If there is enough ram, run mcp.js instead.
+Eventually, it will bootstrap up a home server with 256 gb ram. That should be enough to run the basic scripts.
 
-Run earlygame/coordinator.js n00dles or against another low level server you have root on.
+Crime.js will get karma to where a gang will get going.
 
-If there isn't enough ram to run earlygame/coordinator.js yet, just run early-hacking-template.js directly against one of the low level servers with as many threads as you can do from home.
-
-Buy more ram for home as soon as possible.
-
-### Buy more servers
-Get at leat two servers with at least 32 GB of ram each (more ram is better).
-
-Run control.js against more low level servers. It should schedule weaken, grow, and hack jobs on the purchased servers, with control.js instances running on home.
-
-### Late game
-Run buy/servers.js 1024 or more ram. It will keep buying servers until the max is reached.
-
-Run pserv-controller.js. It will run control.js against all servers in server_list.txt, but limited to how many pservs are available
-
-Occiasionally replace all purchased servers with larger versions when money allows.
+...
 
 Profit.
 

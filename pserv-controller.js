@@ -6,10 +6,8 @@
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	let serverlist = ns.read("server_list.txt");
-	let targets = serverlist.split("\r\n");
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
-	//ns.scriptKill('/earlygame/coordinator.js', 'home');
 
 	while (true) {
 		await ns.sleep(20);
@@ -18,9 +16,8 @@ export async function main(ns) {
 		let maxtargets = (pservs.length * 2) - 1;
 
 		for (let i = 0; i < maxtargets; ++i) {
-			let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
-			if (ns.getServerRequiredHackingLevel(target) <= ns.getHackingLevel() && ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0 && ns.getServerMaxMoney(target) > 0) {
-				ns.run("control.js", 1, target);
+			if (ns.getServerRequiredHackingLevel(targets[i].name) <= ns.getHackingLevel() && ns.hasRootAccess(targets[i].name) === true && ns.getServerMaxRam(targets[i].name) > 0 && ns.getServerMaxMoney(targets[i].name) > 0) {
+				ns.run("control.js", 1, targets[i].name);
 			}
 		}
 

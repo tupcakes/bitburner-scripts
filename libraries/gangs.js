@@ -145,7 +145,7 @@ export function trainmember(ns, gangmember) {
 	}
 
 	// train combat
-	if (str >= ascensionthreashold && def >= ascensionthreashold && dex >= ascensionthreashold && agi >= ascensionthreashold) {
+	if (str < ascensionthreashold && def < ascensionthreashold && dex < ascensionthreashold && agi < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Combat');
 	} else if (cha < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Charisma');
@@ -161,6 +161,7 @@ export function trainmember(ns, gangmember) {
 /** @param {NS} ns **/
 export function trainforht(ns, gangmember) {
 	let ascensionthreashold = 1.1;
+	let statmultiplier = 2.5;
 	let hack = 0;
 	let str = 0;
 	let def = 0;
@@ -187,16 +188,19 @@ export function trainforht(ns, gangmember) {
 		cha = ascensionresult.cha;
 	}
 
-	let memberinfo = ns.gang.getMemberInformation(gangmember);
+	//let memberinfo = ns.gang.getMemberInformation(gangmember);
 
 	if (dex >= ascensionthreashold && cha >= ascensionthreashold && hack >= ascensionthreashold) {
 		ns.gang.ascendMember(gangmember);
 		ns.print("Training based ascend: " + gangmember);
-	} else if (memberinfo.dex_mult < 2.5) {
+	//} else if (memberinfo.dex_mult < statmultiplier || dex < ascensionthreashold) {
+	} else if (dex < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Combat');
-	} else if (memberinfo.cha_mult < 2.5) {
+	// } else if (memberinfo.cha_mult < statmultiplier || cha < ascensionthreashold) {
+	} else if (cha < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Charisma');
-	} else if (memberinfo.hack_mult < 2.5) {
+	// } else if (memberinfo.hack_mult < statmultiplier || hack < ascensionthreashold) {
+	} else if (hack < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Hacking');
 	}
 }
@@ -205,9 +209,10 @@ export function trainforht(ns, gangmember) {
 /** @param {NS} ns **/
 export function readyforhumantrafficking(ns, gangmember) {
 	let memberinfo = ns.gang.getMemberInformation(gangmember);
+	let statmultiplier = 2.5;
 
 	// if HT stat multipliers are good enough, approve for crime
-	if (memberinfo.hack_asc_mult >= 2.5 && memberinfo.dex_asc_mult >= 2.5 && memberinfo.cha_asc_mult >= 2.5) {
+	if (memberinfo.hack_mult >= statmultiplier && memberinfo.hack_mult >= statmultiplier && memberinfo.hack_mult >= statmultiplier) {
 		return true;
 	} else {
 		return false;

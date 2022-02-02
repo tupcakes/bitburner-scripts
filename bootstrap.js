@@ -15,7 +15,8 @@ export async function main(ns) {
 		// if we are in a gang crime.js is supposed to spawn required maint scripts
 		if (ns.gang.inGang() === false) {
 			ns.run('/singularity_scripts/crime.js');
-		}		
+		}
+		ns.run('/earlygame/attack_local.js');
 	}
 	ns.run('start.js');
 }

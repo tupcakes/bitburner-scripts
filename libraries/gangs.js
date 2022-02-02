@@ -213,7 +213,7 @@ export function readyforhumantrafficking(ns, gangmember) {
 	let noncombstatmult = 1.5;
 
 	// if HT stat multipliers are good enough, approve for crime
-	if (memberinfo.dex_mult >= combstatmult && memberinfo.hack_mult >= noncombstatmult && memberinfo.cha_mult >= noncombstatmult) {
+	if (memberinfo.dex_asc_mult >= combstatmult && memberinfo.hack_asc_mult >= noncombstatmult && memberinfo.cha_asc_mult >= noncombstatmult) {
 		return true;
 	} else {
 		return false;

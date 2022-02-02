@@ -4,7 +4,7 @@ export async function main(ns) {
 	// get gang started
 	// spawn start at end
 
-	while (ns.getServerMaxRam('home') < 265) {
+	while (ns.getServerMaxRam('home') < 256) {
 		ns.tail();
 		await ns.sleep(20);
 

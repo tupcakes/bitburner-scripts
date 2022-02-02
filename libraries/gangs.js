@@ -145,7 +145,7 @@ export function trainmember(ns, gangmember) {
 	}
 
 	// train combat
-	if (str < ascensionthreashold && def < ascensionthreashold && dex < ascensionthreashold && agi < ascensionthreashold) {
+	if (str >= ascensionthreashold && def >= ascensionthreashold && dex >= ascensionthreashold && agi >= ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Combat');
 	} else if (cha < ascensionthreashold) {
 		ns.gang.setMemberTask(gangmember, 'Train Charisma');
@@ -189,15 +189,15 @@ export function trainforht(ns, gangmember) {
 
 	let memberinfo = ns.gang.getMemberInformation(gangmember);
 
-	if (memberinfo.dex_mult < 2.5) {
+	if (dex >= ascensionthreashold && cha >= ascensionthreashold && hack >= ascensionthreashold) {
+		ns.gang.ascendMember(gangmember);
+		ns.print("Training based ascend: " + gangmember);
+	} else if (memberinfo.dex_mult < 2.5) {
 		ns.gang.setMemberTask(gangmember, 'Train Combat');
 	} else if (memberinfo.cha_mult < 2.5) {
 		ns.gang.setMemberTask(gangmember, 'Train Charisma');
 	} else if (memberinfo.hack_mult < 2.5) {
 		ns.gang.setMemberTask(gangmember, 'Train Hacking');
-	} else if (dex < ascensionthreashold && cha < ascensionthreashold && hack < ascensionthreashold) {
-		ns.gang.ascendMember(gangmember);
-		ns.print("Training based ascend: " + gangmember);
 	}
 }
 

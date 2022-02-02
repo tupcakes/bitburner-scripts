@@ -1,39 +1,92 @@
 import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning, cheeseintrunning, gangsrunning, pservcontrollerrunning, distsharerunning, mcprunning } from "/libraries/hud.js";
 
+
+
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.tail();
-	ns.disableLog('ALL');
+    const doc = eval("document"); // only doing eval for the HUD
+    const hook0 = doc.getElementById('overview-extra-hook-0');
+    const hook1 = doc.getElementById('overview-extra-hook-1');
+    while (true) {
+        try {
+            const headers = []
+            const values = [];
 
 
-	while (true) {
-		let homeramavailable = ns.getServerMaxRam('home') - ns.getServerUsedRam('home');
+            headers.push("Resources");
+            values.push("----------");
+            // home ram
+            let homeramavailable = ns.getServerMaxRam('home') - ns.getServerUsedRam('home');
+            headers.push("Home ram avail/total:");
+            values.push(homeramavailable.toFixed(2) + "/" + ns.getServerMaxRam('home') + " GB");
 
-		ns.print("-----Available Server Resources-----")
-		ns.print("Home ram available/total:    " + homeramavailable.toFixed(2) + "/" + ns.getServerMaxRam('home') + " GB");
-		ns.print("Total pservs:                " + getpservcount(ns));
-		ns.print("Pserv 0 ram:                 " + getpservram(ns) + " GB");
-		ns.print("Total hacked servers:        " + getrootedcount(ns));
-		ns.print("Total hacked servers ram:    " + getrootedram(ns) + " GB");
-		ns.print("");
-		ns.print("-----Running Processes-----")
-		ns.print("MCP running:                 " + mcprunning(ns));
-		ns.print("Gang control running:        " + gangsrunning(ns));
-		ns.print("Pserv control running:       " + pservcontrollerrunning(ns));
-		ns.print("Share running:               " + distsharerunning(ns));
-		ns.print("Control scripts running:     " + controlscriptsrunning(ns));
-		ns.print("Coordinator scripts running: " + coordinatorscriptsrunning(ns));
-		ns.print("Cheeseint running:           " + cheeseintrunning(ns));
-		if (ns.gang.inGang() === true) {
-			ns.print("");
-			ns.print("-----Gang Info-----")
-			ns.print("Wanted Level/Penalty:        " + ns.gang.getGangInformation().wantedLevel.toFixed(2) + "/" + ((1 - ns.gang.getGangInformation().wantedPenalty) * 100).toFixed(2));
-			ns.print("Wanted Rate:                 " + ns.gang.getGangInformation().wantedLevelGainRate.toFixed(2));
-			ns.print("Territory:                   " + ((ns.gang.getGangInformation().territory) * 100).toFixed(2));
-		}
+            // pserv count
+            headers.push("Total pservs:");
+            values.push(getpservcount(ns));
 
-		ns.print(Math.floor(Math.random() * 1000));
-		await ns.sleep(20);
-		ns.clearLog();
-	}
+            // Pserv 0 ram
+            headers.push("Pserv 0 ram:");
+            values.push(getpservram(ns) + " GB");
+
+            // Servers with root
+            headers.push("Servers with root:");
+            values.push(getrootedcount(ns));
+
+            // Servers with root
+            headers.push("Rooted Ram:");
+            values.push(getrootedram(ns) + " GB");
+
+
+            headers.push("Processes");
+            values.push("----------");
+            // 
+            headers.push("MCP:");
+            values.push(mcprunning(ns));
+
+            //
+            headers.push("Gang control:");
+            values.push(gangsrunning(ns));
+
+            //
+            headers.push("Pserv control:");
+            values.push(pservcontrollerrunning(ns));
+
+            //
+            headers.push("Share:");
+            values.push(distsharerunning(ns));
+
+            //
+            headers.push("Control scripts:");
+            values.push(controlscriptsrunning(ns));
+
+            //
+            headers.push("Coordinator scripts:");
+            values.push(coordinatorscriptsrunning(ns));
+
+
+            if (ns.gang.inGang() === true) {
+                headers.push("Gang");
+                values.push("----------");
+                //
+                headers.push("Wanted Level/Penalty:");
+                values.push(ns.gang.getGangInformation().wantedLevel.toFixed(2) + "/" + ((1 - ns.gang.getGangInformation().wantedPenalty) * 100).toFixed(2));
+
+                //
+                headers.push("Wanted Rate:");
+                values.push(ns.gang.getGangInformation().wantedLevelGainRate.toFixed(2));
+
+                //
+                headers.push("Territory:");
+                values.push(((ns.gang.getGangInformation().territory) * 100).toFixed(2));
+            }
+
+
+            // Now drop it into the placeholder elements
+            hook0.innerText = headers.join(" \n");
+            hook1.innerText = values.join("\n");
+        } catch (err) { // This might come in handy later
+            ns.print("ERROR: Update Skipped: " + String(err));
+        }
+        await ns.sleep(1000);
+    }
 }

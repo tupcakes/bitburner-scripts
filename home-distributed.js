@@ -9,7 +9,7 @@ export async function main(ns) {
 
 	for (let i = 0; i < servers.length; ++i) {
 		let hackinglevel = ns.getHackingLevel();
-		let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);
+		let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(servers[i].name);
 		let ServerMaxMoney = ns.getServerMaxMoney(servers[i].name);
 
 		if (ServerRequiredHackingLevel <= hackinglevel && ServerMaxMoney > 0 && ns.hasRootAccess(servers[i].name) == true) {

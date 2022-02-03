@@ -5,7 +5,7 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 
 	let files = ns.ls('home', ".js");
-	files.push('server_list.txt');
+	files.push('serversbyhacklvl.json.txt');
 
 	// update owned servers
 	let pservs = ns.getPurchasedServers();
@@ -26,18 +26,16 @@ export async function main(ns) {
 
 
 	// update non-owned servers
-	let serverlist = ns.read("server_list.txt");
-	let targets = serverlist.split("\r\n");
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	for (let i = 0; i < targets.length; ++i) {
-		let target = JSON.stringify(targets[i].split(",")).replace('["', '').replace('"]', '');
-		ns.killall(target);
-		if (ns.hasRootAccess(target)) {
+		ns.killall(targets.name);
+		if (ns.hasRootAccess(targets)) {
 			for (let i = 0; i < files.length; i++) {
-				ns.print(target + ": " + files[i]);
-				ns.rm(files[i], target);
+				ns.print(targets.name + ": " + files[i]);
+				ns.rm(files[i], targets.name);
 				// get new copies
-				await ns.scp(files[i], target);
+				await ns.scp(files[i], targets.name);
 				await ns.sleep(20);
 			}
 		}

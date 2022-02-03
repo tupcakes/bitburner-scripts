@@ -14,7 +14,7 @@ export async function updatefiles(ns) {
 /** @param {NS} ns **/
 export async function copyfiles(ns, target) {
 	let files = ns.ls('home', ".js");
-	files.push('server_list.txt');
+	files.push('serversbyhacklvl.json.txt');
 
 	// copy scripts
 	for (let i = 0; i < files.length; i++) {
@@ -68,25 +68,22 @@ export async function getportopeners(ns) {
 // gets money per sec for a single thread.
 /** @param {NS} ns **/
 export function getmostprofitable(ns) {
-	let file = ns.read("server_list.txt");
-	let servers = file.split("\r\n");
+	let servers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 	let stats = [];
 
 
 	for (let i = 0; i < servers.length; ++i) {
-		let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
-
 		// only check if the server can have money and is hackable
-		if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(server) && ns.getServerMaxMoney(server) > 0) {
-			let weakentime = ns.getWeakenTime(server) * 2;
-			let growtime = ns.getGrowTime(server);
-			let hacktime = ns.getHackTime(server);
+		if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(servers[i].name) && ns.getServerMaxMoney(servers[i].name) > 0) {
+			let weakentime = ns.getWeakenTime(servers[i].name) * 2;
+			let growtime = ns.getGrowTime(servers[i].name);
+			let hacktime = ns.getHackTime(servers[i].name);
 			let totaltime = (weakentime + growtime + hacktime) / 1000;
-			let moneyperhack = ns.hackAnalyze(server);
+			let moneyperhack = ns.hackAnalyze(servers[i].name);
 			let moneypersec = moneyperhack / totaltime;
 
 			const stat = new Object
-			stat.name = server;
+			stat.name = servers[i].name;
 			stat.moneypersec = moneypersec;
 			stat.moneyperhack = moneyperhack;
 			stats.push(stat);

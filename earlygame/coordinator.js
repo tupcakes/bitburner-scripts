@@ -22,8 +22,9 @@ export async function main(ns) {
 	//ns.enableLog('exec');
 	ns.clearLog();
 
-	let file = ns.read("server_list.txt");
-	let rootableservers = file.split("\r\n");
+	// let file = ns.read("server_list.txt");
+	// let rootableservers = file.split("\r\n");
+	let rootableservers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	// multipliers - ADJUST THIS
 	let weakenmultiplier = .2;
@@ -59,8 +60,8 @@ export async function main(ns) {
 		let pservs = ns.getPurchasedServers();
 		// add all rootable servers that have ram and we have root on
 		for (const rootableserver of rootableservers) {
-			if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
-				usableservers.push(rootableserver);
+			if (ns.getServerMaxRam(rootableserver.name) > 0 && ns.hasRootAccess(rootableserver.name)) {
+				usableservers.push(rootableserver.name);
 			}
 		}
 		for (const pserv of pservs) {

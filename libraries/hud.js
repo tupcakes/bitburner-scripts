@@ -24,13 +24,12 @@ export function getpservram(ns) {
 
 /** @param {NS} ns **/
 export function getrootedcount(ns) {
-	let serverlist = ns.read("server_list.txt");
-	let targets = serverlist.split("\r\n");
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 	let targetscount = 0;
 
 	// get target count
 	for (const target of targets) {
-		if (ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0) {
+		if (ns.hasRootAccess(target.name) === true && ns.getServerMaxRam(target.name) > 0) {
 			targetscount++;
 		}
 	}
@@ -40,14 +39,13 @@ export function getrootedcount(ns) {
 
 /** @param {NS} ns **/
 export function getrootedram(ns) {
-	let serverlist = ns.read("server_list.txt");
-	let targets = serverlist.split("\r\n");
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 	let targetsram = 0;
 
 	// get target count and ram
 	for (const target of targets) {
-		if (ns.hasRootAccess(target) === true && ns.getServerMaxRam(target) > 0) {
-			targetsram += ns.getServerMaxRam(target);
+		if (ns.hasRootAccess(target.name) === true && ns.getServerMaxRam(target.name) > 0) {
+			targetsram += ns.getServerMaxRam(target.name);
 		}
 	}
 	return targetsram;

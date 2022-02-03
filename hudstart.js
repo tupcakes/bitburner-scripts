@@ -12,6 +12,9 @@ export async function main(ns) {
             const headers = []
             const values = [];
 
+            // visual check if script running
+            headers.push(Math.floor(Math.random() * 1000));
+            values.push("----------");
 
             headers.push("Resources");
             values.push("----------");

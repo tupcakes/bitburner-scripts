@@ -23,7 +23,7 @@ export async function main(ns) {
 	await updatefiles(ns);
 
 	// get tor and port openers
-	//ns.purchaseTor();
+	ns.purchaseTor();
 	getportopeners(ns);
 
 	if (ns.gang.inGang() === true) {

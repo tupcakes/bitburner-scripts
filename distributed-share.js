@@ -5,8 +5,7 @@ export async function main(ns) {
 	ns.clearLog();
 
 	let scriptram = ns.getScriptRam("/helpers/share.js");
-	let file = ns.read("server_list.txt");
-	let rootableservers = file.split("\r\n");
+	let rootableservers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	while (true) {
 		await ns.sleep(20);
@@ -15,8 +14,8 @@ export async function main(ns) {
 
 		// add all rootable servers that have ram and we have root on
 		for (const rootableserver of rootableservers) {
-			if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
-				usableservers.push(rootableserver);
+			if (ns.getServerMaxRam(rootableserver.name) > 0 && ns.hasRootAccess(rootableserver.name)) {
+				usableservers.push(rootableserver.name);
 			}
 		}
 

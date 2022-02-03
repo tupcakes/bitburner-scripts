@@ -14,7 +14,7 @@ export async function updatefiles(ns) {
 /** @param {NS} ns **/
 export async function copyfiles(ns, target) {
 	let files = ns.ls('home', ".js");
-	files.push('serversbyhacklvl.json.txt');
+	files.push('server_list.txt');
 
 	// copy scripts
 	for (let i = 0; i < files.length; i++) {
@@ -133,90 +133,47 @@ export async function buyaugments(ns) {
 		"Illuminati",
 	];
 
-	// const augments = [
-	// 	"BitWire",
-	// 	"Artificial Bio-neural Network Implant",
-	// 	"Artificial Synaptic Potentiation",
-	// 	"Enhanced Myelin Sheathing",
-	// 	"Synaptic Enhancement Implant",
-	// 	"Neural-Retention Enhancement",
-	// 	"DataJack",
-	// 	"Embedded Netburner Module",
-	// 	"Embedded Netburner Module Core Implant",
-	// 	"Embedded Netburner Module Core V2 Upgrade",
-	// 	"Embedded Netburner Module Core V3 Upgrade",
-	// 	"Embedded Netburner Module Analyze Engine",
-	// 	"Embedded Netburner Module Direct Memory Access Upgrade",
-	// 	"Neuralstimulator",
-	// 	"Neural Accelerator",
-	// 	"Cranial Signal Processors - Gen I",
-	// 	"Cranial Signal Processors - Gen II",
-	// 	"Cranial Signal Processors - Gen III",
-	// 	"Cranial Signal Processors - Gen IV",
-	// 	"Cranial Signal Processors - Gen V",
-	// 	"Neuronal Densification",
-	// 	"FocusWire",
-	// 	"PC Direct-Neural Interface",
-	// 	"PC Direct-Neural Interface Optimization Submodule",
-	// 	"PC Direct-Neural Interface NeuroNet Injector",
-	// 	"ADR-V1 Pheromone Gene",
-	// 	"ADR-V2 Pheromone Gene",
-	// 	"The Shadow's Simulacrum",
-	// 	"Neurotrainer I",
-	// 	"Neurotrainer II",
-	// 	"Neurotrainer III",
-	// 	"HyperSight Corneal Implant",
-	// 	"Power Recirculation Core",
-	// 	"QLink",
-	// 	"SPTN-97 Gene Modification",
-	// 	"ECorp HVMind Implant",
-	// 	"SmartJaw",
-	// 	"Xanipher",
-	// 	"nextSENS Gene Modification",
-	// 	"OmniTek InfoLoad",
-	// 	"BitRunners Neurolink",
-	// 	"The Black Hand",
-	// 	"CRTX42-AA Gene Modification",
-	// 	"Neuregen Gene Modification",
-	// 	"PCMatrix",
-	// 	"Social Negotiation Assistant (S.N.A)",
-	// 	"The Red Pill",
-	// 	// "Hacknet Node CPU Architecture Neural-Upload",
-	// 	// "Hacknet Node Cache Architecture Neural-Upload",
-	// 	// "Hacknet Node NIC Architecture Neural-Upload",
-	// 	// "Hacknet Node Kernel Direct-Neural Interface",
-	// 	// "Hacknet Node Core Direct-Neural Interface",
-	// ];
-
+	let purchased = false;
 	const ssaugs = ns.getAugmentationsFromFaction('Slum Snakes');
 	const playeraugs = ns.getOwnedAugmentations(true);
 	const daedalusaugs = ns.getAugmentationsFromFaction('Daedalus');
+	daedalusaugs.push('NeuroFlux Governor');
 	const sec12augs = ns.getAugmentationsFromFaction('Sector-12');
+	sec12augs.push('NeuroFlux Governor');
 
-	// buy augs from daedalus
+	// if node is not node 2 - buy daedalus
 	if (ns.getPlayer().bitNodeN !== 2) {
+		for (const augment of ssaugs) {
+			if (daedalusaugs.includes(augment) === false && playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+				purchased = ns.purchaseAugmentation('Slum Snakes', augment);
+				if (purchased) {
+					ns.tprint("Purchased augment: " + augment);
+				}
+			}
+		}
 		for (const augment of daedalusaugs) {
-			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-				ns.purchaseAugmentation('Daedalus', augment);
+			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.getFactionRep('Daedalus')) {
+				purchased = ns.purchaseAugmentation('Daedalus', augment);
+				if (purchased) {
+					ns.tprint("Purchased augment: " + augment);
+				}
 			}
 		}
-		ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 	}
 
-	// buy from Sector-12 if in BN2
+	// if node is node 2 - buy Sector-12
 	if (ns.getPlayer().bitNodeN === 2) {
-		for (const augment of sec12augs) {
-			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-				ns.purchaseAugmentation('Sector-12', augment);
+		for (const augment of ssaugs) {
+			if (sec12augs.includes(augment) === false && playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
+				ns.purchaseAugmentation('Slum Snakes', augment);
+				ns.tprint("Purchased augment: " + augment);
 			}
 		}
-		ns.purchaseAugmentation('Sector-12', 'NeuroFlux Governor');
-	}
-
-	// buy from gang, but not augs from daedalus or sec12
-	for (const augment of ssaugs) {
-		if (daedalusaugs.includes(augment) === false && sec12augs.includes(augment) === false && playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
-			ns.purchaseAugmentation('Slum Snakes', augment);
+		for (const augment of sec12augs) {
+			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.getFactionRep('Sector-12')) {
+				ns.purchaseAugmentation('Sector-12', augment);
+				ns.tprint("Purchased augment: " + augment);
+			}
 		}
 	}
 }

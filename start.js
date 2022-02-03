@@ -20,7 +20,7 @@ export async function main(ns) {
 	}
 	
 	// update files
-	await updatefiles(ns);
+	//await updatefiles(ns);
 
 	// get tor and port openers
 	ns.purchaseTor();

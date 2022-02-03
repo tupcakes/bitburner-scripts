@@ -41,6 +41,14 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(100);
 
+		// make sure critical scripts are running if they should be
+		if (ns.gang.inGang() === true) {
+			if (ns.scriptRunning('/gangs/tasks.js', 'home') === false) {
+				ns.print("Gang control wasn't running. Starting...");
+				ns.run('/gangs/tasks.js');
+			}
+		}
+
 		let playerfactions = ns.getPlayer().factions;
 
 		// buy ram for home if possible

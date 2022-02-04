@@ -6,7 +6,7 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
-import { buyaugments, createexes, findavailableserver } from "/libraries/utils.js";
+import { buyaugments, getportopeners, createexes, findavailableserver } from "/libraries/utils.js";
 
 
 /** @param {NS} ns **/

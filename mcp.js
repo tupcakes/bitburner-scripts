@@ -41,6 +41,8 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(100);
 
+		getportopeners(ns);
+
 		// make sure critical scripts are running if they should be
 		if (ns.gang.inGang() === true) {
 			if (ns.scriptRunning('/gangs/tasks.js', 'home') === false) {

@@ -137,9 +137,7 @@ export async function buyaugments(ns) {
 	const ssaugs = ns.getAugmentationsFromFaction('Slum Snakes');
 	const playeraugs = ns.getOwnedAugmentations(true);
 	const daedalusaugs = ns.getAugmentationsFromFaction('Daedalus');
-	daedalusaugs.push('NeuroFlux Governor');
 	const sec12augs = ns.getAugmentationsFromFaction('Sector-12');
-	sec12augs.push('NeuroFlux Governor');
 
 	// if node is not node 2 - buy daedalus
 	if (ns.getPlayer().bitNodeN !== 2) {
@@ -154,6 +152,11 @@ export async function buyaugments(ns) {
 		for (const augment of daedalusaugs) {
 			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.getFactionRep('Daedalus')) {
 				purchased = ns.purchaseAugmentation('Daedalus', augment);
+				if (purchased) {
+					ns.tprint("Purchased augment: " + augment);
+				}
+			} else {
+				purchased = ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 				if (purchased) {
 					ns.tprint("Purchased augment: " + augment);
 				}
@@ -173,6 +176,11 @@ export async function buyaugments(ns) {
 			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.getFactionRep('Sector-12')) {
 				ns.purchaseAugmentation('Sector-12', augment);
 				ns.tprint("Purchased augment: " + augment);
+			} else {
+				purchased = ns.purchaseAugmentation('Slum Snakes', 'NeuroFlux Governor');
+				if (purchased) {
+					ns.tprint("Purchased augment: " + augment);
+				}
 			}
 		}
 	}

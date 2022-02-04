@@ -76,7 +76,7 @@ export async function main(ns) {
 		}
 		// we won
 		let territory = ns.gang.getGangInformation().territory;
-		if (territory === 1) {
+		if (territory >= .99) {
 			ns.gang.setTerritoryWarfare(false);
 		}
 		// war is not going well. regroup
@@ -86,7 +86,7 @@ export async function main(ns) {
 
 
 		// wait for tick
-		if (territory < 1) {
+		if (territory < .99) {
 			await warfaretick(ns);
 		}
 
@@ -127,7 +127,7 @@ export async function main(ns) {
 					ns.gang.setMemberTask(gangmembers[i], tasknames[10]);
 				}
 
-				if (ns.gang.getGangInformation().territory < 1) {
+				if (ns.gang.getGangInformation().territory < .99) {
 					await ns.sleep(18500);
 					for (let i = 0; i < gangmembers.length; ++i) {
 						ns.gang.setMemberTask(gangmembers[i], 'Territory Warfare');
@@ -140,7 +140,7 @@ export async function main(ns) {
 
 		// if we haven't won the war,
 		// do work for 18 seconds, then set to territory warfare until next tick
-		if (ns.gang.getGangInformation().territory < 1) {
+		if (ns.gang.getGangInformation().territory < .99) {
 			await ns.sleep(18500);
 			for (let i = 0; i < gangmembers.length; ++i) {
 				ns.gang.setMemberTask(gangmembers[i], 'Territory Warfare');

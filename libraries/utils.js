@@ -146,6 +146,7 @@ export async function buyaugments(ns) {
 				purchased = ns.purchaseAugmentation('Slum Snakes', augment);
 				if (purchased) {
 					ns.tprint("Purchased augment: " + augment);
+					purchased = false;
 				}
 			}
 		}
@@ -154,11 +155,13 @@ export async function buyaugments(ns) {
 				purchased = ns.purchaseAugmentation('Daedalus', augment);
 				if (purchased) {
 					ns.tprint("Purchased augment: " + augment);
+					purchased = false;
 				}
 			} else {
 				purchased = ns.purchaseAugmentation('Daedalus', 'NeuroFlux Governor');
 				if (purchased) {
 					ns.tprint("Purchased augment: " + augment);
+					purchased = false;
 				}
 			}
 		}
@@ -170,16 +173,19 @@ export async function buyaugments(ns) {
 			if (sec12augs.includes(augment) === false && playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.gang.getGangInformation().respect) {
 				ns.purchaseAugmentation('Slum Snakes', augment);
 				ns.tprint("Purchased augment: " + augment);
+				purchased = false;
 			}
 		}
 		for (const augment of sec12augs) {
 			if (playeraugs.includes(augment) === false && ns.getServerMoneyAvailable('home') >= ns.getAugmentationPrice(augment) && ns.getAugmentationRepReq(augment) <= ns.getFactionRep('Sector-12')) {
 				ns.purchaseAugmentation('Sector-12', augment);
 				ns.tprint("Purchased augment: " + augment);
+				purchased = false;
 			} else {
 				purchased = ns.purchaseAugmentation('Slum Snakes', 'NeuroFlux Governor');
 				if (purchased) {
 					ns.tprint("Purchased augment: " + augment);
+					purchased = false;
 				}
 			}
 		}

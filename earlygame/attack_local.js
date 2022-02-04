@@ -4,52 +4,49 @@ export async function main(ns) {
 
 	let scriptram = ns.getScriptRam("/earlygame/early-hack-template.js");
 
-	// read in server file
-	let file = ns.read("server_list.txt");
-	let servers = file.split("\r\n");
+	let servers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	// kill running scripts
 	for (let i = 0; i < servers.length; ++i) {
 		// Kill any running scripts
-		ns.killall(servers[i]);
+		ns.killall(servers[i].name);
 	}
 
 	while (true) {
 		await ns.sleep(5000);
 		for (let i = 0; i < servers.length; ++i) {
-			let server = JSON.stringify(servers[i].split(",")).replace('["', '').replace('"]', '');
 
 			// check if we are running the batch script against this server
-			if (ns.getRunningScript('/earlygame/early-control.js', 'home', server) || ns.getRunningScript('control.js', 'home', server)) {
-				ns.kill('/earlygame/early-hack-template.js', server, server);
+			if (ns.getRunningScript('/earlygame/early-control.js', 'home', servers[i].name) || ns.getRunningScript('control.js', 'home', servers[i].name)) {
+				ns.kill('/earlygame/early-hack-template.js', servers[i].name, servers[i].name);
 				continue;
 			}
 
 
-			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(server);
-			let HackingLevel = ns.getHackingLevel(server);
-			let ServerMaxMoney = ns.getServerMaxMoney(server);
-			let ServerMaxRam = ns.getServerMaxRam(server);
-			let RootAccess = ns.hasRootAccess(server);
+			let ServerRequiredHackingLevel = ns.getServerRequiredHackingLevel(servers[i].name);
+			let HackingLevel = ns.getHackingLevel(servers[i].name);
+			let ServerMaxMoney = ns.getServerMaxMoney(servers[i].name);
+			let ServerMaxRam = ns.getServerMaxRam(servers[i].name);
+			let RootAccess = ns.hasRootAccess(servers[i].name);
 
 			if (ServerMaxMoney > 0 && HackingLevel >= ServerRequiredHackingLevel && ServerMaxRam > scriptram) {
 				// check if it already has root access, if not nuke it
 				if (RootAccess == false) {
 					ns.print("Getting root.");
-					ns.run("/helpers/get_root.js", 1, server);
+					ns.run("/helpers/get_root.js", 1, servers[i].name);
 				} else {
 					// copy the hacking script over
-					await ns.scp("/earlygame/early-hack-template.js", server);
+					await ns.scp("/earlygame/early-hack-template.js", servers[i].name);
 
 					// figure out how many threads we can run of our script
 					let maxnumthreads = parseInt(ServerMaxRam / scriptram);
 					ns.print("maxRam: " + ServerMaxRam);
 					ns.print("scriptram: " + scriptram);
 					ns.print("maxnumthreads: " + maxnumthreads);
-					ns.print("Running on: " + server + "-Threads:" + maxnumthreads + "-HackLevel:" + ServerRequiredHackingLevel);
+					ns.print("Running on: " + servers[i].name + "-Threads:" + maxnumthreads + "-HackLevel:" + ServerRequiredHackingLevel);
 
 					// execute script on the target server
-					ns.exec("/earlygame/early-hack-template.js", server, maxnumthreads, server);
+					ns.exec("/earlygame/early-hack-template.js", servers[i].name, maxnumthreads, servers[i].name);
 				}
 			}
 		}

@@ -16,22 +16,18 @@ export async function main(ns) {
 		pservram = ns.getServerMaxRam(pservs[0]);
 		ns.run("/buy/servers.js", 1, pservram);
 	} else {
-		ns.run("/buy/upgradepservs.js");
+		//ns.run("/buy/upgradepservs.js");
 	}
 	
-	// update files
+	// // update files
 	//await updatefiles(ns);
-
-	// get tor and port openers
-	ns.purchaseTor();
-	getportopeners(ns);
 
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}
 	
 
-	// should probably move this to mcp?
+	await ns.sleep(5000);
 	if (pservs.length > 1 && pservs.length < 25) {
 		ns.run("pserv-controller.js");
 		let bestserver = getmostprofitable(ns);

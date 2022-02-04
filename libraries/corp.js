@@ -1,43 +1,61 @@
-/** THIS REQUIRES A TON OF RAM
- * start corp
- * Create ag division
- * buy smart supply
- * enable smart supply
- * expand office to each city
- * for each city
- *   hire 3 employees
- *   assign 1 to operations, engineer, and business
- * for each city
- *   buy 1 advert inc
- * for each city
- *   upgrade office storage to 300
- * for each city
- *   sell plants and food
- *     MAX/MP
- * 
- */
-
 /** @param {NS} ns **/
-export function bootstrapAg(ns) {
-	createcorp(ns, 'Bit');
+export function getdivisions(ns) {
+	let corp = ns.corporation.getCorporation();
+	let divisions = [];
 
-	// create division
-	ns.corporation.expandIndustry('Agriculture', 'Ag');
-
-	// Buy smart supply
-
+	for (let i = 0; i < corp.divisions.length; ++i) {
+		divisions.push(ns.corporation.getDivision(corp.divisions[i].name));
+	}
+	return divisions;
 }
 
 
 /** @param {NS} ns **/
-export function createcorp(ns, name) {
-	if (ns.getPlayer().bitNodeN === 3) {
-		ns.corporation.createCorporation(name, true);
-	} else {
-		if (ns.getServerMoneyAvailable('home' >= 150000000000) && ns.getPlayer().bitNodeN !== 3) {
-			ns.corporation.createCorporation(name, false);
-		} else {
-			ns.tprint("Not enough money. You need $150,000,000,000.");
+export function getproducts(ns, divisionarg) {
+	let division = ns.corporation.getDivision(divisionarg);
+	let products = [];
+
+	for (let i = 0; i < division.products.length; ++i) {
+		if (division.products[i]) {
+			products.push(ns.corporation.getProduct(divisionarg, division.products[i]));
 		}
 	}
+	return products;
 }
+
+
+/** @param {NS} ns **/
+export function getemployees(ns, divisionarg, cityarg) {
+	let employeeslist = ns.corporation.getOffice(divisionarg, cityarg).employees;
+	let employees = [];
+	for (let i = 0; i < employeeslist.length; i++) {
+		employees.push(ns.corporation.getEmployee(divisionarg, cityarg, employeeslist[i]));
+	}
+	return employees;
+}
+
+
+/** @param {NS} ns **/
+export async function assignemployees(ns, divisionarg, cityarg, employeesarg) {
+	let researchemployees = Math.floor(employeesarg.length * .4);
+	let operationsemployees = Math.floor(employeesarg.length * .15);
+	let remainder = employeesarg.length - ((Math.floor(employeesarg.length * .15) * 4) + Math.floor(employeesarg.length * .4));
+	let jobs = ["Operations", "Engineer", "Business", "Management", "Research & Development"];
+
+
+	for (const employee of employeesarg) {
+		if (employee.pos !== 'Unassigned') {
+			await ns.corporation.assignJob(divisionarg, cityarg, employee.name, 'Unassigned')
+		}
+	}
+
+
+	// assign to jobs
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Operations', operationsemployees);
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Engineer', operationsemployees);
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Business', operationsemployees);
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Management', operationsemployees);
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Research & Development', (researchemployees + remainder));	
+}
+
+

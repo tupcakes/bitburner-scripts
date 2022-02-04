@@ -1,4 +1,4 @@
-import { getdivisions, getproducts, getemployees, assignemployees } from "/libraries/corp.js";
+import { getdivisions, getproducts, getemployees, assignemployees, setta } from "/libraries/corp.js";
 
 
 /** @param {NS} ns **/
@@ -7,13 +7,7 @@ export async function main(ns) {
 	let divisions = getdivisions(ns);
 
 	// enable market TA for products
-	for (const division of divisions) {
-		let products = getproducts(ns, division.name)
-		for (const product of products) {
-			ns.corporation.setProductMarketTA1(division.name, product.name, 'on');
-			ns.corporation.setProductMarketTA2(division.name, product.name, 'on');
-		}
-	}
+	setta(ns);
 
 
 	// assign employees to jobs
@@ -23,4 +17,6 @@ export async function main(ns) {
 			await assignemployees(ns, division.name, city, employees);
 		}
 	}
+
+	ns.tprint("Completed corporation config.");
 }

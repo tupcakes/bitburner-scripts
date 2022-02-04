@@ -40,4 +40,9 @@ export async function main(ns) {
 		ns.run('/earlygame/coordinator.js', 1, bestserver);
 		ns.run("pserv-controller.js");
 	}
+
+
+	if (ns.getPlayer().hasCorporation === true && ns.getServerMaxRam('home') >= 2048) {
+		ns.run("/corps/control-corp.js");
+	}
 }

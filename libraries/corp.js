@@ -59,3 +59,16 @@ export async function assignemployees(ns, divisionarg, cityarg, employeesarg) {
 }
 
 
+/** @param {NS} ns **/
+export function setta(ns) {
+	let divisions = getdivisions(ns);
+
+	// enable market TA for products
+	for (const division of divisions) {
+		let products = getproducts(ns, division.name)
+		for (const product of products) {
+			ns.corporation.setProductMarketTA1(division.name, product.name, 'on');
+			ns.corporation.setProductMarketTA2(division.name, product.name, 'on');
+		}
+	}
+}

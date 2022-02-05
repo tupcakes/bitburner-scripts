@@ -30,14 +30,16 @@ export async function main(ns) {
 	await ns.sleep(5000);
 	if (pservs.length > 1 && pservs.length < 25) {
 		ns.run("pserv-controller.js");
-		let bestserver = getmostprofitable(ns);
-		ns.run('/earlygame/coordinator.js', 1, bestserver);
+		//let bestserver = getmostprofitable(ns);
+		ns.run('/earlygame/coordinator.js', 1, 'n00dles');
+		ns.run('/earlygame/coordinator.js', 1, 'foodnstuff');
 	} else if (pservs.length === 25) {
 		ns.run("pserv-controller.js");
 		ns.run("distributed-share.js");
 	} else {
-		let bestserver = getmostprofitable(ns);
-		ns.run('/earlygame/coordinator.js', 1, bestserver);
+		//let bestserver = getmostprofitable(ns);
+		ns.run('/earlygame/coordinator.js', 1, 'n00dles');
+		ns.run('/earlygame/coordinator.js', 1, 'foodnstuff');
 		ns.run("pserv-controller.js");
 	}
 

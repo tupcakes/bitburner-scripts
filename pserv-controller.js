@@ -16,6 +16,12 @@ export async function main(ns) {
 		let maxtargets = (pservs.length * 2) - 1;
 
 		for (let i = 0; i < maxtargets; ++i) {
+			// check if we are running the batch script against this server
+			if (ns.getRunningScript('/earlygame/coordinator.js', 'home', targets[i].name)) {
+				ns.kill('control.js', 'home', targets[i].name);
+				continue;
+			}
+			
 			if (ns.getServerRequiredHackingLevel(targets[i].name) <= ns.getHackingLevel() && ns.hasRootAccess(targets[i].name) === true && ns.getServerMaxRam(targets[i].name) > 0 && ns.getServerMaxMoney(targets[i].name) > 0) {
 				ns.run("control.js", 1, targets[i].name);
 			}

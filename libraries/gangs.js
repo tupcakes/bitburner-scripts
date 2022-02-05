@@ -28,7 +28,7 @@ export function buygangequipment(ns) {
 	for (let i = 0; i < equipmentnames.length; ++i) {
 		for (let j = 0; j < gangmembers.length; ++j) {
 			// buy if less than 5 mil
-			if (ns.gang.getEquipmentCost(equipmentnames[i]) < equipbuythreshold) {
+			if (ns.gang.getEquipmentCost(equipmentnames[i]) < equipbuythreshold && readyforhumantrafficking(ns, gangmembers[j]) === true) {
 				purchased = ns.gang.purchaseEquipment(gangmembers[j], equipmentnames[i]);
 			}
 			if (purchased === true) {

@@ -1,0 +1,9 @@
+automate status
+automate en|dis
+
+
+automate stamina 55 high;
+automate contract Tracking high;
+automate stamina 40 low;
+automate general 'Hyperbolic Regeneration Chamber' low;
+automate en;

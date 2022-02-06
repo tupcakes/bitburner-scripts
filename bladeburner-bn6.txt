@@ -2,8 +2,8 @@ automate status
 automate en|dis
 
 
-automate stamina 55 high;
+automate stamina 130 high;
 automate contract Tracking high;
-automate stamina 40 low;
+automate stamina 80 low;
 automate general 'Hyperbolic Regeneration Chamber' low;
 automate en;

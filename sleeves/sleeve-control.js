@@ -8,20 +8,15 @@ export async function main(ns) {
 
 		let sleeves = ns.sleeve.getNumSleeves();
 
-		// // recover
-		// for (let i = 0; i < sleeves; i++) {
-		// 	if (ns.sleeve.getSleeveStats(sleeves[i]).shock > 0) {
-		// 		ns.sleeve.setToShockRecovery(sleeves[i]);
-		// 	}
-		// }
+		// recover
+		if (ns.gang.inGang() === true) {
+			for (let i = 0; i < sleeves; i++) {
+				if (ns.sleeve.getSleeveStats(sleeves[i]).sync < 100) {
+					ns.sleeve.setToSynchronize(sleeves[i]);
+				}
+			}
+		}
 
-		// // commit crimes
-		// for (let i = 0; i < sleeves; i++) {
-		// 	if (ns.sleeve.getSleeveStats(sleeves[i]).shock === 0) {
-		// 		ns.sleeve.setToCommitCrime(sleeves[i], 'Mug');
-		// 		//ns.sleeve.setToCommitCrime(sleeves[i], 'Homicide');
-		// 	}
-		// }
 
 		// commit crimes
 		for (let i = 0; i < sleeves; i++) {

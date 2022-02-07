@@ -12,8 +12,8 @@ export async function main(ns) {
 
 	while (allupgraded === false) {
 		await ns.sleep(20);
-		// buy nodes up to our limit
-		while (nodecount < nodelimit) {
+		// buy nodes up to our limit - need to buy 1 node before running
+		if (nodecount < nodelimit) {
 			await ns.sleep(20);
 			ns.hacknet.purchaseNode();
 			nodecount = ns.hacknet.numNodes();

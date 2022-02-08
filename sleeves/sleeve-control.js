@@ -3,6 +3,7 @@ import { getcrimerisk, getbestcrime, getsleevecrimechance } from "/libraries/sle
 
 /** @param {NS} ns **/
 export async function main(ns) {
+	mainloop:
 	while (true) {
 		await ns.sleep(20);
 
@@ -28,10 +29,14 @@ export async function main(ns) {
 					ns.sleeve.setToCommitCrime(sleeves[i], 'Homicide');
 				}
 			} else {
-				let choices = getcrimerisk(ns, i);
-				let bestcrime = getbestcrime(ns, choices);
-				if (task.crime !== bestcrime) {
-					ns.sleeve.setToCommitCrime(sleeves[i], bestcrime);
+				if (ns.sleeve.getSleeveStats(sleeves[i]).shock > 0) {
+					continue mainloop;
+				} else {
+					let choices = getcrimerisk(ns, i);
+					let bestcrime = getbestcrime(ns, choices);
+					if (task.crime !== bestcrime) {
+						ns.sleeve.setToCommitCrime(i, bestcrime);
+					}
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 /** @param {NS} ns **/
 export async function main(ns) {
+	ns.tail();
 
 	ns.travelToCity("Sector-12");
 	let limit = ns.args[0];

@@ -2,8 +2,8 @@ import { lowerprice, raiseprice } from "/libraries/stocks.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	let sym = 'FNS';
-	let target = 'foodnstuff';
+	let sym = 'JGN';
+	let target = 'joesguns';
 	let lowprice = 2500;
 	let highprice = 2900;
 	let shares = 5000;

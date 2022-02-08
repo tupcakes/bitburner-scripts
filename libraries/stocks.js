@@ -408,7 +408,6 @@ export async function raisepricedist(ns, target, targetsymbol, targetprice) {
 			// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
 			// threads.
 			if (usableserversthreadsavailable > remainingfirstweakenthreads) {
-				ns.tprint("getting here");
 				pid = ns.exec("/helpers/weaken1.js", usableservers[i], remainingfirstweakenthreads, target, growtime);
 				weakentime = ns.getWeakenTime(target) + sleepoffset;
 				break;

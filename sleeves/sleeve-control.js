@@ -34,8 +34,11 @@ export async function main(ns) {
 				} else {
 					let choices = getcrimerisk(ns, i);
 					let bestcrime = getbestcrime(ns, choices);
-					if (task.crime !== bestcrime) {
-						ns.sleeve.setToCommitCrime(i, bestcrime[0]);
+					// if (task.crime !== bestcrime[0]) {
+					// 	ns.sleeve.setToCommitCrime(i, bestcrime[0]);
+					// }
+					if (task.crime !== 'Mug') {
+						ns.sleeve.setToCommitCrime(i, 'Mug');
 					}
 				}
 			}

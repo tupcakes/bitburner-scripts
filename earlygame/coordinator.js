@@ -172,9 +172,9 @@ export async function main(ns) {
 					if (usableserversthreadsavailable > remainingfirstweakenthreads) {
 						pid = ns.exec("/helpers/weaken1.js", usableservers[i], remainingfirstweakenthreads, target, hacktime);
 						weakentime = ns.getWeakenTime(target) + sleepoffset;
-						break;
+						//break;
 					} else {
-						pid = ns.exec("/helpers/weaken1.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/weaken1.js", usableservers[i], usableserversthreadsavailable, target, hacktime);
 						remainingfirstweakenthreads = remainingfirstweakenthreads - usableserversthreadsavailable;
 					}
 
@@ -207,14 +207,14 @@ export async function main(ns) {
 					if (usableserversthreadsavailable > remaininggrowthreads) {
 						pid = ns.exec("/helpers/grow.js", usableservers[i], remaininggrowthreads, target, (weakentime + hacktime));
 						growtime = ns.getGrowTime(target) + sleepoffset;
-						break;
+						//break;
 					} else {
-						pid = ns.exec("/helpers/grow.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/grow.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime));
 						remaininggrowthreads = remaininggrowthreads - usableserversthreadsavailable;
 					}
 
 					// if batch is running go to the next host
-					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, hacktime) === false) {
+					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime)) === false) {
 						continue;
 					}
 				}
@@ -242,22 +242,22 @@ export async function main(ns) {
 					if (usableserversthreadsavailable > remainingsecondweakenthreads) {
 						pid = ns.exec("/helpers/weaken2.js", usableservers[i], remainingsecondweakenthreads, target, (weakentime + hacktime + growtime));
 						weakentime = ns.getWeakenTime(target) + sleepoffset;
-						break;
+						//break;
 					} else {
-						pid = ns.exec("/helpers/weaken2.js", usableservers[i], usableserversthreadsavailable, target, 0);
+						pid = ns.exec("/helpers/weaken2.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime));
 						remainingsecondweakenthreads = remainingsecondweakenthreads - usableserversthreadsavailable;
 					}
 
 					// if batch is running go to the next host
-					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, hacktime) === false) {
+					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime)) === false) {
 						continue;
 					}
 				}
 				secondweakenrunning = true;
 			}
 
-			ns.print("Big sleep for " + (weakentime + growtime + weakentime + sleepoffset) + " ms");
-			await ns.sleep(weakentime + growtime + weakentime + sleepoffset);
+			ns.print("Big sleep for " + (weakentime + growtime + sleepoffset) + " ms");
+			await ns.sleep(weakentime + growtime + sleepoffset);
 			firstweakenrunning = false;
 			growrunning = false;
 			secondweakenrunning = false;

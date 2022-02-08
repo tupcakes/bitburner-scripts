@@ -7,6 +7,9 @@ export async function main(ns) {
 	ns.run("mcp.js");
 	ns.run("hudstart.js");
 
+	// ns.run("/buy/hacknet.js");
+
+
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	let pservram = 0;
 	if (pservs.length === 0) {
@@ -19,12 +22,12 @@ export async function main(ns) {
 		//ns.run("/buy/upgradepservs.js");
 	}
 	
-	// // update files
-	//await updatefiles(ns);
-
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}
+
+	// sleeves
+	ns.run("/sleeves/sleeve-control.js");
 	
 
 	await ns.sleep(5000);

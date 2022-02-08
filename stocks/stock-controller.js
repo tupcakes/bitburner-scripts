@@ -12,13 +12,14 @@ export async function main(ns) {
 		await ns.sleep(20);
 
 		// place long stop buy order
-		ns.stock.placeOrder(sym, shares, lowprice, 'StopBuy', 'Long');
+		ns.stock.placeOrder(sym, shares, lowprice, 'LimitBuy', 'Long');
 
 		// lower price until target price is reached
 		await lowerprice(ns, target, sym, lowprice);
 
 		// place long stop sell order
-		ns.stock.placeOrder(sym, shares, highprice, 'StopSell', 'Long');
+		let stocks = ns.stock.getOrders()
+		ns.stock.placeOrder(sym, shares, highprice, 'LimitSell', 'Long');
 
 		// raise price until target price is reached
 		await raiseprice(ns, target, sym, highprice);

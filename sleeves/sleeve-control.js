@@ -8,17 +8,17 @@ export async function main(ns) {
 
 		let sleeves = ns.sleeve.getNumSleeves();
 
-		// recover
+		// recover - once gang is up and running
 		if (ns.gang.inGang() === true) {
 			for (let i = 0; i < sleeves; i++) {
-				if (ns.sleeve.getSleeveStats(sleeves[i]).sync < 100) {
-					ns.sleeve.setToSynchronize(sleeves[i]);
+				if (ns.sleeve.getSleeveStats(sleeves[i]).shock > 0) {
+					ns.sleeve.setToShockRecovery(sleeves[i]);
 				}
 			}
 		}
 
 
-		// commit crimes
+		// commit crimes - will prioritize getting gang started
 		for (let i = 0; i < sleeves; i++) {
 			let task = ns.sleeve.getTask(0);
 			if (ns.gang.inGang() === false) {

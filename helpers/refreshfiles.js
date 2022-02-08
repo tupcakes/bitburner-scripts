@@ -29,13 +29,13 @@ export async function main(ns) {
 	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	for (let i = 0; i < targets.length; ++i) {
-		ns.killall(targets.name);
-		if (ns.hasRootAccess(targets)) {
-			for (let i = 0; i < files.length; i++) {
-				ns.print(targets.name + ": " + files[i]);
-				ns.rm(files[i], targets.name);
+		ns.killall(targets[i].name);
+		if (ns.hasRootAccess(targets[i].name)) {
+			for (let j = 0; j < files.length; j++) {
+				ns.print(targets[i].name + ": " + files[j]);
+				ns.rm(files[j], targets[i].name);
 				// get new copies
-				await ns.scp(files[i], targets.name);
+				await ns.scp(files[j], targets[i].name);
 				await ns.sleep(20);
 			}
 		}

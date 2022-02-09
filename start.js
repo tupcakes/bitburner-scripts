@@ -11,8 +11,9 @@ export async function main(ns) {
 
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs
-	// start if we won the war
-	if (ns.gang.getGangInformation().territory >= .99) {
+	// start if we are winning the war
+	if (ns.gang.getGangInformation().territory >= .75) {
+		ns.run("pserv-controller.js");
 		let pservram = 0;
 		if (pservs.length === 0) {
 			pservram = ns.getServerMaxRam('home');
@@ -38,20 +39,10 @@ export async function main(ns) {
 
 
 	await ns.sleep(5000);
-	if (pservs.length > 1 && pservs.length < 25) {
-		ns.run("pserv-controller.js");
-		//let bestserver = getmostprofitable(ns);
-		ns.run('/earlygame/coordinator.js', 1, 'n00dles');
-		ns.run('/earlygame/coordinator.js', 1, 'foodnstuff');
-	} else if (pservs.length === 25) {
-		ns.run("pserv-controller.js");
-		ns.run("distributed-share.js");
-	} else {
-		//let bestserver = getmostprofitable(ns);
-		ns.run('/earlygame/coordinator.js', 1, 'n00dles');
-		ns.run('/earlygame/coordinator.js', 1, 'foodnstuff');
-		ns.run("pserv-controller.js");
-	}
+	ns.run('/earlygame/coordinator.js', 1, 'n00dles');
+	ns.run('/earlygame/coordinator.js', 1, 'foodnstuff');
+	//ns.run("distributed-share.js");
+	
 
 
 	if (ns.getPlayer().hasCorporation === true && ns.getServerMaxRam('home') >= 2048) {

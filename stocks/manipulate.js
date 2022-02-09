@@ -35,6 +35,8 @@ export async function main(ns) {
 
 			// if we own the stock grow it
 			if (position[0] !== 0) {
+				// first kill any weaken scripts
+				ns.kill("/stocks/weaken-stocks.js", 'home', targets[i].server);
 				if (ns.hasRootAccess(targets[i].server) === true) {
 					ns.run("/stocks/grow-stocks.js", 1, targets[i].server);
 				}
@@ -42,6 +44,8 @@ export async function main(ns) {
 
 			// if we don't own the stock weaken it
 			if (position[0] === 0) {
+				// first kill any grow scripts
+				ns.kill("/stocks/grow-stocks.js", 'home', targets[i].server);
 				if (ns.hasRootAccess(targets[i].server) === true) {
 					ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
 				}

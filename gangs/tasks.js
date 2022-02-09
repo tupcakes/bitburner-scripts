@@ -71,7 +71,7 @@ export async function main(ns) {
 
 		lowestchance = Math.min(...chances);
 		// ready for war
-		if (lowestchance >= .60) {
+		if (lowestchance >= .65) {
 			ns.gang.setTerritoryWarfare(true);
 		}
 		// we won

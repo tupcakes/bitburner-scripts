@@ -4,8 +4,12 @@
 export async function main(ns) {
 	ns.tail();
 	ns.disableLog('ALL');
-	let highmultiplier = .75; // .90 might want to change .75
-	let lowmultiplier = 1.25; // 1.10 might want to change 1.25
+
+	let dollarUS = Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		maximumFractionDigits: 0,
+	});
 
 	while (true) {
 		await ns.sleep(20);
@@ -13,18 +17,19 @@ export async function main(ns) {
 
 		for (const stock of stocks) {
 			let avg = (stock.high + stock.low) / 2;
-			let buyprice = avg - (avg * .25);
-			// let buyprice = stock.low * lowmultiplier;
+			let buyprice = avg - (avg * .15);
 
 			// check if we have shares. if so check if price is good to buy.
 			if (ns.stock.getPosition(stock.sym)[0] === 0) {
 				if (ns.stock.getPrice(stock.sym) <= buyprice) {
 					if (ns.getServerMoneyAvailable('home') >= ns.stock.getPurchaseCost(stock.sym, 1000, 'Long')) {
 						let buytimeprice = ns.stock.buy(stock.sym, 1000);
-						ns.print(stock.sym + ":buying:   " + "@" + buytimeprice.toFixed(2));
-						ns.print(stock.sym + ":buyprice: " + buyprice.toFixed(2));
-						ns.print(stock.sym + ":High/low: " + stock.high.toFixed(2) + "/" + stock.low.toFixed(2));
-						ns.print(stock.sym + ":average:   " + avg.toFixed(2));
+						ns.print(stock.sym + ":buying:      " + "@" + dollarUS.format(buytimeprice.toFixed(2)));
+						ns.print(stock.sym + ":buyprice:    " + dollarUS.format(buyprice.toFixed(2)));
+						ns.print(stock.sym + ":High/low:    " + dollarUS.format(stock.high.toFixed(2)) + "/" + dollarUS.format(stock.low.toFixed(2)));
+						ns.print(stock.sym + ":H/L average: " + dollarUS.format(avg.toFixed(2)));
+					} else {
+						ns.print("Not enough $");
 					}
 				}
 			}

@@ -16,7 +16,7 @@ export async function main(ns) {
 			if (ns.stock.getPosition(sym)[0] !== 0) {
 				ns.print(sym + "     " + ns.stock.getPosition(sym)[0] + "       " + ns.stock.getPosition(sym)[1].toFixed(2) + "    " + ns.stock.getPrice(sym).toFixed(2));
 			}
-		}		
-
+		}
+		ns.print(Math.floor(Math.random() * 1000));
 	}
 }

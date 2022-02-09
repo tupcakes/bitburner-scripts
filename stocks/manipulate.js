@@ -32,16 +32,18 @@ export async function main(ns) {
 			let position = ns.stock.getPosition(targets[i].sym);
 
 			// if we own the stock grow it
-			if (postion[0] !== 0) {
-				ns.run("/stocks/grow-stock.js", 1, targets[i].server);
+			if (position[0] !== 0) {
+				if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(targets[i].server)) {
+					ns.run("/stocks/grow-stocks.js", 1, targets[i].server);
+				}
 			}
 
 			// if we don't own the stock weaken it
-			if (postion[0] !== 0) {
-				ns.run("/stocks/weaken-stock.js", 1, targets[i].server);
+			if (position[0] !== 0) {
+				if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(targets[i].server)) {
+					ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
+				}
 			}
 		}
-
 	}
-
 }

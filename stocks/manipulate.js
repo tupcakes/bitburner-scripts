@@ -41,7 +41,7 @@ export async function main(ns) {
 			}
 
 			// if we don't own the stock weaken it
-			if (position[0] !== 0) {
+			if (position[0] === 0) {
 				if (ns.hasRootAccess(targets[i].server) === true) {
 					ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
 				}

@@ -10,6 +10,8 @@ export async function main(ns) {
 	 * 		weaken stock
 	 */
 
+	ns.disableLog('ALL');
+
 	let targets = JSON.parse(ns.read("/stocks/sym-server-map.json.txt"));
 
 
@@ -28,19 +30,19 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(20);
 
-		for (let i = 0; i < maxpservs; ++i) {
+		for (let i = 0; i < targets.length; ++i) {
 			let position = ns.stock.getPosition(targets[i].sym);
 
 			// if we own the stock grow it
 			if (position[0] !== 0) {
-				if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(targets[i].server)) {
+				if (ns.hasRootAccess(targets[i].server) === true) {
 					ns.run("/stocks/grow-stocks.js", 1, targets[i].server);
 				}
 			}
 
 			// if we don't own the stock weaken it
 			if (position[0] !== 0) {
-				if (ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(targets[i].server)) {
+				if (ns.hasRootAccess(targets[i].server) === true) {
 					ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
 				}
 			}

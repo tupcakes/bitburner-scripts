@@ -5,6 +5,7 @@ export async function main(ns) {
 		ns.run('/stocks/dash-stocks.js');
 		ns.run('/stocks/pricetracker.js');
 		ns.run('/stocks/seller.js');
+		ns.run('/stocks/manipulate.js');
 
 		// wait for pricetracker to generate some data
 		await ns.sleep(120000);

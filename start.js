@@ -11,24 +11,31 @@ export async function main(ns) {
 
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs
-	let pservram = 0;
-	if (pservs.length === 0) {
-		pservram = ns.getServerMaxRam('home');
-		ns.run("/buy/servers.js", 1, pservram);
-	} else if (pservs.length > 0 && pservs.length < 25) {
-		pservram = ns.getServerMaxRam(pservs[0]);
-		ns.run("/buy/servers.js", 1, pservram);
-	} else {
-		//ns.run("/buy/upgradepservs.js");
+	// start if we won the war
+	if (ns.gang.getGangInformation().territory >= .99) {
+		let pservram = 0;
+		if (pservs.length === 0) {
+			pservram = ns.getServerMaxRam('home');
+			ns.run("/buy/servers.js", 1, pservram);
+		} else if (pservs.length > 0 && pservs.length < 25) {
+			pservram = ns.getServerMaxRam(pservs[0]);
+			ns.run("/buy/servers.js", 1, pservram);
+		} else {
+			//ns.run("/buy/upgradepservs.js");
+		}
 	}
-	
+
+	// // update files
+	//await updatefiles(ns);
+
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}
 
+
 	// sleeves
 	ns.run("/sleeves/sleeve-control.js");
-	
+
 
 	await ns.sleep(5000);
 	if (pservs.length > 1 && pservs.length < 25) {

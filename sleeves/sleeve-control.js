@@ -12,8 +12,13 @@ export async function main(ns) {
 		// recover - once gang is up and running
 		if (ns.gang.inGang() === true) {
 			for (let i = 0; i < sleeves; i++) {
-				if (ns.sleeve.getSleeveStats(sleeves[i]).shock > 0) {
+				while (ns.sleeve.getSleeveStats(sleeves[i]).shock > 0 && ns.isBusy() === false) {
 					ns.sleeve.setToShockRecovery(sleeves[i]);
+				}
+			}
+			for (let i = 0; i < sleeves; i++) {
+				if (ns.sleeve.getSleeveStats(sleeves[i]).sync < 100 && ns.isBusy() === false) {
+					ns.sleeve.setToSynchronize(sleeves[i]);
 				}
 			}
 		}

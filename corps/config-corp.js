@@ -6,10 +6,6 @@ export async function main(ns) {
 	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"]
 	let divisions = getdivisions(ns);
 
-	// enable market TA for products
-	setta(ns);
-
-
 	// assign employees to jobs
 	for (const division of divisions) {
 		for (const city of cities) {

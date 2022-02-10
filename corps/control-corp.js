@@ -3,7 +3,8 @@ import { getdivisions, getproducts, getemployees, assignemployees, settaon, sett
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.disableLog('ALL');
+	//ns.disableLog('ALL');
+	ns.disableLog('sleep');
 	ns.clearLog();
 
 	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"]
@@ -18,8 +19,6 @@ export async function main(ns) {
 			// set TA to either on of off
 			if (ns.corporation.hasResearched(division.name, 'Market-TA.I') && ns.corporation.hasResearched(division.name, 'Market-TA.II')) {
 				settaon(ns, division.name);
-			} else {
-				settaoff(ns, division.name);
 			}
 
 			let products = getproducts(ns, division.name)

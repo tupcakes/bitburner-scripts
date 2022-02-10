@@ -1,4 +1,4 @@
-import { getdivisions, getproducts, getemployees, assignemployees, setta } from "/libraries/corp.js";
+import { getdivisions, getemployees, assignemployees } from "/libraries/corp.js";
 
 
 /** @param {NS} ns **/

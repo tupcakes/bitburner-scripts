@@ -27,7 +27,7 @@ export async function main(ns) {
 					let d = new Date();
 					d.toLocaleTimeString();
 
-					ns.print(d.toLocaleTimeString() + " Buying: " + ns.stock.getPrice(stock.sym).toFixed(2) + "<=" + buythresh.toFixed(2))
+					ns.print(d.toLocaleTimeString() + " Buying: " + dollarUS.format(ns.stock.getPrice(stock.sym).toFixed(2)) + "<=" + dollarUS.format(buythresh.toFixed(2)))
 					if (ns.getServerMoneyAvailable('home') >= ns.stock.getPurchaseCost(stock.sym, shares, 'Long')) {
 						let buytimeprice = ns.stock.buy(stock.sym, shares);
 						ns.print(d.toLocaleTimeString() + " " + stock.sym + ":buying:      " + shares + "@" + dollarUS.format(buytimeprice.toFixed(2)));

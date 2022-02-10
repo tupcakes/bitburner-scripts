@@ -28,7 +28,7 @@ export async function main(ns) {
 					let d = new Date();
 					d.toLocaleTimeString();
 
-					ns.print(d.toLocaleTimeString() + " Selling: " + ns.stock.getPrice(stock.sym).toFixed(2) + ">=" + sellthresh.toFixed(2))
+					ns.print(d.toLocaleTimeString() + " Selling: " + dollarUS.format(ns.stock.getPrice(stock.sym).toFixed(2)) + ">=" + dollarUS.format(sellthresh.toFixed(2)))
 
 					let selltimeprice = ns.stock.sell(stock.sym, position[0]);
 					let profit = (position[0] * selltimeprice) - (position[0] * position[1])

@@ -1,8 +1,11 @@
-import { getdivisions, getproducts, getemployees, assignemployees, setta } from "/libraries/corp.js";
+import { getdivisions, getproducts, getemployees, assignemployees, settaon, settaoff } from "/libraries/corp.js";
 
 
 /** @param {NS} ns **/
 export async function main(ns) {
+	ns.disableLog('ALL');
+	ns.clearLog();
+
 	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"]
 	let divisions = getdivisions(ns);
 
@@ -12,6 +15,13 @@ export async function main(ns) {
 
 		divisionloop:
 		for (const division of divisions) {
+			// set TA to either on of off
+			if (ns.corporation.hasResearched(division.name, 'Market-TA.I') && ns.corporation.hasResearched(division.name, 'Market-TA.II')) {
+				settaon(ns, division.name);
+			} else {
+				settaoff(ns, division.name);
+			}
+
 			let products = getproducts(ns, division.name)
 
 			// if alread working on a product wait by cycling the divisionloop
@@ -21,6 +31,7 @@ export async function main(ns) {
 				}
 			}
 
+			// figure out which product is the worst and retire it
 			let worstproduct = products.reduce((min, prod) => min.dmd < prod.dmd ? min : prod);
 			ns.corporation.discontinueProduct(division.name, worstproduct.name);
 
@@ -29,7 +40,5 @@ export async function main(ns) {
 			let cityindex = Math.floor(Math.random() * cities.length);
 			ns.corporation.makeProduct(division.name, cities[cityindex], newproductname, 1e9, 1e9);
 		}
-
-		setta(ns);
 	}
 }

@@ -55,20 +55,27 @@ export async function assignemployees(ns, divisionarg, cityarg, employeesarg) {
 	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Engineer', operationsemployees);
 	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Business', operationsemployees);
 	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Management', operationsemployees);
-	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Research & Development', (researchemployees + remainder));	
+	await ns.corporation.setAutoJobAssignment(divisionarg, cityarg, 'Research & Development', (researchemployees + remainder));
 }
 
 
 /** @param {NS} ns **/
-export function setta(ns) {
-	let divisions = getdivisions(ns);
-
+export function settaon(ns, division) {
 	// enable market TA for products
-	for (const division of divisions) {
-		let products = getproducts(ns, division.name)
-		for (const product of products) {
-			ns.corporation.setProductMarketTA1(division.name, product.name, 'on');
-			ns.corporation.setProductMarketTA2(division.name, product.name, 'on');
-		}
+	let products = getproducts(ns, division)
+	for (const product of products) {
+		ns.corporation.setProductMarketTA1(division, product.name, 'on');
+		ns.corporation.setProductMarketTA2(division, product.name, 'on');
+	}
+}
+
+
+/** @param {NS} ns **/
+export function settaoff(ns, division) {
+	// enable market TA for products
+	let products = getproducts(ns, division)
+	for (const product of products) {
+		ns.corporation.setProductMarketTA1(division, product.name, 'off');
+		ns.corporation.setProductMarketTA2(division, product.name, 'off');
 	}
 }

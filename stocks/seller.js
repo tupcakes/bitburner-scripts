@@ -17,18 +17,20 @@ export async function main(ns) {
 
 		for (const stock of stocks) {
 			let position = ns.stock.getPosition(stock.sym);
-			let sellprice = position[1] + (position[1] * .25);
+			let sellthresh = position[1] + (position[1] * .10);
 			let avg = (stock.high + stock.low) / 2;
-			// let sellprice = avg + (avg * .05);
+			// let sellthresh = avg + (avg * .05);
 
 			// check if we have shares in the stock.  if so check if price is good to sell.
-			if (ns.stock.getPosition(stock.sym)[0] !== 0) {
-				if (ns.stock.getPrice(stock.sym) >= sellprice) {
-					let selltimeprice = ns.stock.sell(stock.sym, ns.stock.getPosition(stock.sym)[0]);
-					ns.print(stock.sym + ":selling:   " + "@" + dollarUS.format(selltimeprice.toFixed(2)));
-					ns.print(stock.sym + ":sellprice: " + dollarUS.format(sellprice.toFixed(2)));
-					ns.print(stock.sym + ":High/low:  " + dollarUS.format(stock.high.toFixed(2)) + "/" + dollarUS.format(stock.low.toFixed(2)));
-					ns.print(stock.sym + ":PAverage:  " + dollarUS.format(position[1].toFixed(2)));
+			if (position[0] !== 0) {
+				if (ns.stock.getPrice(stock.sym) >= sellthresh) {
+					let selltimeprice = ns.stock.sell(stock.sym, position[0]);
+					let profit = (position[0] * selltimeprice) - (position[0] * position[1])
+					ns.print(stock.sym + ":selling:    " + position[0] + "@" + dollarUS.format(selltimeprice.toFixed(2)));
+					ns.print(stock.sym + ":sellthresh: " + dollarUS.format(sellthresh.toFixed(2)));
+					ns.print(stock.sym + ":High/low:   " + dollarUS.format(stock.high.toFixed(2)) + "/" + dollarUS.format(stock.low.toFixed(2)));
+					ns.print(stock.sym + ":PAverage:   " + dollarUS.format(position[1].toFixed(2)));
+					ns.print(stock.sym + ":Profit:     " + dollarUS.format(profit.toFixed(2)));
 				}
 			}
 		}

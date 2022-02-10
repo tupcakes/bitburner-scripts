@@ -18,14 +18,6 @@ export async function main(ns) {
 	let pservs = ns.getPurchasedServers();
 	let maxpservs = (pservs.length * 2) - 1;
 
-	if (pservs.length === 0) {
-		ns.tprint("Need pservs.");
-		return;
-	}
-	// if (ns.getServerMaxRam('home') < 256) {
-	// 	ns.tprint("Home needs more ram.");
-	// 	return;
-	// }
 
 	while (true) {
 		await ns.sleep(20);
@@ -38,7 +30,11 @@ export async function main(ns) {
 				// first kill any weaken scripts
 				ns.kill("/stocks/weaken-stocks.js", 'home', targets[i].server);
 				if (ns.hasRootAccess(targets[i].server) === true) {
-					ns.run("/stocks/grow-stocks.js", 1, targets[i].server);
+					if (pservs.length > 0) {
+						ns.run("/stocks/grow-stocks.js", 1, targets[i].server);
+					} else {
+
+					}
 				}
 			}
 
@@ -47,7 +43,11 @@ export async function main(ns) {
 				// first kill any grow scripts
 				ns.kill("/stocks/grow-stocks.js", 'home', targets[i].server);
 				if (ns.hasRootAccess(targets[i].server) === true) {
-					ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
+					if (pservs.length > 0) {
+						ns.run("/stocks/weaken-stocks.js", 1, targets[i].server);
+					} else {
+
+					}
 				}
 			}
 		}

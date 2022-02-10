@@ -1,16 +1,22 @@
 /** @param {NS} ns **/
-export async function lowerprice(ns, targetserver, targetsymbol, targetprice) {
+export async function lowerprice(ns, targetserver, targetsymbol) {
 	let weakenram = ns.getScriptRam("/helpers/weakenstock.js");
 	let hackram = ns.getScriptRam("/helpers/hackstock.js");
 	let controllerram = ns.getScriptRam("/stocks/stock-controller.js");
+	let sellerram = ns.getScriptRam("/stocks/seller.js");
+	let buyerram = ns.getScriptRam("/stocks/buyer.js");
+	let dashram = ns.getScriptRam("/stocks/dash-stocks.js");
+	let mainpram = ns.getScriptRam("/stocks/simple-manip.js");
+	let rootallram = ns.getScriptRam("root-all.js");
+	let ramoverhead = (sellerram + + buyerram + controllerram + dashram + mainpram + rootallram) - 2;
 
-	let weakenthreads = parseInt((ns.getServerMaxRam('home') - controllerram - 5) / weakenram);
-	let hackthreads = parseInt((ns.getServerMaxRam('home') - controllerram - 5) / hackram);
+	let weakenthreads = parseInt(((ns.getServerMaxRam('home') - ramoverhead) / weakenram) / 2);
+	let hackthreads = parseInt(((ns.getServerMaxRam('home') - ramoverhead) / hackram) / 2);
 
 	let timeoffset = 500;
 	let hacktime = 0;
 
-	while (ns.stock.getPrice(targetsymbol) > targetprice) {
+	while (ns.stock.getPosition(targetsymbol)[0] > 0) {
 		await ns.sleep(20);
 
 		let weakentime = ns.getWeakenTime(targetserver) + timeoffset;
@@ -26,20 +32,27 @@ export async function lowerprice(ns, targetserver, targetsymbol, targetprice) {
 
 
 /** @param {NS} ns **/
-export async function raiseprice(ns, targetserver, targetsymbol, targetprice) {
+export async function raiseprice(ns, targetserver, targetsymbol) {
 	let weakenram = ns.getScriptRam("/helpers/weaken1.js");
 	let growram = ns.getScriptRam("/helpers/growstock.js");
 	let hackram = ns.getScriptRam("/helpers/hack.js");
 	let controllerram = ns.getScriptRam("/stocks/stock-controller.js");
+	let sellerram = ns.getScriptRam("/stocks/seller.js");
+	let buyerram = ns.getScriptRam("/stocks/buyer.js");
+	let dashram = ns.getScriptRam("/stocks/dash-stocks.js");
+	let mainpram = ns.getScriptRam("/stocks/simple-manip.js");
+	let rootallram = ns.getScriptRam("root-all.js");
+	let ramoverhead = (sellerram + + buyerram + controllerram + dashram + mainpram + rootallram) - 2;
 
-	let weakenthreads = parseInt((ns.getServerMaxRam('home') - controllerram - 5) / weakenram);
-	let growthreads = parseInt((ns.getServerMaxRam('home') - controllerram - 5) / growram);
-	let hackthreads = parseInt((ns.getServerMaxRam('home') - controllerram - 5) / hackram);
+	let weakenthreads = parseInt(((ns.getServerMaxRam('home') - ramoverhead) / weakenram) / 2);
+	let growthreads = parseInt(((ns.getServerMaxRam('home') - ramoverhead) / growram) / 2);
+	let hackthreads = parseInt(((ns.getServerMaxRam('home') - ramoverhead) / hackram) / 2);
 
 	let timeoffset = 500;
 	let weakentime = 0;
 
-	while (ns.stock.getPrice(targetsymbol) < targetprice) {
+
+	while (ns.stock.getPosition(targetsymbol)[0] !== 0) {
 		await ns.sleep(20);
 
 		weakentime = ns.getWeakenTime(targetserver) + timeoffset;
@@ -52,15 +65,23 @@ export async function raiseprice(ns, targetserver, targetsymbol, targetprice) {
 		ns.run('/helpers/growstock.js', growthreads, targetserver, 0);
 		await ns.sleep(growtime);
 
-		ns.run('/helpers/weaken2.js', weakenthreads, targetserver, 0);
-		await ns.sleep(weakentime);
+		// ns.run('/helpers/weaken2.js', weakenthreads, targetserver, 0);
+		// await ns.sleep(weakentime);
 
-		ns.run('/helpers/hack.js', hackthreads, targetserver, 0);
-		await ns.sleep(hacktime);
+		// ns.run('/helpers/hack.js', hackthreads, targetserver, 0);
+		// await ns.sleep(hacktime);
 	}
 }
 
 
+/** @param {NS} ns **/
+export async function lowerpricepserv(ns, target, targetsymbol, targetprice) {
+}
+
+
+/** @param {NS} ns **/
+export async function raisepricepserv(ns, target, targetsymbol, targetprice) {
+}
 
 
 
@@ -84,6 +105,7 @@ export async function lowerpricedist(ns, target, targetsymbol, targetprice) {
 	// multipliers - ADJUST THIS
 	let weakenmultiplier = .2;
 	let growmultiplier = 1.15;
+	let hackmultiplier = 1.8;
 	let moneymultiplier = .20;
 
 
@@ -133,12 +155,15 @@ export async function lowerpricedist(ns, target, targetsymbol, targetprice) {
 		let maxnumthreads = Math.floor((totalram - scriptram) / scriptram);
 
 
-		let reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
-		// hackthreads returned a value less than 1
-		if (target == 'n00dles') {
-			reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
-		}
-		let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * reqhackthreads;
+		// let reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) * moneymultiplier)));
+		// // hackthreads returned a value less than 1
+		// if (target == 'n00dles') {
+		// 	reqhackthreads = Math.max(1, ns.hackAnalyzeThreads(target, (ns.getServerMaxMoney(target) - 70000)));
+		// }
+		
+		let reqhackthreads = Math.ceil(maxnumthreads * hackmultiplier);
+
+		let moneyperhack = (ns.getServerMaxMoney(target) * ns.hackAnalyze(target)) * reqhackthreads;		
 		let remaininghackthreads = Math.ceil(reqhackthreads);
 
 
@@ -154,7 +179,8 @@ export async function lowerpricedist(ns, target, targetsymbol, targetprice) {
 		ns.print(Math.floor(Math.random() * 1000));
 
 
-		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
+		// if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
+		if (ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			usableserversthreadsavailable = 0;
 			hacktime = ns.getHackTime(target);
 			for (let i = 0; i < usableservers.length; ++i) {
@@ -200,14 +226,14 @@ export async function lowerpricedist(ns, target, targetsymbol, targetprice) {
 			let reqgrowthreads = Math.ceil(maxnumthreads * growmultiplier);
 
 
-
 			let remainingfirstweakenthreads = Math.ceil(reqweakenthreads);
 			let remaininggrowthreads = Math.ceil(reqgrowthreads);
 			let remainingsecondweakenthreads = Math.ceil(reqweakenthreads);
 
 
 			// first weaken
-			if (firstweakenrunning === false && growrunning === false && secondweakenrunning === false) {
+			//if (firstweakenrunning === false && growrunning === false && secondweakenrunning === false) {
+			if (firstweakenrunning === false) {
 				usableserversthreadsavailable = 0;
 				for (let i = 0; i < usableservers.length; ++i) {
 					await ns.sleep(20);
@@ -241,75 +267,75 @@ export async function lowerpricedist(ns, target, targetsymbol, targetprice) {
 				firstweakenrunning = true;
 			}
 
-			// grow
-			if (firstweakenrunning === true && growrunning === false && secondweakenrunning === false) {
-				usableserversthreadsavailable = 0;
-				for (let i = 0; i < usableservers.length; ++i) {
-					await ns.sleep(20);
+			// // grow
+			// if (firstweakenrunning === true && growrunning === false && secondweakenrunning === false) {
+			// 	usableserversthreadsavailable = 0;
+			// 	for (let i = 0; i < usableservers.length; ++i) {
+			// 		await ns.sleep(20);
 
-					// get usable ram and determine 
-					usableserversfreeram = ns.getServerMaxRam(usableservers[i]) - ns.getServerUsedRam(usableservers[i]);
-					usableserversthreadsavailable = Math.ceil(usableserversfreeram / growscriptram) - 2;
-					if (usableserversthreadsavailable === 0) {
-						continue;
-					}
-					if (remaininggrowthreads === 0) {
-						break;
-					}
+			// 		// get usable ram and determine 
+			// 		usableserversfreeram = ns.getServerMaxRam(usableservers[i]) - ns.getServerUsedRam(usableservers[i]);
+			// 		usableserversthreadsavailable = Math.ceil(usableserversfreeram / growscriptram) - 2;
+			// 		if (usableserversthreadsavailable === 0) {
+			// 			continue;
+			// 		}
+			// 		if (remaininggrowthreads === 0) {
+			// 			break;
+			// 		}
 
-					// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
-					// threads.
-					if (usableserversthreadsavailable > remaininggrowthreads) {
-						pid = ns.exec("/helpers/grow.js", usableservers[i], remaininggrowthreads, target, (weakentime + hacktime));
-						growtime = ns.getGrowTime(target) + sleepoffset;
-						break;
-					} else {
-						pid = ns.exec("/helpers/grow.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime));
-						remaininggrowthreads = remaininggrowthreads - usableserversthreadsavailable;
-					}
+			// 		// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
+			// 		// threads.
+			// 		if (usableserversthreadsavailable > remaininggrowthreads) {
+			// 			pid = ns.exec("/helpers/grow.js", usableservers[i], remaininggrowthreads, target, (weakentime + hacktime));
+			// 			growtime = ns.getGrowTime(target) + sleepoffset;
+			// 			break;
+			// 		} else {
+			// 			pid = ns.exec("/helpers/grow.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime));
+			// 			remaininggrowthreads = remaininggrowthreads - usableserversthreadsavailable;
+			// 		}
 
-					// if batch is running go to the next host
-					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime)) === false) {
-						continue;
-					}
-				}
-				growrunning = true;
-			}
+			// 		// if batch is running go to the next host
+			// 		if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime)) === false) {
+			// 			continue;
+			// 		}
+			// 	}
+			// 	growrunning = true;
+			// }
 
-			// second weaken
-			if (firstweakenrunning === true && growrunning === true && secondweakenrunning === false) {
-				usableserversthreadsavailable = 0;
-				for (let i = 0; i < usableservers.length; ++i) {
-					await ns.sleep(20);
+			// // second weaken
+			// if (firstweakenrunning === true && growrunning === true && secondweakenrunning === false) {
+			// 	usableserversthreadsavailable = 0;
+			// 	for (let i = 0; i < usableservers.length; ++i) {
+			// 		await ns.sleep(20);
 
-					// get usable ram and determine 
-					usableserversfreeram = ns.getServerMaxRam(usableservers[i]) - ns.getServerUsedRam(usableservers[i]);
-					usableserversthreadsavailable = Math.ceil(usableserversfreeram / weakenscriptram) - 2;
-					if (usableserversthreadsavailable === 0) {
-						continue;
-					}
-					if (remainingsecondweakenthreads === 0) {
-						break;
-					}
+			// 		// get usable ram and determine 
+			// 		usableserversfreeram = ns.getServerMaxRam(usableservers[i]) - ns.getServerUsedRam(usableservers[i]);
+			// 		usableserversthreadsavailable = Math.ceil(usableserversfreeram / weakenscriptram) - 2;
+			// 		if (usableserversthreadsavailable === 0) {
+			// 			continue;
+			// 		}
+			// 		if (remainingsecondweakenthreads === 0) {
+			// 			break;
+			// 		}
 
-					// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
-					// threads.
-					if (usableserversthreadsavailable > remainingsecondweakenthreads) {
-						pid = ns.exec("/helpers/weaken2stock.js", usableservers[i], remainingsecondweakenthreads, target, (weakentime + hacktime + growtime));
-						weakentime = ns.getWeakenTime(target) + sleepoffset;
-						break;
-					} else {
-						pid = ns.exec("/helpers/weaken2stock.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime));
-						remainingsecondweakenthreads = remainingsecondweakenthreads - usableserversthreadsavailable;
-					}
+			// 		// if remaining threads is less than the host can run, do the last exec. otherwise run with max available
+			// 		// threads.
+			// 		if (usableserversthreadsavailable > remainingsecondweakenthreads) {
+			// 			pid = ns.exec("/helpers/weaken2stock.js", usableservers[i], remainingsecondweakenthreads, target, (weakentime + hacktime + growtime));
+			// 			weakentime = ns.getWeakenTime(target) + sleepoffset;
+			// 			break;
+			// 		} else {
+			// 			pid = ns.exec("/helpers/weaken2stock.js", usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime));
+			// 			remainingsecondweakenthreads = remainingsecondweakenthreads - usableserversthreadsavailable;
+			// 		}
 
-					// if batch is running go to the next host
-					if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime)) === false) {
-						continue;
-					}
-				}
-				secondweakenrunning = true;
-			}
+			// 		// if batch is running go to the next host
+			// 		if (ns.isRunning(pid, usableservers[i], usableserversthreadsavailable, target, (weakentime + hacktime + growtime)) === false) {
+			// 			continue;
+			// 		}
+			// 	}
+			// 	secondweakenrunning = true;
+			// }
 
 			ns.print("Big sleep for " + (weakentime + growtime + sleepoffset) + " ms");
 			await ns.sleep(weakentime + growtime + sleepoffset);
@@ -338,8 +364,8 @@ export async function raisepricedist(ns, target, targetsymbol, targetprice) {
 	let rootableservers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
 	// multipliers - ADJUST THIS
-	let weakenmultiplier = .2;
-	let growmultiplier = 1.8;
+	let weakenmultiplier = .1;
+	let growmultiplier = 1.9;
 
 
 	let sleepoffset = 2000;
@@ -356,7 +382,8 @@ export async function raisepricedist(ns, target, targetsymbol, targetprice) {
 	let pid = null;
 
 
-	while (ns.stock.getPrice(targetsymbol) < targetprice) {
+	//while (ns.stock.getPrice(targetsymbol) < targetprice) {
+	while (ns.getServerMoneyAvailable(target) !== ns.getServerMaxMoney(target)) {
 		await ns.sleep(20);
 
 		// build list of usable servers

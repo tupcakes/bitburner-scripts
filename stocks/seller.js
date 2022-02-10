@@ -17,7 +17,7 @@ export async function main(ns) {
 
 		for (const stock of stocks) {
 			let position = ns.stock.getPosition(stock.sym);
-			let sellthresh = position[1] + (position[1] * .10);
+			let sellthresh = position[1] + (position[1] * .15);
 			let avg = (stock.high + stock.low) / 2;
 			// let sellthresh = avg + (avg * .05);
 

@@ -8,6 +8,7 @@ export async function main(ns) {
 
 		// wait for pricetracker to generate some data
 		await ns.sleep(120000);
+		// buyer and seller do basic long market order trading
 		ns.run('/stocks/seller.js');
 		ns.run('/stocks/buyer.js');
 	}

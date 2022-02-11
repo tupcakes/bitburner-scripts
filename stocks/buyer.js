@@ -11,10 +11,10 @@ export async function main(ns) {
 		maximumFractionDigits: 0,
 	});
 
-	let shares = 750;
+	let shares = 1000;
 
 	while (true) {
-		await ns.sleep(10000);
+		await ns.sleep(20);
 		let stocks = JSON.parse(ns.read("/stocks/stocks.json.txt"));
 
 		for (const stock of stocks) {

@@ -6,8 +6,11 @@ export async function main(ns) {
 	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"]
 	let divisions = getdivisions(ns);
 
-	// assign employees to jobs
 	for (const division of divisions) {
+		// enable TA on products
+		settaon(ns, division.name);
+
+		// assign employees to jobs
 		for (const city of cities) {
 			// get total possible employees for the city
 			let officesize = ns.corporation.getOffice(division.name, city).size;

@@ -7,8 +7,8 @@ export async function main(ns) {
 	let divisions = getdivisions(ns);
 
 	for (const division of divisions) {
-		// enable TA on products
-		settaon(ns, division.name);
+		// // enable TA on products
+		// settaon(ns, division.name);
 
 		// assign employees to jobs
 		for (const city of cities) {

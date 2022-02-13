@@ -33,41 +33,53 @@ export function getSum(numbers) {
 
 /** @param {NS} ns **/
 export function getdirection(ns, stock) {
+	let sum = 0;
+	let avg = 0;
+	let sample = 10;
+	for (let i = 0; i < sample; i++) {
+		sum += stock.pricehist[i];
+	}
+	avg = sum / sample;
+
 	// percentage of change - decimal
 	let volatility = getNormalizedStandardDeviation(stock.pricehist);
 	// Probability that the specified stock’s price will increase (as opposed to decrease) during the next tick.
 
 
 	// increasing price
-	if (stock.pricehist[0] > stock.pricehist[9] && volatility > 0 && volatility < .004) {
+	// if (stock.pricehist[0] > stock.pricehist[9] && volatility > 0 && volatility < .004) {
+	if (ns.stock.getPrice(stock.sym) > avg && volatility > 0 && volatility < .004) {
 		return '+';
 	}
-	if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .004 && volatility < .006) {
+	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .004 && volatility < .006) {
+	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .004 && volatility < .006) {
 		return '++';
 	}
-	if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .006 && volatility < .01) {
+	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .006 && volatility < .01) {
+	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .006 && volatility < .01) {
 		return '+++';
 	}
-	if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .01) {
+	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .01) {
+	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .01) {
 		return '++++';
 	}
 
 	// decreasing price
-	if (stock.pricehist[0] < stock.pricehist[9] && volatility > 0 && volatility < .004) {
+	if (ns.stock.getPrice(stock.sym) < avg && volatility > 0 && volatility < .004) {
 		return '-';
 	}
-	if (stock.pricehist[0] < stock.pricehist[9] && volatility >= .004 && volatility < .006) {
+	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .004 && volatility < .006) {
 		return '--';
 	}
-	if (stock.pricehist[0] < stock.pricehist[9] && volatility >= .006 && volatility < .01) {
+	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .006 && volatility < .01) {
 		return '---';
 	}
-	if (stock.pricehist[0] < stock.pricehist[9] && volatility >= .01) {
+	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .01) {
 		return '----';
 	}
 
-	// no change - not likely
-	if (stock.pricehist[0] === stock.pricehist[9]) {
+	// no change
+	if (ns.stock.getPrice(stock.sym) === avg) {
 		return '=';
 	}
 }

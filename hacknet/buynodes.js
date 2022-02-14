@@ -19,17 +19,13 @@ export async function main(ns) {
 
 		// if node stats aren't at max attempt upgrade
 		for (let i = 0; i < ns.hacknet.numNodes(); i++) {
-			if (ns.hacknet.getNodeStats(i).level < 200) { // level - max 200
+			if (ns.gang.getGangInformation().territory < .99) {
 				ns.hacknet.upgradeLevel(i, 1);
-			}
-			if (ns.hacknet.getNodeStats(i).ram < 64) { // ram - max 64
 				ns.hacknet.upgradeRam(i, 1);
-			}
-			if (ns.hacknet.getNodeStats(i).cores < 16) {// cores - max 16
 				ns.hacknet.upgradeCore(i, 1);
-			}
-			if (ns.hacknet.getNodeStats(i).cache < 4) {// cache - max ?
 				ns.hacknet.upgradeCache(i, 1);
+			} else {
+				ns.hacknet.upgradeRam(i, 1);
 			}
 		}
 

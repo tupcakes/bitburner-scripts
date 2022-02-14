@@ -8,11 +8,12 @@ export async function main(ns) {
 	ns.run("hudstart.js");
 
 	// ns.run("/buy/hacknet.js");
+	ns.run("/hacknet/buynodes.js");
 
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	// start if we are winning the war
-	if (ns.gang.getGangInformation().territory >= .75) {
+	if (ns.gang.getGangInformation().territory >= .99) {
 		ns.run("pserv-controller.js");
 		let pservram = 0;
 		if (pservs.length === 0) {

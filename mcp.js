@@ -41,6 +41,9 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(100);
 
+		// if cache is getting full buy something
+		ns.hacknet.spendHashes('Sell for Money');
+
 		getportopeners(ns);
 
 		// make sure critical scripts are running if they should be
@@ -78,7 +81,7 @@ export async function main(ns) {
 
 		// check if ready to install augments and reset
 		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
-		if (pendingaugs >= 4) {
+		if (pendingaugs >= 4 && ns.gang.inGang()) {
 			ns.run("reset.js");
 		}
 

@@ -17,6 +17,7 @@ export async function main(ns) {
 
 		let totalinvested = 0;
 		let totalworth = 0;
+		let prctchange = 0;
 
 		let symbols = ns.stock.getSymbols();
 
@@ -28,10 +29,14 @@ export async function main(ns) {
 			}
 		}
 
+		prctchange = ((totalworth + ns.getServerMoneyAvailable('home') - startingmoney) / startingmoney) * 100;
+
 		ns.print("Staring Money    " + dollarUS.format(startingmoney));
 		ns.print("Total Inv:       " + dollarUS.format(totalinvested));
 		ns.print("Total Inv Worth: " + dollarUS.format(totalworth));
 		ns.print("Total Assets:    " + dollarUS.format(totalworth + ns.getServerMoneyAvailable('home')));
+		ns.print("% Change:        " + prctchange.toFixed(2));
+
 		ns.print(Math.floor(Math.random() * 1000));
 	}
 }

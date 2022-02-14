@@ -32,19 +32,23 @@ export async function main(ns) {
 				if (ns.sleeve.getSleeveStats(i).shock > 0) {
 					continue mainloop;
 				}
-				// let choices = getcrimerisk(ns, i);
-				// let bestcrime = getbestcrime(ns, choices);
-				// if (task.crime !== bestcrime[0]) {
-				// 	ns.sleeve.setToCommitCrime(i, bestcrime[0]);
-				// }
 
-
+				// if we are member of the covenant, work for them and assign rest to mugging for xp
+				// if not a member just have everyone do mugging 
 				if (ns.getPlayer().factions.includes('The Covenant')) {
-					if (task.factionWorkType !== 'Hacking Contracts') {
-						ns.sleeve.setToFactionWork(i, 'The Covenant', 'Hacking Contracts');
+					if (task.factionWorkType !== 'Hacking Contracts' && i === 0) {
+						ns.sleeve.setToFactionWork(0, 'The Covenant', 'Hacking Contracts');
+					} else {
+						if (task.crime !== 'Mug') {
+							ns.sleeve.setToCommitCrime(i, 'Mug');
+						}
 					}
 				} else if (task.crime !== 'Mug') {
 					ns.sleeve.setToCommitCrime(i, 'Mug');
+				}
+
+				for (const aug of ns.sleeve.getSleevePurchasableAugs(i)) {
+					ns.sleeve.purchaseSleeveAug(i, aug.name);
 				}
 			}
 		}

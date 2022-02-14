@@ -19,17 +19,21 @@ export async function main(ns) {
 
 		// if node stats aren't at max attempt upgrade
 		for (let i = 0; i < ns.hacknet.numNodes(); i++) {
-			if (ns.gang.getGangInformation().territory < .99) {
+			// if (ns.gang.getGangInformation().territory < .99) {
 				ns.hacknet.upgradeLevel(i, 1);
 				ns.hacknet.upgradeRam(i, 1);
 				ns.hacknet.upgradeCore(i, 1);
-				ns.hacknet.upgradeCache(i, 1);
-			} else {
-				ns.hacknet.upgradeRam(i, 1);
-			}
+			 	ns.hacknet.upgradeCache(i, 1);
+			// } else {
+			// 	ns.hacknet.upgradeRam(i, 1);
+			// }
 		}
 
 		// if cache is getting full buy something
-		ns.hacknet.spendHashes('Sell for Money');
+		if (ns.getPlayer().hasCorporation) {
+			ns.hacknet.spendHashes('Sell for Corporation Funds');	
+		} else {
+			ns.hacknet.spendHashes('Sell for Money');
+		}
 	}
 }

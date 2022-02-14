@@ -14,7 +14,9 @@ export async function main(ns) {
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	// start if we are winning the war
 	if (ns.gang.getGangInformation().territory >= .99) {
-		ns.run("pserv-controller.js");
+		if (ns.getPurchasedServerLimit() > 0) {
+			ns.run("pserv-controller.js");
+		}
 		let pservram = 0;
 		if (pservs.length === 0) {
 			pservram = ns.getServerMaxRam('home');
@@ -47,6 +49,6 @@ export async function main(ns) {
 
 
 	if (ns.getPlayer().hasCorporation === true && ns.getServerMaxRam('home') >= 2048) {
-		ns.run("/corps/control-corp.js");
+		//ns.run("/corps/control-corp.js");
 	}
 }

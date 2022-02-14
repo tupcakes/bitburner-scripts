@@ -33,11 +33,11 @@ export async function main(ns) {
 					continue mainloop;
 				}
 
-				// if we are member of the covenant, work for them and assign rest to mugging for xp
+				// if we are member of daedalus, work for them and assign rest to mugging for xp
 				// if not a member just have everyone do mugging 
-				if (ns.getPlayer().factions.includes('The Covenant')) {
-					if (task.factionWorkType !== 'Hacking Contracts' && i === 0) {
-						ns.sleeve.setToFactionWork(0, 'The Covenant', 'Hacking Contracts');
+				if (ns.getPlayer().factions.includes('Daedalus')) {
+					if (task.factionWorkType !== 'Field Work' && i === 0) {
+						ns.sleeve.setToFactionWork(0, 'Daedalus', 'Field Work');
 					} else {
 						if (task.crime !== 'Mug') {
 							ns.sleeve.setToCommitCrime(i, 'Mug');

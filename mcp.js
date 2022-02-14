@@ -42,7 +42,11 @@ export async function main(ns) {
 		await ns.sleep(100);
 
 		// if cache is getting full buy something
-		ns.hacknet.spendHashes('Sell for Money');
+		if (ns.getPlayer().hasCorporation) {
+			ns.hacknet.spendHashes('Sell for Corporation Funds');	
+		} else {
+			ns.hacknet.spendHashes('Sell for Money');
+		}
 
 		getportopeners(ns);
 

@@ -5,14 +5,14 @@ import { getcrimerisk, getbestcrime, getsleevecrimechance } from "/libraries/sle
 export async function main(ns) {
 	mainloop:
 	while (true) {
-		await ns.sleep(200);
+		await ns.sleep(20);
 
 		let sleeves = ns.sleeve.getNumSleeves();
 
 		// recover - once gang is up and running
 		if (ns.gang.inGang() === true) {
 			for (let i = 0; i < sleeves; i++) {
-				while (ns.sleeve.getSleeveStats(i).shock > 0 && ns.isBusy() === false) {
+				if (ns.sleeve.getSleeveStats(i).shock > 0) {
 					ns.sleeve.setToShockRecovery(i);
 				}
 			}

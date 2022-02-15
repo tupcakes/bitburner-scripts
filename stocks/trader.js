@@ -33,7 +33,9 @@ export function getSum(numbers) {
 
 /** @param {NS} ns **/
 export function getdirection(ns, stock) {
-	let avg = movingaverage(ns, stock);
+	let smallavg = movingaverage(ns, stock, 10);
+	let medavg = movingaverage(ns, stock, 20);
+	let largeavg = movingaverage(ns, stock, 30);
 
 	// percentage of change - decimal
 	let volatility = getNormalizedStandardDeviation(stock.pricehist);
@@ -41,60 +43,66 @@ export function getdirection(ns, stock) {
 
 
 	// increasing price
-	// if (stock.pricehist[0] > stock.pricehist[9] && volatility > 0 && volatility < .004) {
-	if (ns.stock.getPrice(stock.sym) > avg && volatility > 0 && volatility < .004) {
-		return '+';
-	}
-	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .004 && volatility < .006) {
-	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .004 && volatility < .006) {
-		return '++';
-	}
-	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .006 && volatility < .01) {
-	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .006 && volatility < .01) {
+	// if (ns.stock.getPrice(stock.sym) > avg && volatility > 0 && volatility < .004) {
+	if (largeavg > medavg) {
 		return '+++';
 	}
-	// if (stock.pricehist[0] > stock.pricehist[9] && volatility >= .01) {
-	if (ns.stock.getPrice(stock.sym) > avg && volatility >= .01) {
-		return '++++';
+	// if (ns.stock.getPrice(stock.sym) > avg && volatility >= .004 && volatility < .006) {
+	//if (ns.stock.getPrice(stock.sym) > medavg) {
+	if (medavg > smallavg) {
+		return '++';
 	}
+	// if (ns.stock.getPrice(stock.sym) > avg && volatility >= .006 && volatility < .01) {
+	// if (ns.stock.getPrice(stock.sym) > largeavg) {
+	if (ns.stock.getPrice(stock.sym) > smallavg) {
+		return '+';
+	}
+	// if (ns.stock.getPrice(stock.sym) > avg && volatility >= .01) {
+	// 	return '++++';
+	// }
 
 	// decreasing price
-	if (ns.stock.getPrice(stock.sym) < avg && volatility > 0 && volatility < .004) {
+	// if (ns.stock.getPrice(stock.sym) < avg && volatility > 0 && volatility < .004) {
+	if (largeavg < medavg) {
 		return '-';
 	}
-	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .004 && volatility < .006) {
+	// if (ns.stock.getPrice(stock.sym) < avg && volatility >= .004 && volatility < .006) {
+	// if (ns.stock.getPrice(stock.sym) < medavg) {
+	if (medavg < smallavg) {
 		return '--';
 	}
-	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .006 && volatility < .01) {
-		return '---';
+	// if (ns.stock.getPrice(stock.sym) < avg && volatility >= .006 && volatility < .01) {
+	// if (ns.stock.getPrice(stock.sym) < largeavg) {
+	if (ns.stock.getPrice(stock.sym) < smallavg) {
+		return '-';
 	}
-	if (ns.stock.getPrice(stock.sym) < avg && volatility >= .01) {
-		return '----';
-	}
+	// if (ns.stock.getPrice(stock.sym) < avg && volatility >= .01) {
+	// 	return '----';
+	// }
 
 	// no change
-	if (ns.stock.getPrice(stock.sym) === avg) {
-		return '=';
-	}
+	return '=';
 }
 
 
-export function movingaverage(ns, stock) {
+export function movingaverage(ns, stock, samplesize) {
 	let sum = 0;
 	let avg = 0;
-	let sample = 20;
-	for (let i = 0; i < sample; i++) {
+	for (let i = 0; i < samplesize; i++) {
 		sum += stock.pricehist[i];
 	}
-	avg = sum / sample;
+	avg = sum / samplesize;
 	return avg;
 }
+
 
 
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.tail();
 	ns.disableLog('ALL');
+
+	let shortenabled = true;
 
 	let dollarUS = Intl.NumberFormat("en-US", {
 		style: "currency",
@@ -116,6 +124,7 @@ export async function main(ns) {
 		lookback.push(stock);
 	}
 
+
 	while (true) {
 		await ns.sleep(4200);
 
@@ -123,8 +132,7 @@ export async function main(ns) {
 		for (let i = 0; i < lookback.length; i++) {
 			let position = ns.stock.getPosition(lookback[i].sym);
 			let spread = ns.stock.getAskPrice(lookback[i].sym) - ns.stock.getBidPrice(lookback[i].sym);
-			let shares = 1000;
-			let history = 40; // I've heard 40 is a good size for using std dev
+			let history = 30; // I've heard 40 is a good size for using std dev
 			let stocks = JSON.parse(ns.read("/stocks/stocks.json.txt"));
 
 			// add current price to price history
@@ -153,12 +161,15 @@ export async function main(ns) {
 
 			let volatility = getNormalizedStandardDeviation(lookback[i].pricehist);
 
+
+
 			let d = new Date();
 			d.toLocaleTimeString();
 
 
+			// sell - long
 			if (position[0] > 0) {
-				let avg = movingaverage(ns, lookback[i]);
+				let avg = movingaverage(ns, lookback[i], 20);
 				let pctgain = ((ns.stock.getBidPrice(lookback[i].sym) - position[1]) / position[1]) * 100;
 
 				// is the price increase slowing, if so might be an indicator to sell
@@ -166,8 +177,9 @@ export async function main(ns) {
 				//lookback[i].pricehist
 				//lookback[i].pricechangehist
 				//lookback[i].pctchange
-				//if (lookback[i].pctchange[0] < 1 && ns.stock.getBidPrice(lookback[i].sym) <= avg && pctgain >= 0) {
-				if (ns.stock.getBidPrice(lookback[i].sym) <= avg && pctgain >= 0) {
+				// if the sell price is less than or equal too the rolling avg AND there is a gain, sell
+				// if (ns.stock.getBidPrice(lookback[i].sym) <= avg && pctgain >= 0) {
+				if ((getdirection(ns, lookback[i]) === '=' || getdirection(ns, lookback[i]) === '-' || getdirection(ns, lookback[i]) === '--' || getdirection(ns, lookback[i]) === '---')) {
 					ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Selling:    " + position[0] + " @ " + dollarUS.format(ns.stock.getBidPrice(lookback[i].sym).toFixed(2)));
 					ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Average:    " + dollarUS.format(avg));
 					ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Direction:  " + getdirection(ns, lookback[i]));
@@ -179,66 +191,38 @@ export async function main(ns) {
 					ns.stock.sell(lookback[i].sym, position[0]);
 
 				}
-
-
-
-
-
-				// let sellthreshold = (position[1] + spread);
-				// if (getdirection(ns, lookback[i]) === '+') {
-				// 	sellthreshold = (position[1] + spread) * 1.03;
-				// } else if (getdirection(ns, lookback[i]) === '++') {
-				// 	sellthreshold = (position[1] + spread) * 1.05;
-				// } else if (getdirection(ns, lookback[i]) === '+++') {
-				// 	sellthreshold = (position[1] + spread) * 1.08;
-				// } else if (getdirection(ns, lookback[i]) === '++++') {
-				// 	sellthreshold = (position[1] + spread) * 1.10;
-				// } else if (volatility > .01) {
-				// 	sellthreshold = (position[1] + spread) * 1.15;
-				// }
-
-
-				// if we have a 25% profit just sell, otherwise use threshold
-				// if (pctgain >= 25) {
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Selling:       " + position[0] + " @ " + dollarUS.format(ns.stock.getBidPrice(lookback[i].sym).toFixed(2)));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Direction:     " + getdirection(ns, lookback[i]));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " sellthreshold: " + dollarUS.format(sellthreshold));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Spread:        " + dollarUS.format(spread));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " PosPrice       " + dollarUS.format(position[1]));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Volatility:    " + volatility.toFixed(4));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " pctgain   :    " + pctgain.toFixed(2));  // this is wrong
-				// 	ns.print("---");
-				// 	ns.stock.sell(lookback[i].sym, position[0]);
-				// } else if (ns.stock.getBidPrice(lookback[i].sym) >= sellthreshold) {
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Selling:       " + position[0] + " @ " + dollarUS.format(ns.stock.getBidPrice(lookback[i].sym).toFixed(2)));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Direction:     " + getdirection(ns, lookback[i]));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " sellthreshold: " + dollarUS.format(sellthreshold));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Spread:        " + dollarUS.format(spread));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " PosPrice       " + dollarUS.format(position[1]));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Volatility:    " + volatility.toFixed(4));
-				// 	ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " pctgain   :    " + pctgain.toFixed(2));  // this is wrong
-				// 	ns.print("---");
-				// 	ns.stock.sell(lookback[i].sym, position[0]);
-				// }
 			}
 
 
-			// Idealy we want to buy stock with low price and high volotility and high forcast
-			// if volotility and forcast are high
+			// sell - short
+			if (shortenabled === true) {
+				if (position[2] > 0) {
+
+				}
+			}
+
+
+			// buy
 			if (position[0] === 0) {
-				let avg = movingaverage(ns, lookback[i]);
+				let avg = movingaverage(ns, lookback[i], 20);
 
-				// for (let j = 0; j < 5; j++) {
-				// 	if (lookback[i].pricehist[j] < avg) {
-				// 		continue stockloop;
-				// 	}
-				// }
+				// buy - long
+				let shares = 0;
+				// if (getdirection(ns, lookback[i]) === '+' && volatility > .01) {
+				if (getdirection(ns, lookback[i]) === '+') {
+					//shares = 500;
+				// } else if (getdirection(ns, lookback[i]) === '++' && volatility < .0075 && volatility >= .005) {
+				} else if (getdirection(ns, lookback[i]) === '++') {
+					shares = 1000;
+				// } else if (getdirection(ns, lookback[i]) === '+++' && volatility < .005) {
+				} else if (getdirection(ns, lookback[i]) === '+++') {
+					shares = 5000;
+				}
 
-
-				// if (ns.stock.getAskPrice(lookback[i].sym) > avg && volatility > .01) {
-				if (ns.stock.getAskPrice(lookback[i].sym) > (avg * 1.05)) {
+				// if (ns.stock.getAskPrice(lookback[i].sym) > (avg * 1.05) && shares > 0) {
+				if (shares > 0) {
 					if (ns.getServerMoneyAvailable('home') >= ns.stock.getPurchaseCost(lookback[i].sym, shares, 'Long')) {
-						ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Buying:     " + shares + "@" + dollarUS.format(ns.stock.getAskPrice(lookback[i].sym).toFixed(2)));
+						ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Buying:   " + shares + "@" + dollarUS.format(ns.stock.getAskPrice(lookback[i].sym).toFixed(2)));
 						ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Average:    " + dollarUS.format(avg));
 						ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Direction:  " + getdirection(ns, lookback[i]));
 						ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Volatility: " + volatility.toFixed(4));
@@ -247,6 +231,33 @@ export async function main(ns) {
 						ns.stock.buy(lookback[i].sym, shares);
 					}
 				}
+
+
+
+
+
+				// // buy - short
+				// if (shortenabled === true) {
+				// if (getdirection(ns, lookback[i]) === '-' && volatility > .01) {
+				// 	shares = 100;
+				// } else if (getdirection(ns, lookback[i]) === '--' && volatility < .0075 && volatility >= .005) {
+				// 	shares = 1000;
+				// } else if (getdirection(ns, lookback[i]) === '---' && volatility < .005) {
+				// 	shares = 5000;
+				// }
+
+				// if (ns.stock.getAskPrice(lookback[i].sym) < (avg * 1.05) && shares > 0) {
+				// 	if (ns.getServerMoneyAvailable('home') >= ns.stock.getPurchaseCost(lookback[i].sym, shares, 'Short')) {
+				// 		ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Shorting:   " + shares + "@" + dollarUS.format(ns.stock.getAskPrice(lookback[i].sym).toFixed(2)));
+				// 		ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Average:    " + dollarUS.format(avg));
+				// 		ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Direction:  " + getdirection(ns, lookback[i]));
+				// 		ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Volatility: " + volatility.toFixed(4));
+				// 		ns.print(d.toLocaleTimeString() + " " + lookback[i].sym + " Spread:     " + dollarUS.format(spread));
+				// 		ns.print("---");
+				// 		ns.stock.short(lookback[i].sym, shares);
+				// 	}
+				// }
+				// }
 			}
 		}
 	}

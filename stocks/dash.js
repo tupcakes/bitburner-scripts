@@ -24,8 +24,12 @@ export async function main(ns) {
 		for (const sym of symbols) {
 			let position = ns.stock.getPosition(sym);
 			if (position[0] !== 0) {
-				totalinvested = totalinvested + (ns.stock.getPosition(sym)[1] * ns.stock.getPosition(sym)[0]);
-				totalworth = totalworth + (ns.stock.getBidPrice(sym) * ns.stock.getPosition(sym)[0]);
+				totalinvested = totalinvested + (position[0] * position[1]);
+				//totalworth = totalworth + (ns.stock.getBidPrice(sym) * ns.stock.getPosition(sym)[0]);
+				totalworth = totalworth + ns.stock.getSaleGain(sym, position[0], 'Long');
+			} else if (position[2] != 0) {
+				totalinvested = totalinvested + (position[2] * position[3]);
+				totalworth = totalworth + ns.stock.getSaleGain(sym, position[2], 'Short');
 			}
 		}
 

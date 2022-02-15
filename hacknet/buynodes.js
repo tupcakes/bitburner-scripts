@@ -8,6 +8,11 @@ export async function main(ns) {
 
 		let allupgraded = false;
 
+		// if warfare has started stop buying node upgrades
+		if (ns.gang.getGangInformation().territoryWarfareEngaged) {
+			return;
+		}
+
 		// buy nodes up to limit
 		if (ns.hacknet.numNodes() < ns.hacknet.maxNumNodes()) {
 			ns.hacknet.purchaseNode();
@@ -30,8 +35,12 @@ export async function main(ns) {
 		}
 
 		// if cache is getting full buy something
-		if (ns.getPlayer().hasCorporation) {
+		// if has corp and not in warfare
+		if (ns.getPlayer().hasCorporation && ns.gang.getGangInformation().territoryWarfareEngaged === false) {
 			ns.hacknet.spendHashes('Sell for Corporation Funds');	
+			if (ns.hacknet.hashCost('Sell for Corporation Funds') > 2500) {
+				//ns.softReset('start.js');
+			}
 		} else {
 			ns.hacknet.spendHashes('Sell for Money');
 		}

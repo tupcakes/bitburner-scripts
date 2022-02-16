@@ -14,8 +14,19 @@ export async function main(ns) {
 		}
 
 		// buy nodes up to limit
-		if (ns.hacknet.numNodes() < ns.hacknet.maxNumNodes()) {
-			ns.hacknet.purchaseNode();
+		if (ns.hacknet.numNodes() < ns.hacknet.maxNumNodes() && ns.getServerMoneyAvailable('home') >= ns.hacknet.getPurchaseNodeCost()) {
+			let nodeidx = ns.hacknet.purchaseNode();
+			let nodename = ns.hacknet.getNodeStats(nodeidx).name
+			
+			// copy scripts
+            for (let i = 0; i < files.length; i++) {
+                ns.print(nodename + ": " + files[i]);
+                ns.rm(files[i], nodename);
+                // get new copies
+                await ns.scp(files[i], nodename);
+                await ns.sleep(20);
+            }
+			
 		}
 		if (ns.hacknet.numNodes() === 0) {
 			continue;

@@ -38,8 +38,39 @@ export async function main(ns) {
 
 
 	ns.stopAction();
+	mainloop:
 	while (true) {
 		await ns.sleep(100);
+
+
+		// check if ready to install augments and reset
+		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
+		if (pendingaugs >= 4 && ns.gang.inGang() && ns.gang.getGangInformation().territory > .99) {
+			let symbols = ns.stock.getSymbols();
+			for (const sym of symbols) {
+				if (ns.stock.getPosition(sym)[0] > 0 || ns.stock.getPosition(sym)[2] > 0) {
+					ns.run("/stocks/selloff.js");
+					continue mainloop;
+				}
+				ns.run("reset.js");
+			}
+		}
+
+
+		// if we won the war start trading stocks
+		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
+			ns.run('/stocks/early-stock-trader.js');
+			ns.tail('/stocks/early-stock-trader.js');
+			// ns.run('/stocks/dash.js');
+			// ns.tail('/stocks/dash.js');
+		}
+		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+			ns.run('/stocks/stock-trader.js');
+			ns.tail('/stocks/stock-trader.js');
+			// ns.run('/stocks/dash.js');
+			// ns.tail('/stocks/dash.js');
+		}
+
 
 		// buy stock api
 		if (ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
@@ -87,20 +118,9 @@ export async function main(ns) {
 		}
 
 
-		// if we won the way start trading stocks
-		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
-			ns.run('/stock/early-stock-trader.js');
-		}
-
-
 		// create programs - for int
 		//await createexes(ns);
 
-		// check if ready to install augments and reset
-		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
-		if (pendingaugs >= 4 && ns.gang.inGang() && ns.gang.getGangInformation().territory > .99) {
-			ns.run("reset.js");
-		}
 
 		// root servers
 		//   backdoor faction servers
@@ -160,6 +180,22 @@ export async function main(ns) {
 					}
 				}
 			}
+		}
+
+		
+		// if we won the war start trading stocks
+		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
+			ns.run('/stocks/early-stock-trader.js');
+			ns.tail('/stocks/early-stock-trader.js');
+			ns.run('/stocks/dash.js');
+			ns.tail('/stocks/dash.js');
+		}
+		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+			ns.print("getting here");
+			ns.run('/stocks/stock-trader.js');
+			ns.tail('/stocks/stock-trader.js');
+			ns.run('/stocks/dash.js');
+			ns.tail('/stocks/dash.js');
 		}
 	}
 }

@@ -181,21 +181,5 @@ export async function main(ns) {
 				}
 			}
 		}
-
-		
-		// if we won the war start trading stocks
-		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
-			ns.run('/stocks/early-stock-trader.js');
-			ns.tail('/stocks/early-stock-trader.js');
-			ns.run('/stocks/dash.js');
-			ns.tail('/stocks/dash.js');
-		}
-		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
-			ns.print("getting here");
-			ns.run('/stocks/stock-trader.js');
-			ns.tail('/stocks/stock-trader.js');
-			ns.run('/stocks/dash.js');
-			ns.tail('/stocks/dash.js');
-		}
 	}
 }

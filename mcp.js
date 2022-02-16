@@ -41,6 +41,12 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(100);
 
+		// buy stock api
+		if (ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
+			ns.stock.purchase4SMarketData();
+			ns.stock.purchase4SMarketDataTixApi();	
+		}
+
 		// if cache is getting full buy something
 		if (ns.getPlayer().hasCorporation) {
 			ns.hacknet.spendHashes('Sell for Corporation Funds');	
@@ -85,7 +91,7 @@ export async function main(ns) {
 
 		// check if ready to install augments and reset
 		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
-		if (pendingaugs >= 4 && ns.gang.inGang()) {
+		if (pendingaugs >= 4 && ns.gang.inGang() && ns.gang.getGangInformation().territory > .99) {
 			ns.run("reset.js");
 		}
 

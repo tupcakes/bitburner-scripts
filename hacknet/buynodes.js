@@ -3,8 +3,11 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 	//ns.enableLog('exec');
 	ns.clearLog();
+
 	while (true) {
 		await ns.sleep(20);
+		let files = ns.ls('home', ".js");
+    	files.push('server_list.txt');
 
 		let allupgraded = false;
 
@@ -26,7 +29,8 @@ export async function main(ns) {
                 await ns.scp(files[i], nodename);
                 await ns.sleep(20);
             }
-			
+			// update server list
+			ns.run('createserverlist.js');
 		}
 		if (ns.hacknet.numNodes() === 0) {
 			continue;

@@ -1,3 +1,5 @@
+//https://github.com/kamukrass/Bitburner
+
 // file: early-stock-trader.js
 
 // does not require 4s Market Data TIX API Access

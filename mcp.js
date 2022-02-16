@@ -86,6 +86,13 @@ export async function main(ns) {
 			}
 		}
 
+
+		// if we won the way start trading stocks
+		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
+			ns.run('/stock/early-stock-trader.js');
+		}
+
+
 		// create programs - for int
 		//await createexes(ns);
 

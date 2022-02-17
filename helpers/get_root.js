@@ -13,6 +13,6 @@ export async function main(ns) {
 	if (countPrograms(ns) >= ns.getServerNumPortsRequired(target)) {
 		breakPorts(ns, target);
 		ns.nuke(target);
-		copyfiles(ns, target)
+		await copyfiles(ns, target);
 	}
 }

@@ -8,6 +8,31 @@
 import { countPrograms } from "/libraries/root.js";
 import { buyaugments, getportopeners, createexes, findavailableserver } from "/libraries/utils.js";
 
+export function getserverswithram(ns) {
+	ns.run('createserverlist.js');
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+
+	// let pservs = ns.getPurchasedServers();
+	let allservers = [];
+	allservers.push("home");
+	// for (const pserv of pservs) {
+	// 	allservers.push(pserv);
+	// }
+	// only use servers with ram
+	for (const target of targets) {
+		if (target.maxram > 0) {
+			allservers.push(target.name);
+		}
+	}
+	return allservers;
+}
+
+export function getallservers(ns) {
+	ns.run('createserverlist.js');
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+	return targets;
+}
+
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -22,25 +47,15 @@ export async function main(ns) {
 		"run4theh111z",
 	];
 
-	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
-
-	let pservs = ns.getPurchasedServers();
-	let allservers = [];
-	allservers.push("home");
-	for (const pserv of pservs) {
-		allservers.push(pserv);
-	}
-	for (const target of targets) {
-		if (ns.getServerMaxRam(target.name) > 0) {
-			allservers.push(target.name);
-		}
-	}
-
 
 	ns.stopAction();
 	mainloop:
 	while (true) {
 		await ns.sleep(100);
+
+
+		let allservers = getserverswithram(ns);
+		let targets = getallservers(ns);
 
 
 		// check if ready to install augments and reset
@@ -61,26 +76,22 @@ export async function main(ns) {
 		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
 			ns.run('/stocks/early-stock-trader.js');
 			ns.tail('/stocks/early-stock-trader.js');
-			// ns.run('/stocks/dash.js');
-			// ns.tail('/stocks/dash.js');
 		}
 		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
 			ns.run('/stocks/stock-trader.js');
 			ns.tail('/stocks/stock-trader.js');
-			// ns.run('/stocks/dash.js');
-			// ns.tail('/stocks/dash.js');
 		}
 
 
 		// buy stock api
 		if (ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
 			ns.stock.purchase4SMarketData();
-			ns.stock.purchase4SMarketDataTixApi();	
+			ns.stock.purchase4SMarketDataTixApi();
 		}
 
 		// if cache is getting full buy something
 		if (ns.getPlayer().hasCorporation) {
-			ns.hacknet.spendHashes('Sell for Corporation Funds');	
+			ns.hacknet.spendHashes('Sell for Corporation Funds');
 		} else {
 			ns.hacknet.spendHashes('Sell for Money');
 		}

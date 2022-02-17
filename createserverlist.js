@@ -9,7 +9,8 @@ export async function main(ns) {
         return element.name.includes('darkweb') === false && element.name.includes('home') === false;
     });
 
-    filteredservers.sort((a, b) => a.hackinglevel - b.hackinglevel);
+    // filteredservers.sort((a, b) => a.hackinglevel - b.hackinglevel);
+    filteredservers.sort((a, b) => a.portsrequired - b.portsrequired);
 
     await ns.write('serversbyhacklvl.json', JSON.stringify(filteredservers), "w");
 }

@@ -12,7 +12,7 @@ export async function main(ns) {
 	if (ns.corporation.hasResearched(division, 'uPgrade: Capacity.I') === true) {
 		maxproducts = 4;
 	}
-	if (products.length < maxproducts) {
+	if (products.length === maxproducts) {
 		let worstproduct = products.reduce((min, prod) => min.dmd < prod.dmd ? min : prod);
 		ns.corporation.discontinueProduct(division, worstproduct.name);
 	}

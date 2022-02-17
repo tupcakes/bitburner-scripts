@@ -23,6 +23,7 @@ export function spider(ns) {
                 server.name = thisScan[j]
                 server.hackinglevel = ns.getServerRequiredHackingLevel(thisScan[j]);
                 server.maxmoney = ns.getServerMaxMoney(thisScan[j]);
+                server.maxram = ns.getServerMaxRam(thisScan[j]);
                 server.portsrequired = ns.getServerNumPortsRequired(thisScan[j]);
                 serversSeen.push(server);
             }

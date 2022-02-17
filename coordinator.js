@@ -46,7 +46,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 	ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 	ns.print("Usable servers length:  " + usableservers.length);
 	ns.print("Threads required:       " + threadsrequired);
-	ns.print("Threads remaining:      " + threadsremaining);
+	//ns.print("Threads remaining:      " + threadsremaining);
 	ns.print(Math.floor(Math.random() * 1000));
 }
 
@@ -144,10 +144,15 @@ export async function main(ns) {
 						ns.exec('/helpers/grow.js', usableservers[i].name, maxthreadsonhost, target, 0);
 						growthreadsremaining = growthreadsremaining - maxthreadsonhost;
 					}
+					// if no more usable servers exit loop
+					if (i === usableservers.length - 1) {
+						sleeptime = ns.getGrowTime(target);
+						await ns.sleep(sleeptime);
+						continue mainloop;
+					}
 				}
-				continue mainloop;  // this will be a problem when we can grow on less than max servers
 			}
-			sleeptime = ns.getWeakenTime(target);
+			sleeptime = ns.getGrowTime(target);
 			await ns.sleep(sleeptime);
 		}
 
@@ -175,10 +180,15 @@ export async function main(ns) {
 						ns.exec('/helpers/hack.js', usableservers[i].name, maxthreadsonhost, target, 0);
 						hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
 					}
+					// if no more usable servers exit loop
+					if (i === usableservers.length - 1) {
+						sleeptime = ns.getGrowTime(target);
+						await ns.sleep(sleeptime);
+						continue mainloop;
+					}
 				}
-				continue mainloop;
 			}
-			sleeptime = ns.getWeakenTime(target);
+			sleeptime = ns.getHackTime(target);
 			await ns.sleep(sleeptime);
 		}
 	}

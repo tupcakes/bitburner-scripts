@@ -74,8 +74,15 @@ export async function main(ns) {
 		let hackmultiplier = .75;
 
 		// update server list
+		let usableservers = [];
 		ns.run('createserverlist.js');
-		let usableservers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+		let serverlist = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+		for (const server of serverlist) {
+			if (server.maxram > 0 && server.hackinglevel <= ns.getHackingLevel()) {
+				usableservers.push(server);
+			}
+		}
+		ns.tprint(usableservers);
 
 		let weakenthreadsrequired = getweakenthreads(ns, target);
 		let weakenthreadsremaining = weakenthreadsrequired;

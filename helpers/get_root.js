@@ -1,4 +1,5 @@
 import { countPrograms, breakPorts } from "/libraries/root.js";
+import { copyfiles } from "/libraries/utils.js";
 
 export function autocomplete(data, args) {
 	return data.servers;
@@ -12,5 +13,6 @@ export async function main(ns) {
 	if (countPrograms(ns) >= ns.getServerNumPortsRequired(target)) {
 		breakPorts(ns, target);
 		ns.nuke(target);
+		copyfiles(ns, target)
 	}
 }

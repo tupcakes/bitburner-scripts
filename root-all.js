@@ -33,14 +33,6 @@ export async function main(ns) {
 					ns.tprint("Rooted: " + targets[i].name);
 					ns.print("Rooted: " + targets[i].name);
 
-					let copyfiles_pid = ns.run('/helpers/copyfiles.js', 1, targets[i].name);
-					await ns.sleep(100);
-
-					copyrunningloop:
-					while (ns.isRunning(copyfiles_pid) === true) {
-						await ns.sleep(20);
-						continue copyrunningloop;
-					}
 					// backdoor
 					if (factionservers.includes(targets[i].name)) {
 						ns.run('/helpers/backdoor.js', 1, targets[i].name);

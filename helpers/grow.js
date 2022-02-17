@@ -1,9 +1,13 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	//ns.tail("grow.js", "home", ns.args[0]);
 	let target = ns.args[0];
 	let pauseoffset = ns.args[1];
 
 	await ns.sleep(pauseoffset);
-	await ns.grow(target);
+
+	if (ns.args.length >= 3) {
+		await ns.grow(server, { stock: ns.args[2] });
+	} else {
+		await ns.grow(target);
+	}
 }

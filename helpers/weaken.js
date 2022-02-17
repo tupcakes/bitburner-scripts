@@ -4,10 +4,5 @@ export async function main(ns) {
 	let pauseoffset = ns.args[1];
 
 	await ns.sleep(pauseoffset);
-
-	if (ns.args.length >= 3) {
-		await ns.hack(server, { stock: ns.args[2] });
-	} else {
-		await ns.hack(target);
-	}
+	await ns.weaken(target);
 }

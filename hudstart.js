@@ -27,10 +27,6 @@ export async function main(ns) {
             headers.push("Total pservs:");
             values.push(getpservcount(ns));
 
-            // Pserv 0 ram
-            headers.push("Pserv 0 ram:");
-            values.push(getpservram(ns) + " GB");
-
             // Servers with root
             headers.push("Servers with root:");
             values.push(getrootedcount(ns));
@@ -49,14 +45,6 @@ export async function main(ns) {
             //
             headers.push("Gang control:");
             values.push(gangsrunning(ns));
-
-            //
-            headers.push("Pserv control:");
-            values.push(pservcontrollerrunning(ns));
-
-            //
-            headers.push("Share:");
-            values.push(distsharerunning(ns));
 
             //
             headers.push("Control scripts:");

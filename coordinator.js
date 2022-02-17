@@ -82,7 +82,6 @@ export async function main(ns) {
 				usableservers.push(server);
 			}
 		}
-		ns.tprint(usableservers);
 
 		let weakenthreadsrequired = getweakenthreads(ns, target);
 		let weakenthreadsremaining = weakenthreadsrequired;

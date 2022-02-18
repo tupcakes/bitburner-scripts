@@ -9,7 +9,7 @@ export async function main(ns) {
 	ns.universityCourse('Sector-12', 'Study Computer Science', false);
 
 
-	await ns.sleep(1000);
+	ns.run('coordinator.js', 1, 'n00dles');
 	if (ns.getPlayer().has4SDataTixApi === false) {
 		ns.run('/stocks/early-stock-trader.js');
 		ns.tail('/stocks/early-stock-trader.js');

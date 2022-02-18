@@ -248,7 +248,7 @@ export async function main(ns) {
 
 		let growserver = growStockPort.read();
 		let hackserver = hackStockPort.read();
-		if (growserver === 'NULL PORT DATA' || hackserver === 'NULL PORT DATA') {
+		if (growserver === 'NULL PORT DATA' || hackserver === 'NULL PORT DATA' || growserver === '' || hackserver === '') {
 			continue;
 		} else {
 			if (growserver !== 'NULL PORT DATA') {
@@ -257,7 +257,7 @@ export async function main(ns) {
 				}
 			}
 			if (hackserver !== 'NULL PORT DATA') {
-				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel()) {
+				if (ns.getServerRequiredHackingLevel(hackserver) <= ns.getHackingLevel()) {
 					await weakenstocks(ns, hackserver);
 				}
 			}

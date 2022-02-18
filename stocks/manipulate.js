@@ -222,6 +222,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 	});
 
 	ns.clearLog();
+	ns.print("Target:                 " + target);
 	ns.print("Running:                " + operation);
 	ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 	ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
@@ -252,12 +253,12 @@ export async function main(ns) {
 		} else {
 			if (growserver !== 'NULL PORT DATA') {
 				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel()) {
-					growstocks(ns, growserver);
+					await growstocks(ns, growserver);
 				}
 			}
 			if (hackserver !== 'NULL PORT DATA') {
 				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel()) {
-					weakenstocks(ns, hackserver);
+					await weakenstocks(ns, hackserver);
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-import { getdivisions, getproducts, getemployees, assignemployees, settaon, settaoff } from "/libraries/corp.js";
+import { getdivisions, getproducts, makeproducts, getemployees, assignemployees, settaon, settaoff } from "/libraries/corp.js";
 
 
 /** @param {NS} ns **/
@@ -31,7 +31,7 @@ export async function main(ns) {
 			}
 
 			// create new product
-			ns.run('/corps/make-product.js', 1, division.name);
+			makeproducts(ns, division.name);
 		}
 	}
 }

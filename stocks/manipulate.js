@@ -162,7 +162,7 @@ export async function weakenstocks(ns, target) {
 				if (hackthreadsremaining <= maxthreadsonhost && hackthreadsremaining > 0) {
 					ns.exec('/helpers/hack.js', usableservers[i].name, hackthreadsremaining, target, 0);
 					hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
-					return;
+					break threadloop;
 				} else {
 					ns.exec('/helpers/hack.js', usableservers[i].name, maxthreadsonhost, target, 0);
 					hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
@@ -171,7 +171,7 @@ export async function weakenstocks(ns, target) {
 				if (i === usableservers.length - 1) {
 					sleeptime = ns.getGrowTime(target);
 					await ns.sleep(sleeptime);
-					return;
+					break threadloop;
 				}
 			}
 		}

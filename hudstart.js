@@ -56,8 +56,12 @@ export async function main(ns) {
                 headers.push("Stocks");
                 values.push("----------");
                 //
-                headers.push("Stock Value:");
-                values.push(dollarUS.format(stockvalue(ns)));
+                headers.push("Invested:");
+                values.push(dollarUS.format(stockvalue(ns).invested));
+
+                headers.push("Worth:");
+                values.push(dollarUS.format(stockvalue(ns).worth));
+
 
                 headers.push("Long Stocks:");
                 values.push(stockpositions(ns).long);

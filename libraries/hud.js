@@ -150,17 +150,21 @@ export function stockvalue(ns) {
 			let position = ns.stock.getPosition(sym);
 			if (position[0] !== 0) {
 				totalinvestedlong = totalinvestedlong + (position[0] * position[1]);
-				// totalinvworthlong = totalinvworthlong + ns.stock.getSaleGain(sym, position[0], 'Long');
+				totalinvworthlong = totalinvworthlong + ns.stock.getSaleGain(sym, position[0], 'Long');
 			} else if (position[2] != 0) {
 				totalinvestedshort = totalinvestedshort + (position[2] * position[3]);
-				// totalinvworthshort = totalinvworthshort + ns.stock.getSaleGain(sym, position[2], 'Short');
+				totalinvworthshort = totalinvworthshort + ns.stock.getSaleGain(sym, position[2], 'Short');
 			}
 		}
 
 		totalinvested = totalinvestedlong + totalinvestedshort;
-		// totalinvworth = totalinvworthlong + totalinvworthshort;
+		totalinvworth = totalinvworthlong + totalinvworthshort;
 
-		return totalinvested;
+		const stocks = new Object
+		stocks.invested = totalinvested;
+		stocks.worth = totalinvworth
+
+		return stocks;
 }
 
 

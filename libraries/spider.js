@@ -8,6 +8,8 @@ export function spider(ns) {
     server.name = 'home'
     server.hackinglevel = 0;
     server.maxmoney = 0;
+    server.maxram = ns.getServerMaxRam('home');
+    server.portsrequired = 0;
     serversSeen.push(server);
 
     // For every server we've seen so far, do a scan
@@ -17,7 +19,6 @@ export function spider(ns) {
         for (let j = 0; j < thisScan.length; j++) {
             // If this server isn't in serversSeen, add it
             let index = serversSeen.findIndex((item) => item.name === thisScan[j]);
-            // if (serversSeen.indexOf(thisScan[j]) === -1) {
             if (index === -1) {
                 const server = new Object
                 server.name = thisScan[j]

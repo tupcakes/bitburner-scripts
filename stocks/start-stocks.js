@@ -13,6 +13,9 @@ export async function main(ns) {
 		"run4theh111z",
 	];
 
+	// start the hud
+	ns.run('hudstart.js');
+
 
 	// if sleeve isn't in volhaven and we have enough money, travel and study.
 	// if we're already in volhaven, study
@@ -34,10 +37,10 @@ export async function main(ns) {
 		ns.universityCourse('Rothman University', 'Study Computer Science', false);
 		ns.run('coordinator.js', 1, 'n00dles');
 		ns.run('/stocks/early-stock-trader.js');
-		ns.tail('/stocks/early-stock-trader.js');
+		// ns.tail('/stocks/early-stock-trader.js');
 	} else {
 		ns.run('/stocks/stock-trader.js');
-		ns.tail('/stocks/stock-trader.js');
+		// ns.tail('/stocks/stock-trader.js');
 	}
 	ns.run('/stocks/manipulate.js');
 

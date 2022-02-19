@@ -131,3 +131,55 @@ export function mcprunning(ns) {
 		return false;
 	}
 }
+
+
+/** @param {NS} ns **/
+export function stockvalue(ns) {
+		let totalinvested = 0;
+		let totalinvworth = 0;
+
+		let totalinvestedlong = 0;
+		let totalinvestedshort = 0;
+
+		let totalinvworthlong = 0;
+		let totalinvworthshort = 0;
+
+		let symbols = ns.stock.getSymbols();
+
+		for (const sym of symbols) {
+			let position = ns.stock.getPosition(sym);
+			if (position[0] !== 0) {
+				totalinvestedlong = totalinvestedlong + (position[0] * position[1]);
+				// totalinvworthlong = totalinvworthlong + ns.stock.getSaleGain(sym, position[0], 'Long');
+			} else if (position[2] != 0) {
+				totalinvestedshort = totalinvestedshort + (position[2] * position[3]);
+				// totalinvworthshort = totalinvworthshort + ns.stock.getSaleGain(sym, position[2], 'Short');
+			}
+		}
+
+		totalinvested = totalinvestedlong + totalinvestedshort;
+		// totalinvworth = totalinvworthlong + totalinvworthshort;
+
+		return totalinvested;
+}
+
+
+/** @param {NS} ns **/
+export function stockpositions(ns) {
+	let symbols = ns.stock.getSymbols();
+	let longs = 0;
+	let shorts = 0;
+
+	for (const sym of symbols) {
+		if (ns.stock.getPosition(sym)[0] > 0) {
+			longs++;
+		}
+		if (ns.stock.getPosition(sym)[2] > 0) {
+			shorts++;
+		}
+	}
+	const positions = new Object
+	positions.long = longs;
+	positions.short = shorts;
+	return positions;
+}

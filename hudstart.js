@@ -1,15 +1,21 @@
-import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning, cheeseintrunning, gangsrunning, pservcontrollerrunning, distsharerunning, mcprunning } from "/libraries/hud.js";
+import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning, cheeseintrunning, gangsrunning, pservcontrollerrunning, distsharerunning, mcprunning, stockvalue, stockpositions } from "/libraries/hud.js";
 
 
 
 /** @param {NS} ns **/
 export async function main(ns) {
+    let dollarUS = Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		maximumFractionDigits: 0,
+	});
+    
     const doc = eval("document"); // only doing eval for the HUD
     const hook0 = doc.getElementById('overview-extra-hook-0');
     const hook1 = doc.getElementById('overview-extra-hook-1');
     while (true) {
         try {
-            const headers = []
+            const headers = [];
             const values = [];
 
             // visual check if script running
@@ -31,8 +37,8 @@ export async function main(ns) {
             headers.push("Servers with root:");
             values.push(getrootedcount(ns));
 
-            // Servers with root
-            headers.push("Rooted Ram:");
+            // Usable ram
+            headers.push("Usable Ram:");
             values.push(getrootedram(ns) + " GB");
 
 
@@ -46,13 +52,19 @@ export async function main(ns) {
             headers.push("Gang control:");
             values.push(gangsrunning(ns));
 
-            //
-            headers.push("Control scripts:");
-            values.push(controlscriptsrunning(ns));
+            if (stockvalue(ns)) {
+                headers.push("Stocks");
+                values.push("----------");
+                //
+                headers.push("Stock Value:");
+                values.push(dollarUS.format(stockvalue(ns)));
 
-            //
-            headers.push("Coordinator scripts:");
-            values.push(coordinatorscriptsrunning(ns));
+                headers.push("Long Stocks:");
+                values.push(stockpositions(ns).long);
+
+                headers.push("Short Stocks:");
+                values.push(stockpositions(ns).short);
+            }
 
 
             if (ns.gang.inGang() === true) {

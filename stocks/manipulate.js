@@ -252,12 +252,12 @@ export async function main(ns) {
 			continue;
 		} else {
 			if (growserver !== 'NULL PORT DATA') {
-				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel()) {
+				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel() && ns.hasRootAccess(growserver)) {
 					await growstocks(ns, growserver);
 				}
 			}
 			if (hackserver !== 'NULL PORT DATA') {
-				if (ns.getServerRequiredHackingLevel(hackserver) <= ns.getHackingLevel()) {
+				if (ns.getServerRequiredHackingLevel(hackserver) <= ns.getHackingLevel() && ns.hasRootAccess(hackserver)) {
 					await weakenstocks(ns, hackserver);
 				}
 			}

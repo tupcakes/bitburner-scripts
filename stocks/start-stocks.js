@@ -30,10 +30,10 @@ export async function main(ns) {
 
 	// do some other things to get hack up
 	ns.universityCourse('Rothman University', 'Study Computer Science', false);
-	ns.run('coordinator.js', 1, 'n00dles');
 
 	// start trading stocks
 	if (ns.getPlayer().has4SDataTixApi === false) {
+		ns.run('coordinator.js', 1, 'n00dles');
 		ns.run('/stocks/early-stock-trader.js');
 		ns.tail('/stocks/early-stock-trader.js');
 	} else {

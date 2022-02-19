@@ -30,5 +30,9 @@ export function spider(ns) {
             }
         }
     }
+    // put home at the end of the array. it should be the last server we use
+    let home = serversSeen[0];
+    serversSeen.shift();
+    serversSeen.push(home);
     return serversSeen;
 }

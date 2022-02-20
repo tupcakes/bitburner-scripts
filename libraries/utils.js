@@ -198,7 +198,7 @@ export function getbesthackxp(ns) {
 	let xpstats = [];
 
 	for (let i = 0; i < servers.length; ++i) {
-		if (ns.hasRootAccess(servers[i].name)) {
+		if (ns.hasRootAccess(servers[i].name) && ns.getServerMaxMoney > 0) {
 			let serverxp = ns.formulas.hacking.hackExp(ns.getServer(servers[i].name), ns.getPlayer());
 			const stat = new Object
 			stat.name = servers[i].name;

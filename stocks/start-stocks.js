@@ -41,6 +41,8 @@ export async function main(ns) {
 	// we're cheap skate stock traders, so we'll make our exes. then we get root
 	while (true) {
 		await ns.sleep(100);
+		// scan for contracts
+		ns.run('contracts/contract-scanner.js');
 
 		createexes(ns);
 

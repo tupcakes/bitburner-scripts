@@ -7,6 +7,9 @@ export async function main(ns) {
 	while (ns.getServerMaxRam('home') < 256) {
 		ns.tail();
 		await ns.sleep(20);
+		
+		// scan for contracts
+		ns.run('contracts/contract-scanner.js');
 
 		// buy ram for home if possible
 		ns.upgradeHomeRam();
@@ -16,7 +19,7 @@ export async function main(ns) {
 		if (ns.gang.inGang() === false) {
 			ns.run('/singularity_scripts/crime.js');
 		}
-		ns.run("hackbestxp.js");
+		ns.run('/earlygame/attack_local.js');
 	}
 	ns.run('start.js');
 }

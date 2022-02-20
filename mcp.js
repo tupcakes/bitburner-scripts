@@ -7,7 +7,6 @@
 
 import { countPrograms } from "/libraries/root.js";
 import { buyaugments, getportopeners, createexes, findavailableserver } from "/libraries/utils.js";
-import { factionservers } from 'constants.js'
 
 export function getserverswithram(ns) {
 	ns.run('createserverlist.js');
@@ -41,6 +40,14 @@ export async function main(ns) {
 	//ns.enableLog('exec');
 	ns.clearLog();
 
+	const factionservers = [
+		"CSEC",
+		"avmnite-02h",
+		"I.I.I.I",
+		"run4theh111z",
+	];
+
+
 	ns.stopAction();
 	mainloop:
 	while (true) {
@@ -49,6 +56,9 @@ export async function main(ns) {
 
 		let allservers = getserverswithram(ns);
 		let targets = getallservers(ns);
+
+		// scan for contracts
+		ns.run('contracts/contract-scanner.js');
 
 
 		// check if ready to install augments and reset

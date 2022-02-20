@@ -1,3 +1,6 @@
+import { symservers } from 'constants.js'
+
+
 /** @param {NS} ns **/
 export async function growstocks(ns, target) {
 	// WG
@@ -6,86 +9,90 @@ export async function growstocks(ns, target) {
 	let growscriptram = ns.getScriptRam('/helpers/grow.js');
 	let hackscriptram = ns.getScriptRam('/helpers/hack.js');
 	let hackmultiplier = .75;
-	let weakenthreadsrequired = getweakenthreads(ns, target);
-	let weakenthreadsremaining = weakenthreadsrequired;
-	let growthreadsrequired = getgrowthreads(ns, target);
-	let growthreadsremaining = growthreadsrequired;
-	let hackthreadsrequired = gethackthreads(ns, target, hackmultiplier);
-	let hackthreadsremaining = hackthreadsrequired;
 	let sleeptime = 0;
 
-	// update server list
-	let usableservers = [];
-	ns.run('createserverlist.js');
-	let serverlist = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
-	for (const server of serverlist) {
-		if (server.maxram > 0 && server.hackinglevel <= ns.getHackingLevel()) {
-			usableservers.push(server);
-		}
-	}
+	while (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target)) {
+		await ns.sleep(20);
+		let weakenthreadsrequired = getweakenthreads(ns, target);
+		let weakenthreadsremaining = weakenthreadsrequired;
+		let growthreadsrequired = getgrowthreads(ns, target);
+		let growthreadsremaining = growthreadsrequired;
+		let hackthreadsrequired = gethackthreads(ns, target, hackmultiplier);
+		let hackthreadsremaining = hackthreadsrequired;
 
-	// WEAKEN
-	if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-		threadloop:
-		while (weakenthreadsremaining > 0) {
-			showstats(ns, target, usableservers, "Weaken", weakenthreadsrequired, weakenthreadsremaining)
-			await ns.sleep(20);
-			usableserversloop:
-			for (let i = 0; i < usableservers.length; ++i) {
-				await ns.sleep(20);
-				let freeram = getfreeram(ns, usableservers[i].name);
-				if (freeram < weakenscriptram) {
-					continue usableserversloop;
-				}
-				let maxthreadsonhost = Math.floor(freeram / weakenscriptram);
-
-				if (weakenthreadsremaining <= maxthreadsonhost) {
-					ns.exec('/helpers/weaken.js', usableservers[i].name, weakenthreadsremaining, target, 0);
-					weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
-					break threadloop;
-				} else if (weakenthreadsremaining > 0) {
-					ns.exec('/helpers/weaken.js', usableservers[i].name, maxthreadsonhost, target, 0);
-					weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
-				}
+		// update server list
+		let usableservers = [];
+		ns.run('createserverlist.js');
+		let serverlist = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+		for (const server of serverlist) {
+			if (server.maxram > 0 && server.hackinglevel <= ns.getHackingLevel()) {
+				usableservers.push(server);
 			}
 		}
-		sleeptime = ns.getWeakenTime(target);
-		await ns.sleep(sleeptime);
-	}
 
-	// GROW
-	if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
-		threadloop:
-		while (growthreadsremaining > 0) {
-			showstats(ns, target, usableservers, "Grow", growthreadsrequired, growthreadsremaining);
-			await ns.sleep(20);
-			usableserversloop:
-			for (let i = 0; i < usableservers.length; ++i) {
+		// WEAKEN
+		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+			threadloop:
+			while (weakenthreadsremaining > 0) {
+				showstats(ns, target, usableservers, "Grow Stock", "Weaken", weakenthreadsrequired, weakenthreadsremaining)
 				await ns.sleep(20);
-				let freeram = getfreeram(ns, usableservers[i].name);
-				if (freeram < growscriptram) {
-					continue usableserversloop;
-				}
-				let maxthreadsonhost = Math.floor(freeram / growscriptram);
+				usableserversloop:
+				for (let i = 0; i < usableservers.length; ++i) {
+					await ns.sleep(20);
+					let freeram = getfreeram(ns, usableservers[i].name);
+					if (freeram < weakenscriptram) {
+						continue usableserversloop;
+					}
+					let maxthreadsonhost = Math.floor(freeram / weakenscriptram);
 
-				if (growthreadsremaining <= maxthreadsonhost && growthreadsremaining > 0) {
-					ns.exec('/helpers/grow.js', usableservers[i].name, growthreadsremaining, target, 0);
-					growthreadsremaining = growthreadsremaining - maxthreadsonhost;
-					break threadloop;
-				} else {
-					ns.exec('/helpers/grow.js', usableservers[i].name, maxthreadsonhost, target, 0);
-					growthreadsremaining = growthreadsremaining - maxthreadsonhost;
-				}
-				// if no more usable servers exit loop
-				if (i === usableservers.length - 1) {
-					sleeptime = ns.getGrowTime(target);
-					await ns.sleep(sleeptime);
-					break threadloop;
+					if (weakenthreadsremaining <= maxthreadsonhost) {
+						ns.exec('/helpers/weaken.js', usableservers[i].name, weakenthreadsremaining, target, 0);
+						weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
+						break threadloop;
+					} else if (weakenthreadsremaining > 0) {
+						ns.exec('/helpers/weaken.js', usableservers[i].name, maxthreadsonhost, target, 0);
+						weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
+					}
 				}
 			}
+			sleeptime = ns.getWeakenTime(target);
+			await ns.sleep(sleeptime);
 		}
-		sleeptime = ns.getGrowTime(target);
-		await ns.sleep(sleeptime);
+
+		// GROW
+		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
+			threadloop:
+			while (growthreadsremaining > 0) {
+				showstats(ns, target, usableservers, "Grow Stock", "Grow", growthreadsrequired, growthreadsremaining);
+				await ns.sleep(20);
+				usableserversloop:
+				for (let i = 0; i < usableservers.length; ++i) {
+					await ns.sleep(20);
+					let freeram = getfreeram(ns, usableservers[i].name);
+					if (freeram < growscriptram) {
+						continue usableserversloop;
+					}
+					let maxthreadsonhost = Math.floor(freeram / growscriptram);
+
+					if (growthreadsremaining <= maxthreadsonhost && growthreadsremaining > 0) {
+						ns.exec('/helpers/grow.js', usableservers[i].name, growthreadsremaining, target, 0);
+						growthreadsremaining = growthreadsremaining - maxthreadsonhost;
+						break threadloop;
+					} else {
+						ns.exec('/helpers/grow.js', usableservers[i].name, maxthreadsonhost, target, 0);
+						growthreadsremaining = growthreadsremaining - maxthreadsonhost;
+					}
+					// if no more usable servers exit loop
+					if (i === usableservers.length - 1) {
+						sleeptime = ns.getGrowTime(target);
+						await ns.sleep(sleeptime);
+						break threadloop;
+					}
+				}
+			}
+			sleeptime = ns.getGrowTime(target);
+			await ns.sleep(sleeptime);
+		}
 	}
 }
 
@@ -97,86 +104,91 @@ export async function weakenstocks(ns, target) {
 	let growscriptram = ns.getScriptRam('/helpers/grow.js');
 	let hackscriptram = ns.getScriptRam('/helpers/hack.js');
 	let hackmultiplier = .75;
-	let weakenthreadsrequired = getweakenthreads(ns, target);
-	let weakenthreadsremaining = weakenthreadsrequired;
-	let growthreadsrequired = getgrowthreads(ns, target);
-	let growthreadsremaining = growthreadsrequired;
-	let hackthreadsrequired = gethackthreads(ns, target, hackmultiplier);
-	let hackthreadsremaining = hackthreadsrequired;
 	let sleeptime = 0;
 
-	// update server list
-	let usableservers = [];
-	ns.run('createserverlist.js');
-	let serverlist = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
-	for (const server of serverlist) {
-		if (server.maxram > 0 && server.hackinglevel <= ns.getHackingLevel()) {
-			usableservers.push(server);
-		}
-	}
+	while (ns.getServerMoneyAvailable(target) > 0) {
+		await ns.sleep(20);
+		let weakenthreadsrequired = getweakenthreads(ns, target);
+		let weakenthreadsremaining = weakenthreadsrequired;
+		let growthreadsrequired = getgrowthreads(ns, target);
+		let growthreadsremaining = growthreadsrequired;
+		let hackthreadsrequired = gethackthreads(ns, target, hackmultiplier);
+		let hackthreadsremaining = hackthreadsrequired;
+		let sleeptime = 0;
 
-	// WEAKEN
-	if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
-		threadloop:
-		while (weakenthreadsremaining > 0) {
-			showstats(ns, target, usableservers, "Weaken", weakenthreadsrequired, weakenthreadsremaining)
-			await ns.sleep(20);
-			usableserversloop:
-			for (let i = 0; i < usableservers.length; ++i) {
-				await ns.sleep(20);
-				let freeram = getfreeram(ns, usableservers[i].name);
-				if (freeram < weakenscriptram) {
-					continue usableserversloop;
-				}
-				let maxthreadsonhost = Math.floor(freeram / weakenscriptram);
-
-				if (weakenthreadsremaining <= maxthreadsonhost) {
-					ns.exec('/helpers/weaken.js', usableservers[i].name, weakenthreadsremaining, target, 0);
-					weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
-					break threadloop;
-				} else if (weakenthreadsremaining > 0) {
-					ns.exec('/helpers/weaken.js', usableservers[i].name, maxthreadsonhost, target, 0);
-					weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
-				}
+		// update server list
+		let usableservers = [];
+		ns.run('createserverlist.js');
+		let serverlist = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+		for (const server of serverlist) {
+			if (server.maxram > 0 && server.hackinglevel <= ns.getHackingLevel()) {
+				usableservers.push(server);
 			}
 		}
-		sleeptime = ns.getWeakenTime(target);
-		await ns.sleep(sleeptime);
-	}
 
-	// HACK
-	if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
-		threadloop:
-		while (hackthreadsremaining > 0) {
-			showstats(ns, target, usableservers, "Hack", hackthreadsrequired, hackthreadsremaining);
-			await ns.sleep(20);
-			usableserversloop:
-			for (let i = 0; i < usableservers.length; ++i) {
+		// WEAKEN
+		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
+			threadloop:
+			while (weakenthreadsremaining > 0) {
+				showstats(ns, target, usableservers, "Weaken Stock", "Weaken", weakenthreadsrequired, weakenthreadsremaining)
 				await ns.sleep(20);
-				let freeram = getfreeram(ns, usableservers[i].name);
-				if (freeram < hackscriptram) {
-					continue usableserversloop;
-				}
-				let maxthreadsonhost = Math.floor(freeram / hackscriptram);
+				usableserversloop:
+				for (let i = 0; i < usableservers.length; ++i) {
+					await ns.sleep(20);
+					let freeram = getfreeram(ns, usableservers[i].name);
+					if (freeram < weakenscriptram) {
+						continue usableserversloop;
+					}
+					let maxthreadsonhost = Math.floor(freeram / weakenscriptram);
 
-				if (hackthreadsremaining <= maxthreadsonhost && hackthreadsremaining > 0) {
-					ns.exec('/helpers/hack.js', usableservers[i].name, hackthreadsremaining, target, 0);
-					hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
-					break threadloop;
-				} else {
-					ns.exec('/helpers/hack.js', usableservers[i].name, maxthreadsonhost, target, 0);
-					hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
-				}
-				// if no more usable servers exit loop
-				if (i === usableservers.length - 1) {
-					sleeptime = ns.getGrowTime(target);
-					await ns.sleep(sleeptime);
-					break threadloop;
+					if (weakenthreadsremaining <= maxthreadsonhost) {
+						ns.exec('/helpers/weaken.js', usableservers[i].name, weakenthreadsremaining, target, 0);
+						weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
+						break threadloop;
+					} else if (weakenthreadsremaining > 0) {
+						ns.exec('/helpers/weaken.js', usableservers[i].name, maxthreadsonhost, target, 0);
+						weakenthreadsremaining = weakenthreadsremaining - maxthreadsonhost;
+					}
 				}
 			}
+			sleeptime = ns.getWeakenTime(target);
+			await ns.sleep(sleeptime);
 		}
-		sleeptime = ns.getHackTime(target);
-		await ns.sleep(sleeptime);
+
+		// HACK
+		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
+			threadloop:
+			while (hackthreadsremaining > 0) {
+				showstats(ns, target, usableservers, "Weaken Stock", "Hack", hackthreadsrequired, hackthreadsremaining);
+				await ns.sleep(20);
+				usableserversloop:
+				for (let i = 0; i < usableservers.length; ++i) {
+					await ns.sleep(20);
+					let freeram = getfreeram(ns, usableservers[i].name);
+					if (freeram < hackscriptram) {
+						continue usableserversloop;
+					}
+					let maxthreadsonhost = Math.floor(freeram / hackscriptram);
+
+					if (hackthreadsremaining <= maxthreadsonhost && hackthreadsremaining > 0) {
+						ns.exec('/helpers/hack.js', usableservers[i].name, hackthreadsremaining, target, 0);
+						hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
+						break threadloop;
+					} else {
+						ns.exec('/helpers/hack.js', usableservers[i].name, maxthreadsonhost, target, 0);
+						hackthreadsremaining = hackthreadsremaining - maxthreadsonhost;
+					}
+					// if no more usable servers exit loop
+					if (i === usableservers.length - 1) {
+						sleeptime = ns.getGrowTime(target);
+						await ns.sleep(sleeptime);
+						break threadloop;
+					}
+				}
+			}
+			sleeptime = ns.getHackTime(target);
+			await ns.sleep(sleeptime);
+		}
 	}
 }
 
@@ -214,7 +226,7 @@ export function getfreeram(ns, target) {
 }
 
 /** @param {NS} ns **/
-export function showstats(ns, target, usableservers, operation, threadsrequired, threadsremaining) {
+export function showstats(ns, target, usableservers, stockoperation, operation, threadsrequired, threadsremaining) {
 	let dollarUS = Intl.NumberFormat("en-US", {
 		style: "currency",
 		currency: "USD",
@@ -223,6 +235,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 
 	ns.clearLog();
 	ns.print("Target:                 " + target);
+	ns.print("Stock operation:        " + stockoperation);
 	ns.print("Running:                " + operation);
 	ns.print("ServerMoneyAvailable:   " + dollarUS.format(ns.getServerMoneyAvailable(target)));
 	ns.print("ServerMaxMoney:         " + dollarUS.format(ns.getServerMaxMoney(target)));
@@ -241,8 +254,20 @@ export async function main(ns) {
 	// ns.enableLog('exec');
 	ns.clearLog();
 
+
 	while (true) {
 		await ns.sleep(50);
+
+		let stockservers = [];
+		const symbols = ns.stock.getSymbols();
+		for (const sym of symbols) {
+			const position = ns.stock.getPosition(sym);
+
+			if (position[0] > 0 || position[2] > 0) {
+				stockservers.push(symservers[sym]);
+			}
+		}
+
 		var growStockPort = ns.getPortHandle(1); // port 1 is grow
 		var hackStockPort = ns.getPortHandle(2); // port 2 is hack
 
@@ -252,13 +277,17 @@ export async function main(ns) {
 			continue;
 		} else {
 			if (growserver !== 'NULL PORT DATA') {
-				if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel() && ns.hasRootAccess(growserver)) {
-					await growstocks(ns, growserver);
+				if (stockservers.includes(growserver)) {
+					if (ns.getServerRequiredHackingLevel(growserver) <= ns.getHackingLevel() && ns.hasRootAccess(growserver)) {
+						await growstocks(ns, growserver);
+					}
 				}
 			}
 			if (hackserver !== 'NULL PORT DATA') {
-				if (ns.getServerRequiredHackingLevel(hackserver) <= ns.getHackingLevel() && ns.hasRootAccess(hackserver)) {
-					await weakenstocks(ns, hackserver);
+				if (stockservers.includes(hackserver)) {
+					if (ns.getServerRequiredHackingLevel(hackserver) <= ns.getHackingLevel() && ns.hasRootAccess(hackserver)) {
+						await weakenstocks(ns, hackserver);
+					}
 				}
 			}
 		}

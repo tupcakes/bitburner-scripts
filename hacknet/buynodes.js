@@ -7,7 +7,7 @@ export async function main(ns) {
 	while (true) {
 		await ns.sleep(20);
 		let files = ns.ls('home', ".js");
-    	files.push('server_list.txt');
+    	files.push('serversbyhacklvl.json.txt');
 
 		let allupgraded = false;
 

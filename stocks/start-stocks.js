@@ -1,6 +1,6 @@
 import { createexes } from "/libraries/utils.js"
 import { countPrograms } from "/libraries/root.js"
-import { factionservers } from 'constants.js'
+import { factionservers, hackingfactions } from 'constants.js'
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -72,6 +72,24 @@ export async function main(ns) {
 		}
 
 		// join factions
-		
+		let joinfaction_ram = ns.getScriptRam('/helpers/joinfaction.js');
+		let factioninvites = ns.checkFactionInvitations();
+		if (factioninvites.length > 0) {
+			for (const factioninvite of factioninvites) {
+
+				if (hackingfactions.includes(factioninvite)) {
+
+					factionaserversloop:
+					for (let i = 0; i < targets.length; ++i) {
+						let availableram = ns.getServerMaxRam(targets[i].name) - ns.getServerUsedRam(targets[i].name);
+						if (availableram > joinfaction_ram) {
+							ns.exec('/helpers/joinfaction.js', targets[i].name, 1, factioninvite);
+							ns.print('Joined: ' + factioninvite);
+							break factionaserversloop;
+						}
+					}
+				}
+			}
+		}
 	}
 }

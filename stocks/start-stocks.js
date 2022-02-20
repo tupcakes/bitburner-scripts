@@ -1,17 +1,11 @@
 import { createexes } from "/libraries/utils.js"
 import { countPrograms } from "/libraries/root.js"
+import { factionservers } from 'constants.js'
 
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
 	ns.clearLog();
-
-	const factionservers = [
-		"CSEC",
-		"avmnite-02h",
-		"I.I.I.I",
-		"run4theh111z",
-	];
 
 	// start the hud
 	ns.run('hudstart.js');
@@ -53,6 +47,7 @@ export async function main(ns) {
 		ns.run('createserverlist.js');
 		let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 
+		// root and backdoor servers
 		roottargetsloop:
 		for (let i = 0; i < targets.length; ++i) {
 			await ns.sleep(20);
@@ -75,5 +70,8 @@ export async function main(ns) {
 				}
 			}
 		}
+
+		// join factions
+		
 	}
 }

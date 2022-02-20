@@ -33,3 +33,12 @@ export const symservers = {
 	"OMN": "omnia",
 	"FNS": "foodnstuff"
 }
+
+
+export const factionservers = [
+	"CSEC",
+	"avmnite-02h",
+	"I.I.I.I",
+	"run4theh111z",
+	"Daedalus"
+]

@@ -22,8 +22,8 @@ export function getsleevecrimechance(ns, crimearg, sleevenumber) {
 
 
 /** @param {NS} ns **/
+import { crimes } from 'constants.js'
 export function getcrimerisk(ns, sleevenumber) {
-    import { crimes } from 'constants.js'    
 
     /** Calculate the risk value of all crimes */
     let choices = crimes.map((crime) => {

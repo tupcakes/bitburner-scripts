@@ -27,8 +27,8 @@ export async function copyfiles(ns, target) {
 
 
 /** @param {NS} ns **/
+import { programs } from 'constants.js'
 export async function createexes(ns) {
-	import { programs } from 'constants.js'
 
 
 	for (const program of programs) {
@@ -88,7 +88,6 @@ export function getmostprofitable(ns) {
 // buys from the collection of hacking, skill, and rep augments
 /** @param {NS} ns **/
 export async function buyaugments(ns) {
-	import { factions } from 'constants.js'
 
 	let purchased = false;
 	const ssaugs = ns.getAugmentationsFromFaction('Slum Snakes');

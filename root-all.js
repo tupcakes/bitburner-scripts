@@ -1,17 +1,11 @@
 import { countPrograms } from "/libraries/root.js";
 import { getportopeners } from "/libraries/utils.js";
+import { factionservers } from 'constants.js'
 
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
 	ns.clearLog();
-
-	const factionservers = [
-		"CSEC",
-		"avmnite-02h",
-		"I.I.I.I",
-		"run4theh111z",
-	];
 
 	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 

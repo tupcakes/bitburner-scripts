@@ -7,6 +7,7 @@
 **/
 
 import { newgangmember, buygangequipment, ascendgangmember, warfaretick, getbesttask, trainmember, trainforht, readyforhumantrafficking } from "/libraries/gangs.js";
+import { gangs } from 'constants.js'
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -20,17 +21,6 @@ export async function main(ns) {
 
 	// SET THESE
 	//let wantedlevelmax = 100;
-
-
-	const gangs = [
-		"Slum Snakes",
-		"Speakers for the Dead",
-		"The Black Hand",
-		"The Dark Army",
-		"The Syndicate",
-		"NiteSec",
-		"Tetrads",
-	];
 
 
 	let ingang = ns.gang.inGang();

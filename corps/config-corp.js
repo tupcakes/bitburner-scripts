@@ -1,9 +1,9 @@
 import { getdivisions, getemployees, assignemployees } from "/libraries/corp.js";
+import { cities } from 'constants.js'
 
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"]
 	let divisions = getdivisions(ns);
 
 	for (const division of divisions) {

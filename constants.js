@@ -90,3 +90,19 @@ export const programs = [
 	// "AutoLink.exe",
 	// "ServerProfiler.exe",
 ]
+
+
+export const crimes = [
+	"Shoplift",
+	"RobStore",
+	"Mug",
+	"Larceny",
+	"Drugs",
+	"BondForgery",
+	"TraffickArms",
+	"Homicide",
+	"GrandTheftAuto",
+	"Kidnap",
+	"Assassination",
+	"Heist",
+]

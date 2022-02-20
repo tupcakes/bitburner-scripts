@@ -1,17 +1,4 @@
-const crimes = [
-    "Shoplift",
-    "RobStore",
-    "Mug",
-    "Larceny",
-    "Drugs",
-    "BondForgery",
-    "TraffickArms",
-    "Homicide",
-    "GrandTheftAuto",
-    "Kidnap",
-    "Assassination",
-    "Heist",
-];
+import { crimes } from 'constants.js'
 
 /** @param {import(".").NS } ns */export
 async function main(ns) {

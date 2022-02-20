@@ -1,13 +1,11 @@
 import { getdivisions, getproducts, makeproducts, getemployees, assignemployees, settaon, settaoff } from "/libraries/corp.js";
 
-
 /** @param {NS} ns **/
 export async function main(ns) {
 	//ns.disableLog('ALL');
 	ns.disableLog('sleep');
 	ns.clearLog();
 
-	let cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"];
 	let divisions = getdivisions(ns);
 
 

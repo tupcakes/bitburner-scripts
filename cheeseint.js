@@ -14,15 +14,6 @@ export async function main(ns) {
 		//"ServerProfiler.exe",
 	];
 
-	const cities = [
-		"Aevum",
-		"Volhaven",
-		"Chongqing",
-		"New Tokyo",
-		"Ishima",
-		"Sector-12",
-	];
-
 	while (true) {
 		await ns.sleep(20);
 

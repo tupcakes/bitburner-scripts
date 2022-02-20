@@ -42,3 +42,51 @@ export const factionservers = [
 	"run4theh111z",
 	"Daedalus"
 ]
+
+
+export const factions = [
+	"Slum Snakes",
+	"CyberSec",
+	"Tian Di Hui",
+	"Netburners",
+	"Sector-12",
+	"Chongqing",
+	"New Tokyo",
+	"Ishima",
+	"Aevum",
+	"Volhaven",
+	"NiteSec",
+	"The Black Hand",
+	"BitRunners",
+	"ECorp",
+	"MegaCorp",
+	"KuaiGong International",
+	"Four Sigma",
+	"NWO",
+	"Blade Industries",
+	"OmniTek Incorporated",
+	"Bachman & Associates",
+	"Clarke Incorporated",
+	"Fulcrum Secret Technologies",
+	"Tetrads",
+	"Silhouette",
+	"Speakers for the Dead",
+	"The Dark Army",
+	"The Syndicate",
+	"The Covenant",
+	"Daedalus",
+	"Illuminati",
+]
+
+
+export const programs = [
+	"BruteSSH.exe",
+	"FTPCrack.exe",
+	"relaySMTP.exe",
+	"HTTPWorm.exe",
+	"SQLInject.exe",
+	// "DeepscanV1.exe",
+	// "DeepscanV2.exe",
+	// "AutoLink.exe",
+	// "ServerProfiler.exe",
+]

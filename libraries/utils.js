@@ -28,17 +28,7 @@ export async function copyfiles(ns, target) {
 
 /** @param {NS} ns **/
 export async function createexes(ns) {
-	const programs = [
-		"BruteSSH.exe",
-		"FTPCrack.exe",
-		"relaySMTP.exe",
-		"HTTPWorm.exe",
-		"SQLInject.exe",
-		// "DeepscanV1.exe",
-		// "DeepscanV2.exe",
-		// "AutoLink.exe",
-		// "ServerProfiler.exe",
-	];
+	import { programs } from 'constants.js'
 
 
 	for (const program of programs) {
@@ -98,39 +88,7 @@ export function getmostprofitable(ns) {
 // buys from the collection of hacking, skill, and rep augments
 /** @param {NS} ns **/
 export async function buyaugments(ns) {
-	const factions = [
-		"Slum Snakes",
-		"CyberSec",
-		"Tian Di Hui",
-		"Netburners",
-		"Sector-12",
-		"Chongqing",
-		"New Tokyo",
-		"Ishima",
-		"Aevum",
-		"Volhaven",
-		"NiteSec",
-		"The Black Hand",
-		"BitRunners",
-		"ECorp",
-		"MegaCorp",
-		"KuaiGong International",
-		"Four Sigma",
-		"NWO",
-		"Blade Industries",
-		"OmniTek Incorporated",
-		"Bachman & Associates",
-		"Clarke Incorporated",
-		"Fulcrum Secret Technologies",
-		"Tetrads",
-		"Silhouette",
-		"Speakers for the Dead",
-		"The Dark Army",
-		"The Syndicate",
-		"The Covenant",
-		"Daedalus",
-		"Illuminati",
-	];
+	import { factions } from 'constants.js'
 
 	let purchased = false;
 	const ssaugs = ns.getAugmentationsFromFaction('Slum Snakes');

@@ -16,7 +16,7 @@ export async function main(ns) {
 		if (ns.gang.inGang() === false) {
 			ns.run('/singularity_scripts/crime.js');
 		}
-		ns.run('/earlygame/attack_local.js');
+		ns.run("hackbestxp.js");
 	}
 	ns.run('start.js');
 }

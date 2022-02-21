@@ -1,4 +1,5 @@
 import { getpservcount, getpservram, getrootedcount, getrootedram, controlscriptsrunning, coordinatorscriptsrunning, cheeseintrunning, gangsrunning, pservcontrollerrunning, distsharerunning, mcprunning, stockvalue, stockpositions } from "/libraries/hud.js";
+import { gettime } from '/libraries/utils.js'
 
 
 
@@ -19,7 +20,8 @@ export async function main(ns) {
             const values = [];
 
             // visual check if script running
-            headers.push(Math.floor(Math.random() * 1000));
+            //headers.push(Math.floor(Math.random() * 1000));
+            headers.push(gettime());
             values.push("----------");
 
             headers.push("Resources");

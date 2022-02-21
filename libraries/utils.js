@@ -198,7 +198,7 @@ export function getbesthackxp(ns) {
 	let xpstats = [];
 
 	for (let i = 0; i < servers.length; ++i) {
-		if (ns.hasRootAccess(servers[i].name) && ns.getServerMaxMoney > 0) {
+		if (ns.hasRootAccess(servers[i].name) && ns.getServerMaxMoney(servers[i].name) > 0) {
 			let serverxp = ns.formulas.hacking.hackExp(ns.getServer(servers[i].name), ns.getPlayer());
 			const stat = new Object
 			stat.name = servers[i].name;
@@ -209,4 +209,19 @@ export function getbesthackxp(ns) {
 
 	let bestserver = xpstats.reduce((max, stat) => max.serverxp > stat.serverxp ? max : stat);
 	return bestserver.name;
+}
+
+
+export function gettime() {
+	let date = new Date();
+	let time = date.toLocaleString('en-US', {
+		// weekday: 'short', // long, short, narrow
+		// day: 'numeric', // numeric, 2-digit
+		// year: 'numeric', // numeric, 2-digit
+		// month: 'long', // numeric, 2-digit, long, short, narrow
+		hour: 'numeric', // numeric, 2-digit
+		minute: 'numeric', // numeric, 2-digit
+		second: 'numeric', // numeric, 2-digit
+	});
+	return time;
 }

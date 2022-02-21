@@ -1,4 +1,5 @@
 import { symservers } from 'constants.js'
+import { gettime } from '/libraries/utils.js'
 
 
 /** @param {NS} ns **/
@@ -244,7 +245,8 @@ export function showstats(ns, target, usableservers, stockoperation, operation, 
 	ns.print("Usable servers length:  " + usableservers.length);
 	ns.print("Threads required:       " + threadsrequired);
 	//ns.print("Threads remaining:      " + threadsremaining);
-	ns.print(Math.floor(Math.random() * 1000));
+	//ns.print(Math.floor(Math.random() * 1000));
+	ns.print(gettime());
 }
 
 /** @param {NS} ns **/

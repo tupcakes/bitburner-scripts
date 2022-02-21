@@ -9,7 +9,7 @@ export async function main(ns) {
 		await ns.sleep(20);
 		
 		// scan for contracts
-		ns.run('contracts/contract-scanner.js');
+		ns.run('/contracts/contract-scanner.js');
 
 		// buy ram for home if possible
 		ns.upgradeHomeRam();
@@ -19,7 +19,9 @@ export async function main(ns) {
 		if (ns.gang.inGang() === false) {
 			ns.run('/singularity_scripts/crime.js');
 		}
-		ns.run('/earlygame/attack_local.js');
+
+		// spend hashes if we have them
+		ns.hacknet.spendHashes('Sell for Money');
 	}
 	ns.run('start.js');
 }

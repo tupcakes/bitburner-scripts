@@ -7,7 +7,6 @@ export async function main(ns) {
 	ns.run("mcp.js");
 	ns.run("hudstart.js");
 
-	// ns.run("/buy/hacknet.js");
 	ns.run("/hacknet/buynodes.js");
 
 
@@ -29,9 +28,6 @@ export async function main(ns) {
 		}
 	}
 
-	// // update files
-	//await updatefiles(ns);
-
 	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}
@@ -39,15 +35,6 @@ export async function main(ns) {
 
 	// sleeves
 	ns.run("/sleeves/sleeve-control.js");
-
-
-	await ns.sleep(5000);
-	// ns.run('coordinator.js', 1, 'n00dles');
-	// ns.run('coordinator.js', 1, 'foodnstuff');
-	ns.run("hackbestxp.js");
-	//ns.run("distributed-share.js");
-	
-
 
 	if (ns.getPlayer().hasCorporation === true && ns.getServerMaxRam('home') >= 2048) {
 		//ns.run("/corps/control-corp.js");

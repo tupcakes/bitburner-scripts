@@ -6,7 +6,7 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
-import { buyaugments, getportopeners, createexes, findavailableserver } from "/libraries/utils.js";
+import { buyaugments, getportopeners, createexes, findavailableserver, getbesthackxp } from "/libraries/utils.js";
 
 export function getserverswithram(ns) {
 	ns.run('createserverlist.js');
@@ -47,6 +47,8 @@ export async function main(ns) {
 		"run4theh111z",
 	];
 
+	let besthackserver = "";
+
 
 	ns.stopAction();
 	mainloop:
@@ -59,6 +61,13 @@ export async function main(ns) {
 
 		// scan for contracts
 		ns.run('contracts/contract-scanner.js');
+
+		// hack best server for xp gain
+		if (besthackserver !== getbesthackxp(ns)) {
+			ns.kill('coordinator.js', 'home', besthackserver);
+			ns.run('hackbestxp.js');
+			besthackserver = getbesthackxp(ns);
+		}
 
 
 		// check if ready to install augments and reset

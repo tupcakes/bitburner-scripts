@@ -1,3 +1,6 @@
+import { gettime } from '/libraries/utils.js'
+
+
 /** @param {NS} ns **/
 export function getgrowthreads(ns, target) {
 	let growmoneyuntilmax = ns.getServerMaxMoney(target) - ns.getServerMoneyAvailable(target);
@@ -46,8 +49,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 	ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 	ns.print("Usable servers length:  " + usableservers.length);
 	ns.print("Threads required:       " + threadsrequired);
-	//ns.print("Threads remaining:      " + threadsremaining);
-	ns.print(Math.floor(Math.random() * 1000));
+	ns.print(gettime());
 }
 
 export function autocomplete(data, args) {

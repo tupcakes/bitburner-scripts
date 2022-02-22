@@ -40,6 +40,15 @@ export const factionservers = [
 	"avmnite-02h",
 	"I.I.I.I",
 	"run4theh111z",
+	"The-Cave"
+]
+
+
+export const hackingfactions = [
+	"CyberSec",
+	"NiteSec",
+	"The Black Hand",
+	"BitRunners",
 	"Daedalus"
 ]
 
@@ -105,4 +114,25 @@ export const crimes = [
 	"Kidnap",
 	"Assassination",
 	"Heist",
+]
+
+
+export const gangs = [
+	"Slum Snakes",
+	"Speakers for the Dead",
+	"The Black Hand",
+	"The Dark Army",
+	"The Syndicate",
+	"NiteSec",
+	"Tetrads",
+]
+
+
+export const cities = [
+	"Aevum",
+	"Chongqing",
+	"Sector-12",
+	"New Tokyo",
+	"Ishima",
+	"Volhaven"
 ]

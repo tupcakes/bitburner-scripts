@@ -24,14 +24,19 @@ export async function main(ns) {
 					if (task.factionWorkType !== 'Field Work' && i === 0) {
 						ns.sleeve.setToFactionWork(0, 'Daedalus', 'Field Work');
 					} else {
-						ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
+						if (task.task !== 'Class') {
+							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
+						}
 					}
 				} else {
-					ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
-					continue gangloop;
+					if (task.task !== 'Class') {
+						ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
+					}
 				}
 			}
-			return;
+			if (ns.getPlayer().factions.includes('Daedalus')) {
+				return;
+			}
 		} else { // if not in gang
 			for (let i = 0; i < sleeves; i++) {
 				let task = ns.sleeve.getTask(i);

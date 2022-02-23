@@ -16,7 +16,8 @@ export function gethackthreads(ns, target, hackmultiplier) {
 		ns.tprint("Hack multiplier must be less than 1.");
 		return -1;
 	}
-	return Math.ceil((ns.getServerMaxMoney(target) * hackmultiplier) * ns.hackAnalyze(target));
+	let onethreadmoneystolen = ns.getServerMaxMoney(target) * ns.hackAnalyze(target);
+	return Math.ceil(((ns.getServerMaxMoney(target) * hackmultiplier) / onethreadmoneystolen));
 }
 
 /** @param {NS} ns **/

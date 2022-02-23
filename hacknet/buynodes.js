@@ -1,3 +1,13 @@
+export function gethashpower(ns) {
+	let totalhashpower = 0;
+
+	for (let i = 0; i < ns.hacknet.numNodes(); i++) {
+		totalhashpower += ns.hacknet.getNodeStats(i).production;
+	}
+	return totalhashpower;
+}
+
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	ns.disableLog('ALL');
@@ -16,6 +26,8 @@ export async function main(ns) {
 			if (ns.gang.getGangInformation().territoryWarfareEngaged) {
 				return;
 			}
+		} else if (gethashpower(ns) >= 4) {
+			return;
 		}
 
 		// buy nodes up to limit

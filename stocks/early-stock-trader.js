@@ -73,6 +73,7 @@ export async function main(ns) {
 			ns.stock.purchase4SMarketDataTixApi();
 		}
     if (ns.getPlayer().has4SDataTixApi) {
+      ns.run('/stocks/selloff.js');
       ns.run('/stocks/stock-trader.js');
 			ns.tail('/stocks/stock-trader.js');
     }

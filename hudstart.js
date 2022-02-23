@@ -87,6 +87,12 @@ export async function main(ns) {
                 //
                 headers.push("Territory:");
                 values.push(((ns.gang.getGangInformation().territory) * 100).toFixed(2));
+            } else {
+                headers.push("Gang");
+                values.push("----------");
+                
+                headers.push("Karma:");
+                values.push(ns.heart.break().toFixed(2));
             }
 
 

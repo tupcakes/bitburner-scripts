@@ -40,9 +40,9 @@ export async function main(ns) {
 		} else { // if not in gang
 			for (let i = 0; i < sleeves; i++) {
 				let task = ns.sleeve.getTask(i);
-				if (getsleevecrimechance(ns, 'Homicide', i) < .9 && task.crime !== 'Mug') {
+				if (getsleevecrimechance(ns, 'Homicide', i) < .25 && task.crime !== 'Mug') {
 					ns.sleeve.setToCommitCrime(i, 'Mug');
-				} else if (getsleevecrimechance(ns, 'Homicide', i) >= .9 && task.crime !== 'Homicide') {
+				} else if (getsleevecrimechance(ns, 'Homicide', i) >= .25 && task.crime !== 'Homicide') {
 					ns.sleeve.setToCommitCrime(i, 'Homicide');
 				}
 			}

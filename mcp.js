@@ -31,6 +31,9 @@ export async function main(ns) {
 		// scan for contracts
 		ns.run('contracts/contract-scanner.js');
 
+		// buy approved augments
+		buyaugments(ns);
+
 		// // hack best server for xp gain
 		// if (besthackserver !== getbesthackxp(ns)) {
 		// 	ns.kill('coordinator.js', 'home', besthackserver);
@@ -53,6 +56,10 @@ export async function main(ns) {
 				}
 			}
 		}
+
+		
+		// buy ram for home if possible
+		ns.upgradeHomeRam();
 
 
 		// if we won the war start trading stocks
@@ -97,14 +104,7 @@ export async function main(ns) {
 
 		let playerfactions = ns.getPlayer().factions;
 
-		// buy ram for home if possible
-		ns.upgradeHomeRam();
-
-		// buy approved augments
-		buyaugments(ns);
-
 		// hacking contracts
-
 		if (ns.isBusy() === false) {
 			if (playerfactions.includes('Daedalus') && ns.getPlayer().bitNodeN !== 2) {
 				ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');

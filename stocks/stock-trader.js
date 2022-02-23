@@ -5,12 +5,16 @@
 // requires 4s Market Data TIX API Access
 
 // defines if stocks can be shorted (see BitNode 8)
-const shortAvailable = true;
+const shortAvailable = false;
+
+const liquidMoney = 10000000000;
 
 const commission = 100000;
 
 export async function main(ns) {
     ns.disableLog("ALL");
+
+    ns.scriptKill('/stocks/early-stock-trader.js', 'home');
 
     while (true) {
         tendStocks(ns);
@@ -19,6 +23,8 @@ export async function main(ns) {
 }
 
 function tendStocks(ns) {
+    let buffermoney = 100000000;
+
     ns.print("");
     var stocks = getAllStocks(ns);
 
@@ -65,6 +71,13 @@ function tendStocks(ns) {
 
     for (const stock of stocks) {
         var money = ns.getPlayer().money;
+        // // if we have less money than the liquid $ threshold, require 250 mil
+        // // else keep some money liquid
+        // if (ns.getPlayer().money >= (liquidMoney + 250000000)) {
+        //     var money = ns.getPlayer().money;
+        // } else {
+        //     var money = ns.getPlayer().money - liquidMoney;
+        // }
         //ns.print(`INFO ${stock.summary}`);
         if (stock.forecast > 0.55) {
             longStocks.add(stock.sym);

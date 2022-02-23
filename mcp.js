@@ -62,6 +62,7 @@ export async function main(ns) {
 				ns.tail('/stocks/early-stock-trader.js');
 			}
 			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+				ns.scriptKill('/stocks/early-stock-trader.js', 'home');
 				ns.run('/stocks/stock-trader.js');
 				ns.tail('/stocks/stock-trader.js');
 			}

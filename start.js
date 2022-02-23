@@ -14,23 +14,22 @@ export async function main(ns) {
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs
 	// start if we are winning the war
-	if (ns.gang.getGangInformation().territory >= .99) {
-		// if (ns.getPurchasedServerLimit() > 0) {
-		// 	ns.run("hackbestxp.js");
-		// }
-		let pservram = 0;
-		if (pservs.length === 0) {
-			pservram = ns.getServerMaxRam('home');
-			ns.run("/buy/servers.js", 1, pservram);
-		} else if (pservs.length > 0 && pservs.length < 25) {
-			pservram = ns.getServerMaxRam(pservs[0]);
-			ns.run("/buy/servers.js", 1, pservram);
-		} else {
-			//ns.run("/buy/upgradepservs.js");
+	if (ns.gang.inGang()) {
+		if (ns.gang.getGangInformation().territory >= .99) {
+			// if (ns.getPurchasedServerLimit() > 0) {
+			// 	ns.run("hackbestxp.js");
+			// }
+			let pservram = 0;
+			if (pservs.length === 0) {
+				pservram = ns.getServerMaxRam('home');
+				ns.run("/buy/servers.js", 1, pservram);
+			} else if (pservs.length > 0 && pservs.length < 25) {
+				pservram = ns.getServerMaxRam(pservs[0]);
+				ns.run("/buy/servers.js", 1, pservram);
+			} else {
+				//ns.run("/buy/upgradepservs.js");
+			}
 		}
-	}
-
-	if (ns.gang.inGang() === true) {
 		ns.run("/gangs/tasks.js");
 	}
 

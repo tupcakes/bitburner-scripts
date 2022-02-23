@@ -35,7 +35,7 @@ export function getfreeram(ns, target) {
 }
 
 /** @param {NS} ns **/
-export function showstats(ns, target, usableservers, operation, threadsrequired, threadsremaining) {
+export function showstats(ns, target, usableservers, operation, threadsrequired, runtime) {
 	let dollarUS = Intl.NumberFormat("en-US", {
 		style: "currency",
 		currency: "USD",
@@ -49,7 +49,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 	ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
 	ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 	ns.print("Usable servers length:  " + usableservers.length);
-	ns.print("Threads required:       " + threadsrequired);
+	ns.print("Runtime:                " + ((runtime / 1000) / 60).toFixed(2) + " Minutes");
 	ns.print(gettime());
 }
 
@@ -97,7 +97,7 @@ export async function main(ns) {
 		if (ns.getServerSecurityLevel(target) > ns.getServerMinSecurityLevel(target)) {
 			threadloop:
 			while (weakenthreadsremaining > 0) {
-				showstats(ns, target, usableservers, "Weaken", weakenthreadsrequired, weakenthreadsremaining)
+				showstats(ns, target, usableservers, "Weaken", weakenthreadsrequired, ns.getWeakenTime(target))
 				await ns.sleep(20);
 				usableserversloop:
 				for (let i = 0; i < usableservers.length; ++i) {
@@ -127,7 +127,7 @@ export async function main(ns) {
 		if (ns.getServerMoneyAvailable(target) < ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			threadloop:
 			while (growthreadsremaining > 0) {
-				showstats(ns, target, usableservers, "Grow", growthreadsrequired, growthreadsremaining);
+				showstats(ns, target, usableservers, "Grow", growthreadsrequired, ns.getGrowTime(target));
 				await ns.sleep(20);
 				usableserversloop:
 				for (let i = 0; i < usableservers.length; ++i) {
@@ -163,7 +163,7 @@ export async function main(ns) {
 		if (ns.getServerMoneyAvailable(target) === ns.getServerMaxMoney(target) && ns.getServerSecurityLevel(target) === ns.getServerMinSecurityLevel(target)) {
 			threadloop:
 			while (hackthreadsremaining > 0) {
-				showstats(ns, target, usableservers, "Hack", hackthreadsrequired, hackthreadsremaining);
+				showstats(ns, target, usableservers, "Hack", hackthreadsrequired, ns.getHackTime(target));
 				await ns.sleep(20);
 				usableserversloop:
 				for (let i = 0; i < usableservers.length; ++i) {

@@ -70,7 +70,7 @@ export async function main(ns) {
 
 		// buy stock api
 		if (ns.getPlayer().hasWseAccount && ns.getPlayer().hasTixApiAccess) {
-			ns.stock.purchase4SMarketData();
+			// ns.stock.purchase4SMarketData();
 			ns.stock.purchase4SMarketDataTixApi();
 		}
 

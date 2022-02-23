@@ -6,33 +6,8 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
-import { buyaugments, getportopeners, createexes, findavailableserver, getbesthackxp } from "/libraries/utils.js";
+import { buyaugments, getportopeners, createexes, findavailableserver, getbesthackxp, getallservers, getserverswithram } from "/libraries/utils.js";
 import { factionservers } from 'constants.js'
-
-export function getserverswithram(ns) {
-	ns.run('createserverlist.js');
-	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
-
-	// let pservs = ns.getPurchasedServers();
-	let allservers = [];
-	allservers.push("home");
-	// for (const pserv of pservs) {
-	// 	allservers.push(pserv);
-	// }
-	// only use servers with ram
-	for (const target of targets) {
-		if (target.maxram > 0) {
-			allservers.push(target.name);
-		}
-	}
-	return allservers;
-}
-
-export function getallservers(ns) {
-	ns.run('createserverlist.js');
-	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
-	return targets;
-}
 
 
 /** @param {NS} ns **/

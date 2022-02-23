@@ -1,13 +1,15 @@
-import { updatefiles, getportopeners, getmostprofitable } from "/libraries/utils.js";
+import { updatefiles, getportopeners, getmostprofitable, getallservers } from "/libraries/utils.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
 	let pservs = ns.getPurchasedServers();
 
+	getallservers(ns);
+
 	ns.run("mcp.js");
 	ns.run("hudstart.js");
 
-	ns.run("/hacknet/buynodes.js");
+	//ns.run("/hacknet/buynodes.js");
 
 
 	// buy pservs with ram = home + home, if we don't have 25 pservs

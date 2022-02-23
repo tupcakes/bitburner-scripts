@@ -212,6 +212,7 @@ export function getbesthackxp(ns) {
 }
 
 
+/** @param {NS} ns **/
 export function gettime() {
 	let date = new Date();
 	let time = date.toLocaleString('en-US', {
@@ -224,4 +225,33 @@ export function gettime() {
 		second: 'numeric', // numeric, 2-digit
 	});
 	return time;
+}
+
+
+/** @param {NS} ns **/
+export function getallservers(ns) {
+	ns.run('createserverlist.js');
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+	return targets;
+}
+
+
+/** @param {NS} ns **/
+export function getserverswithram(ns) {
+	ns.run('createserverlist.js');
+	let targets = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
+
+	// let pservs = ns.getPurchasedServers();
+	let allservers = [];
+	allservers.push("home");
+	// for (const pserv of pservs) {
+	// 	allservers.push(pserv);
+	// }
+	// only use servers with ram
+	for (const target of targets) {
+		if (target.maxram > 0) {
+			allservers.push(target.name);
+		}
+	}
+	return allservers;
 }

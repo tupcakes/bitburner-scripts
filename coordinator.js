@@ -16,7 +16,7 @@ export function gethackthreads(ns, target, hackmultiplier) {
 		ns.tprint("Hack multiplier must be less than 1.");
 		return -1;
 	}
-	return Math.ceil((ns.getServerMaxMoney(target) * hackmultiplier) / ns.hackAnalyze(target));
+	return Math.ceil((ns.getServerMaxMoney(target) * hackmultiplier) * ns.hackAnalyze(target));
 }
 
 /** @param {NS} ns **/
@@ -58,7 +58,6 @@ export function autocomplete(data, args) {
 
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.tail();
 	ns.disableLog('ALL');
 	// ns.enableLog('exec');
 	ns.clearLog();

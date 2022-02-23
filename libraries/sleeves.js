@@ -50,3 +50,11 @@ export function getbestcrime(ns, choices) {
     });
     return bestCrime;
 }
+
+
+/** @param {NS} ns **/
+export function buysleeveaugs(ns, sleevenumber) {
+	for (const aug of ns.sleeve.getSleevePurchasableAugs(sleevenumber)) {
+		ns.sleeve.purchaseSleeveAug(sleevenumber, aug.name);
+	}
+}

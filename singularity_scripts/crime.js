@@ -18,7 +18,7 @@ export async function main(ns) {
 		}
 
 		// if homicide not good enough do mug
-		if (ns.getCrimeChance('Homicide') < .9) {
+		if (ns.getCrimeChance('Homicide') < .5) {
 			crimetime = Mugtime;
 			ns.commitCrime('Mug');
 		} else {

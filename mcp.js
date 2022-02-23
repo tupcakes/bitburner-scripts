@@ -56,12 +56,12 @@ export async function main(ns) {
 		// scan for contracts
 		ns.run('contracts/contract-scanner.js');
 
-		// hack best server for xp gain
-		if (besthackserver !== getbesthackxp(ns)) {
-			ns.kill('coordinator.js', 'home', besthackserver);
-			ns.run('hackbestxp.js');
-			besthackserver = getbesthackxp(ns);
-		}
+		// // hack best server for xp gain
+		// if (besthackserver !== getbesthackxp(ns)) {
+		// 	ns.kill('coordinator.js', 'home', besthackserver);
+		// 	ns.run('hackbestxp.js');
+		// 	besthackserver = getbesthackxp(ns);
+		// }
 
 
 		// check if ready to install augments and reset
@@ -79,11 +79,11 @@ export async function main(ns) {
 
 
 		// if we won the war start trading stocks
-		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
+		if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
 			ns.run('/stocks/early-stock-trader.js');
 			ns.tail('/stocks/early-stock-trader.js');
 		}
-		if (ns.gang.getGangInformation().territory > .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+		if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
 			ns.run('/stocks/stock-trader.js');
 			ns.tail('/stocks/stock-trader.js');
 		}

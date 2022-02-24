@@ -35,10 +35,10 @@ export async function main(ns) {
 		buyaugments(ns);
 
 		// // hack best server for xp gain
-		// if (besthackserver !== getbesthackxp(ns)) {
+		// if (besthackserver !== getmostprofitable(ns)) {
 		// 	ns.kill('coordinator.js', 'home', besthackserver);
-		// 	ns.run('hackbestxp.js');
-		// 	besthackserver = getbesthackxp(ns);
+		// 	ns.run('coordinator.js', 1, getmostprofitable(ns));
+		// 	besthackserver = getmostprofitable(ns);
 		// }
 
 
@@ -58,7 +58,7 @@ export async function main(ns) {
 		}
 
 		
-		// buy ram for home if possible
+		// // buy ram for home if possible
 		ns.upgradeHomeRam();
 
 
@@ -66,12 +66,10 @@ export async function main(ns) {
 		if (ns.gang.inGang()) {
 			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
 				ns.run('/stocks/early-stock-trader.js');
-				ns.tail('/stocks/early-stock-trader.js');
 			}
 			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
 				ns.scriptKill('/stocks/early-stock-trader.js', 'home');
 				ns.run('/stocks/stock-trader.js');
-				ns.tail('/stocks/stock-trader.js');
 			}
 		}
 

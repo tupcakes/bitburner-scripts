@@ -49,6 +49,7 @@ export function showstats(ns, target, usableservers, operation, threadsrequired,
 	ns.print("ServerSecurityLevel:    " + ns.getServerSecurityLevel(target));
 	ns.print("ServerMinSecurityLevel: " + ns.getServerMinSecurityLevel(target));
 	ns.print("Usable servers length:  " + usableservers.length);
+	ns.print("Threads required:       " + threadsrequired);
 	ns.print("Runtime:                " + ((runtime / 1000) / 60).toFixed(2) + " Minutes");
 	ns.print(gettime());
 }

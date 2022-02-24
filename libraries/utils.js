@@ -57,6 +57,7 @@ export async function getportopeners(ns) {
 // gets money per sec for a single thread.
 /** @param {NS} ns **/
 export function getmostprofitable(ns) {
+	ns.run('createserverlist.js');
 	let servers = JSON.parse(ns.read("serversbyhacklvl.json.txt"));
 	let stats = [];
 
@@ -68,7 +69,7 @@ export function getmostprofitable(ns) {
 			let growtime = ns.getGrowTime(servers[i].name);
 			let hacktime = ns.getHackTime(servers[i].name);
 			let totaltime = (weakentime + growtime + hacktime) / 1000;
-			let moneyperhack = ns.hackAnalyze(servers[i].name);
+			let moneyperhack = ns.getServerMaxMoney(servers[i].name) * ns.hackAnalyze(servers[i].name);
 			let moneypersec = moneyperhack / totaltime;
 
 			const stat = new Object
@@ -151,26 +152,22 @@ export async function buyaugments(ns) {
 
 /** @param {NS} ns **/
 export function findavailableserver(ns, script) {
-	let file = ns.read("server_list.txt");
-	let rootableservers = file.split("\r\n");
+	let serverswithram = getserverswithram(ns);
 
 	// build list of usable servers
 	let usableservers = [];
 
 	let pservs = ns.getPurchasedServers();
 	// add all rootable servers that have ram and we have root on
-	for (const rootableserver of rootableservers) {
-		if (ns.getServerMaxRam(rootableserver) > 0 && ns.hasRootAccess(rootableserver)) {
-			usableservers.push(rootableserver);
+	for (const serverwithram of serverswithram) {
+		if (ns.hasRootAccess(serverwithram)) {
+			usableservers.push(serverwithram);
 		}
 	}
-	// add pservs
-	for (const pserv of pservs) {
-		usableservers.push(pserv);
-	}
-	// add home as last option
-	usableservers.push("home");
 
+	// move home to end of array
+	usableservers = usableservers.filter(server => server !== 'home');
+	usableservers.push('home');
 
 	// find a server to run on
 	let scriptram = ns.getScriptRam(script);

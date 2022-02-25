@@ -12,7 +12,7 @@ export async function main(ns) {
 		let newemployeecount = Math.floor(ns.corporation.getCorporation().funds / oneemployeecost);
 
 		if (newemployeecount === 0) {
-			return;
+			continue;
 		}
 
 		ns.corporation.upgradeOfficeSize(division, city, newemployeecount);

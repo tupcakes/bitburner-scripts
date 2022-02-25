@@ -11,8 +11,13 @@ export async function main(ns) {
 		let oneemployeecost = ns.corporation.getOfficeSizeUpgradeCost(division, city, 1);
 		let newemployeecount = Math.floor(ns.corporation.getCorporation().funds / oneemployeecost);
 
+		if (newemployeecount === 0) {
+			return;
+		}
+
 		ns.corporation.upgradeOfficeSize(division, city, newemployeecount);
 		for (let i = 0; i < newemployeecount; i++) {
+			await ns.sleep(20);
 			ns.corporation.hireEmployee(division, city);
 		}
 	}

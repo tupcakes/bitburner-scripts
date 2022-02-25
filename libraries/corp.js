@@ -99,11 +99,12 @@ export function makeproducts(ns, division) {
 		ns.corporation.discontinueProduct(division, worstproduct.name);
 	}
 
-	// create new product in random city and sell it
+	// create new product in city and sell it
 	let newproductname = division + "-" + Math.floor(Math.random() * 1000);
-	let cityindex = Math.floor(Math.random() * cities.length);
-	ns.corporation.makeProduct(division, cities[cityindex], newproductname, 1e9, 1e9);
-	ns.corporation.sellProduct(division, cities[cityindex], newproductname, 'MAX', 'MP', true);
+	//let cityindex = Math.floor(Math.random() * cities.length);
+	let city = getbiggestoffice(ns, division);
+	ns.corporation.makeProduct(division, city, newproductname, 1e9, 1e9);
+	ns.corporation.sellProduct(division, city, newproductname, 'MAX', 'MP', true);
 
 
 	// set TA
@@ -112,5 +113,27 @@ export function makeproducts(ns, division) {
 	}
 	if (ns.corporation.hasResearched(division, 'Market-TA.II')) {
 		ns.corporation.setProductMarketTA2(division, newproductname, 'on');
+	}
+}
+
+
+/** @param {NS} ns **/
+export function getbiggestoffice(ns, division) {
+	let employeecounts = [];
+
+	for (const city of cities) {
+		const employeecount = new Object
+		employeecount.city = city;
+		employeecount.count = ns.corporation.getOffice(division, city).employees.length;
+		employeecounts.push(employeecount);
+	}
+
+	let mostemployees = Math.max.apply(Math, employeecounts.map(function (o) { return o.count; }));
+
+	for (var i = 0; i < employeecounts.length; i++) {
+		if (employeecounts[i].count === mostemployees) {
+
+			return employeecounts[i].city;
+		}
 	}
 }

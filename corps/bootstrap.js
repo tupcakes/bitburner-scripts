@@ -1,3 +1,5 @@
+import { cities } from 'constants.js'
+
 /** @param {NS} ns **/
 export async function main(ns) {
 	// create corp
@@ -13,7 +15,6 @@ export async function main(ns) {
 	// run config-corp
 	// run control-corp
 
-	const cities = ["Aevum", "Chongqing", "Sector-12", "New Tokyo", "Ishima", "Volhaven"];
 	const division = 'Software';
 
 	if (ns.getServerMoneyAvailable('home') < 150000000000 && ns.getPlayer().hasCorporation === false) {
@@ -22,42 +23,62 @@ export async function main(ns) {
 	}
 
 	// create corp
-	ns.corporation.createCorporation('Bit', true);
+	if (ns.getPlayer().hasCorporation === false) {
+		ns.corporation.createCorporation('Bit', true);
+	}
 
 	// create software division
-	ns.corporation.expandIndustry(division, division);
+	if (ns.corporation.getCorporation().divisions[0].name.includes(division) === false) {
+		ns.corporation.expandIndustry(division, division);
+	}
 
 	// buy upgrades
-	ns.corporation.unlockUpgrade('Smart Supply');
-	// ns.corporation.unlockUpgrade('Warehouse API');
-	// ns.corporation.unlockUpgrade('Office API');
+	if (ns.corporation.hasUnlockUpgrade('Smart Supply') === false) {
+		ns.corporation.unlockUpgrade('Smart Supply');
+	}
+	if (ns.corporation.hasUnlockUpgrade('Warehouse API') === false) {
+		ns.corporation.unlockUpgrade('Warehouse API');
+	}
+	if (ns.corporation.hasUnlockUpgrade('Office API') === false) {
+		ns.corporation.unlockUpgrade('Office API');
+	}
 
 	// expand to all cities - requires apis
 	for (const city of cities) {
-		ns.corporation.setSmartSupply(division, city, true);
-	// 	ns.corporation.expandCity(division, city);
-	// 	ns.corporation.purchaseWarehouse(division, city);
+		// expand to city
+		if (ns.corporation.getCorporation().divisions[0].cities.includes(city)) {
+			ns.corporation.expandCity(division, city);
+		}
 
-	// 	// hire employees
-	// 	for (let i = 0; i < 3; i++) {
-	// 		ns.corporation.hireEmployee(division, city);
-	// 	}
+		if (ns.corporation.hasUnlockUpgrade('Smart Supply')) {
+			ns.corporation.setSmartSupply(division, city, true);
+		}
 
-	// 	// set AI cores sale to MAX/MP
-	// 	ns.corporation.sellMaterial(division, city, 'AI Cores', 'MAX', 'MP');
+		if (ns.corporation.hasUnlockUpgrade('Office API')) {
+			// hire employees
+			for (let i = 0; i < 3; i++) {
+				ns.corporation.hireEmployee(division, city);
+			}
+
+			if (ns.corporation.hasUnlockUpgrade('Warehouse API')) {
+				ns.corporation.purchaseWarehouse(division, city);
+				// set AI cores sale to MAX/MP
+				ns.corporation.sellMaterial(division, city, 'AI Cores', 'MAX', 'MP');
+			}
+		}
+
+		// // buy dreamsense
+		// for (let i = 0; i < 2; i++) {
+		// 	ns.corporation.levelUpgrade('DreamSense');
+		// }
+
+		// // spend remaining money on advert
+		// while (ns.corporation.getHireAdVertCost(division) <= ns.corporation.getCorporation().funds) {
+		// 	ns.corporation.hireAdVert(division);
+		// }
+
+		// assign employees
+		//ns.run('/corps/config-corp.js');
+		//ns.run('/corps/control-corp.js');
 	}
-
-	// // buy dreamsense
-	// for (let i = 0; i < 2; i++) {
-	// 	ns.corporation.levelUpgrade('DreamSense');
-	// }
-
-	// // spend remaining money on advert
-	// while (ns.corporation.getHireAdVertCost(division) <= ns.corporation.getCorporation().funds) {
-	// 	ns.corporation.hireAdVert(division);
-	// }
-
-	// assign employees
-	//ns.run('/corps/config-corp.js');
-	//ns.run('/corps/control-corp.js');
 }

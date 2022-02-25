@@ -28,14 +28,19 @@ export async function main(ns) {
 							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
 						}
 					}
+					return;
 				} else {
-					if (task.task !== 'Class') {
-						ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
+					// if (i < Math.floor((sleeves / 2))) {
+					if (i < (sleeves - 2)) {
+						if (task.task !== 'Class') {
+							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
+						}
+					} else {
+						if (task.crime !== 'Mug') {
+							ns.sleeve.setToCommitCrime(i, 'Mug');
+						}
 					}
 				}
-			}
-			if (ns.getPlayer().factions.includes('Daedalus')) {
-				return;
 			}
 		} else { // if not in gang
 			for (let i = 0; i < sleeves; i++) {

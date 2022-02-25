@@ -117,6 +117,7 @@ export function makeproducts(ns, division) {
 }
 
 
+import { cities } from 'constants.js'
 /** @param {NS} ns **/
 export function getbiggestoffice(ns, division) {
 	let employeecounts = [];

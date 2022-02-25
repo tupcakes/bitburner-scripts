@@ -6,7 +6,7 @@
 */
 
 import { countPrograms } from "/libraries/root.js";
-import { buyaugments, getportopeners, createexes, findavailableserver, getbesthackxp, getallservers, getserverswithram } from "/libraries/utils.js";
+import { buyaugments, getportopeners, createexes, findavailableserver, getbesthackxp, getallservers, getserverswithram, getmostprofitable } from "/libraries/utils.js";
 import { factionservers } from 'constants.js'
 
 
@@ -71,6 +71,7 @@ export async function main(ns) {
 				ns.scriptKill('/stocks/early-stock-trader.js', 'home');
 				ns.run('/stocks/stock-trader.js');
 			}
+			ns.run('/stocks/manipulate.js');
 		}
 
 

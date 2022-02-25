@@ -20,15 +20,23 @@ export async function main(ns) {
 				let task = ns.sleeve.getTask(i);
 				if (ns.sleeve.getSleeveStats(i).shock > 0) {
 					ns.sleeve.setToShockRecovery(i);
-				} else if (ns.getPlayer().factions.includes('Daedalus')) {
+					continue;
+				}
+				
+				if (ns.getPlayer().factions.includes('Daedalus')) {
 					if (task.factionWorkType !== 'Field Work' && i === 0) {
 						ns.sleeve.setToFactionWork(0, 'Daedalus', 'Field Work');
-					} else {
-						if (task.task !== 'Class') {
-							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');
-						}
 					}
-					return;
+					if (i > 0 && i < (sleeves - 2)) {
+						//if (task.task !== 'Class') {
+							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Algorithms');
+						//}
+					} else {
+						if (i >= (sleeves - 2))
+							//if (task.crime !== 'Mug') {
+								ns.sleeve.setToCommitCrime(i, 'Mug');
+							//}
+					}
 				} else {
 					// if (i < Math.floor((sleeves / 2))) {
 					if (i < (sleeves - 2)) {
@@ -51,6 +59,10 @@ export async function main(ns) {
 					ns.sleeve.setToCommitCrime(i, 'Homicide');
 				}
 			}
+		}
+
+		if (ns.getPlayer().factions.includes('Daedalus')) {
+			return;
 		}
 	}
 }

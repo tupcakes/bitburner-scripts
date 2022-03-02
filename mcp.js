@@ -49,25 +49,28 @@ export async function main(ns) {
 		let pendingaugs = ns.getOwnedAugmentations(true).length - ns.getOwnedAugmentations(false).length;
 		if (pendingaugs >= 4 && ns.gang.inGang()) {
 			if (ns.gang.getGangInformation().territory > .99) {
-				let symbols = ns.stock.getSymbols();
-				for (const sym of symbols) {
-					if (ns.stock.getPosition(sym)[0] > 0 || ns.stock.getPosition(sym)[2] > 0) {
-						ns.run("/stocks/selloff.js");
-						continue mainloop;
-					}
-					ns.run("reset.js");
-				}
+				// let symbols = ns.stock.getSymbols();
+				// for (const sym of symbols) {
+				// 	if (ns.stock.getPosition(sym)[0] > 0 || ns.stock.getPosition(sym)[2] > 0) {
+				// 		ns.run("/stocks/selloff.js");
+				// 		continue mainloop;
+				// 	}
+				// 	ns.run("reset.js");
+				// }
+				ns.spawn("reset.js");
 			}
 		}
 
 
 		// if we won the war start trading stocks
 		if (ns.gang.inGang()) {
-			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
+			// if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
+			if (ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
 				ns.run('/stocks/early-stock-trader.js');
 				
 			}
-			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+			// if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
+			if (ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
 				ns.scriptKill('/stocks/early-stock-trader.js', 'home');
 				ns.run('/stocks/stock-trader.js');
 			}
@@ -101,9 +104,9 @@ export async function main(ns) {
 			ns.run('hudstart.js');
 		}
 
-		let playerfactions = ns.getPlayer().factions;
 
 		// hacking contracts
+		let playerfactions = ns.getPlayer().factions;
 		if (ns.isBusy() === false) {
 			if (playerfactions.includes('Daedalus') && ns.getPlayer().bitNodeN !== 2) {
 				ns.run('/helpers/workforfaction.js', 1, 'Daedalus', 'Hacking');

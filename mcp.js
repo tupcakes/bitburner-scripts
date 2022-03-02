@@ -34,6 +34,9 @@ export async function main(ns) {
 		// buy approved augments
 		buyaugments(ns);
 
+		// buy ram for home if possible
+		ns.upgradeHomeRam();
+
 		// // hack best server for xp gain
 		// if (besthackserver !== getmostprofitable(ns)) {
 		// 	ns.kill('coordinator.js', 'home', besthackserver);
@@ -57,15 +60,12 @@ export async function main(ns) {
 			}
 		}
 
-		
-		// // buy ram for home if possible
-		ns.upgradeHomeRam();
-
 
 		// if we won the war start trading stocks
 		if (ns.gang.inGang()) {
 			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === false) {
 				ns.run('/stocks/early-stock-trader.js');
+				
 			}
 			if (ns.gang.getGangInformation().territory < .99 && ns.getPlayer().hasTixApiAccess && ns.getPlayer().has4SDataTixApi === true) {
 				ns.scriptKill('/stocks/early-stock-trader.js', 'home');

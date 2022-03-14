@@ -17,6 +17,10 @@ export async function main(ns) {
 				await ns.sleep(20);
 				buysleeveaugs(ns, i);
 
+				if (ns.sleeve.getInformation(i).city !== 'Volhaven') {
+					ns.sleeve.travel(i, 'Volhaven');
+				}
+
 				let task = ns.sleeve.getTask(i);
 				if (ns.sleeve.getSleeveStats(i).shock > 0) {
 					ns.sleeve.setToShockRecovery(i);
@@ -28,17 +32,12 @@ export async function main(ns) {
 						ns.sleeve.setToFactionWork(0, 'Daedalus', 'Field Work');
 					}
 					if (i > 0 && i < (sleeves - 2)) {
-						//if (task.task !== 'Class') {
-							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Algorithms');
-						//}
+						ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Algorithms');
 					} else {
 						if (i >= (sleeves - 2))
-							//if (task.crime !== 'Mug') {
-								ns.sleeve.setToCommitCrime(i, 'Mug');
-							//}
+							ns.sleeve.setToCommitCrime(i, 'Mug');
 					}
 				} else {
-					// if (i < Math.floor((sleeves / 2))) {
 					if (i < (sleeves - 2)) {
 						if (task.task !== 'Class') {
 							ns.sleeve.setToUniversityCourse(i, 'ZB Institute of Technology', 'Study Computer Science');

@@ -2,8 +2,8 @@ automate status
 automate en|dis
 
 
-automate stamina 2365 high;
-automate contract Assassination high;
-automate stamina 1800 low;
+automate stamina 74 high;
+automate contract Investigation high;
+automate stamina 35 low;
 automate general 'Hyperbolic Regeneration Chamber' low;
 automate en;
